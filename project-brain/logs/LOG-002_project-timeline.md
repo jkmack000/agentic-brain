@@ -770,3 +770,25 @@ Running chronological record of all project sessions, milestones, ingestions, an
   - Coder brain lives at `coder-brain/` as sibling to `project-brain/` within agentic-brain repo (can be extracted to own repo later)
   - INDEX-MASTER includes capability advertisements (capabilities, input-types, output-types, token-budget, domain) for future automated routing
 - **Blockers/dead ends:** None
+
+### 2026-02-17 — WORK — LEARN-037 Deposit + SPEC-001 Option D + First Migration
+- **Duration:** ~20min (continuation of above session)
+- **Key actions:**
+  - Deposited LEARN-037: Sandbox Agent SDK research (architecture, features, Prover implications, Rivet actor analysis)
+  - Updated SPEC-001: added Option D (Sandbox Agent + Rivet actors) as Phase 2+ coordination option
+  - First knowledge migration: LEARN-035 → coder-brain LEARN-001, LEARN-036 → coder-brain LEARN-002
+  - First use of SPEC-003 retirement workflow: originals moved to project-brain/archive/
+  - Agentic-brain 49→47 files, coder-brain 0→2 files
+  - Added OQs #25 and #26 to INDEX-MASTER
+- **Files created:**
+  - LEARN-037 (Sandbox Agent SDK)
+  - coder-brain LEARN-001 (Freqtrade IStrategy, from LEARN-035)
+  - coder-brain LEARN-002 (LLM code gen patterns, from LEARN-036)
+- **Files retired:**
+  - LEARN-035, LEARN-036 → archive/
+- **Files modified:**
+  - SPEC-001, INDEX-MASTER, INDEX-claude-code.md, coder-brain INDEX-MASTER
+- **Decisions made:**
+  - Sandbox Agent as Phase 2+ Option D; Rivet = working memory, brain files = long-term memory
+  - Coder domain knowledge migrates to coder-brain; SPEC-002 stays (architecture doc)
+- **Blockers/dead ends:** Context at 80% — Freqtrade deep ingestion deferred to next session
