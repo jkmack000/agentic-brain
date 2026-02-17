@@ -1,7 +1,7 @@
 # INDEX-MASTER
 <!-- type: INDEX -->
-<!-- updated: 2026-02-14 -->
-<!-- total-files: 31 -->
+<!-- updated: 2026-02-17 -->
+<!-- total-files: 37 -->
 <!-- Load this file at the start of every Claude Code session. -->
 
 ## How to Use This Index
@@ -42,6 +42,16 @@ _None yet. Sub-indexes will be created when file count exceeds ~75._
 - **Key decisions:** Fat index over thin index; standalone CLI over Obsidian plugin; search/work session split; typed file system with 6 types; hierarchical index navigation for scale.
 - **Interface:** N/A (architecture spec, not code)
 - **Known issues:** None open
+
+### SPEC-001
+- **Type:** SPEC
+- **File:** specs/SPEC-001_prover-multi-brain-architecture.md
+- **Tags:** prover, multi-brain, orchestrator, architecture, git-worktrees, sub-agents, coordination, backtesting
+- **Links:** SPEC-000, LEARN-024, LEARN-009, LEARN-011, LEARN-015
+- **Summary:** Full architecture for Prover — the multi-brain backtesting system. Defines 5 brains (Agentic meta-brain, Orchestrator, Donchian, Coder, Frontend) with roles and status. Three coordination options evaluated: (A) git worktree isolation (from Letta), (B) Claude Code sub-agents (native), (C) agent teams (experimental). Recommends Option B first, evolve to A for persistence. Defines inter-brain communication format (CONTEXT-PACK and RESULT templates, 1-2K token target). Three routing strategies (hardcoded → fat-index capability ads → learned RULE-based). Five gaps prioritized: P1 concurrent initialization (needed for new brains), P1 frontmatter decision (keep centralized INDEX-MASTER), P2 git worktree isolation, P2 formalized defragmentation (triggers defined), P3 background reflection. Resolves open questions: backtest results as LEARN files (not raw data), cross-brain conflicts flagged for user decision.
+- **Key decisions:** Option B (sub-agents) as starting coordination mechanism; centralized INDEX-MASTER over per-file frontmatter; backtest insights as LEARN files; conflicts resolved by user, not autonomously.
+- **Interface:** Defines CONTEXT-PACK (orchestrator→specialist) and RESULT (specialist→orchestrator) message formats.
+- **Known issues:** Four open questions remain: context7 repo link, frontend stack, Prover scope, iterative orchestration. Agent teams experimental and 7x cost. Subagents can't recurse.
 
 ---
 
@@ -315,6 +325,56 @@ _None yet._
 - **Key decisions:** None — competitive intelligence. QMD identified as both competitor and potential search backend complement.
 - **Interface:** N/A (learning, not code)
 - **Known issues:** Pre-1.0, sqlite-vec alpha, 96% savings unverified, evolving rapidly (74 PRs/month).
+
+### LEARN-025
+- **Type:** LEARN
+- **File:** learnings/LEARN-025_backtesting-engine-architecture-research.md
+- **Tags:** backtesting, architecture, event-driven, vectorized, data-pipeline, strategy-abstraction, optimization, overfitting, prover
+- **Links:** SPEC-001, SPEC-000
+- **Summary:** Comprehensive research synthesis on production backtesting engine architectures for Prover. Covers 7 areas: (1) Core architecture — event-driven vs vectorized, streaming vs batch, hybrid two-phase pipeline (vectorized screening → event-driven validation) as industry best practice; NautilusTrader Rust-core actor model as performance gold standard. (2) Data pipeline — raw→clean→resample→strategy-ready flow, Parquet as industry-standard format, multi-timeframe alignment rules (higher TF values only after period closes), partition strategies. (3) Strategy abstraction — 4 patterns compared: class inheritance (Backtrader/Zipline), DataFrame methods (Freqtrade, recommended for LLM generation), vectorized composition (VectorBT), handler interfaces (LEAN). (4) Result storage — Parquet for data + JSON for metadata, 12 key performance metrics, directory structure pattern. (5) Parameter optimization — grid/random/Bayesian(Optuna)/walk-forward/CPCV compared; 3-phase pipeline recommended (vectorized sweep → Bayesian refinement → CPCV validation with PBO < 0.5 gate). (6) Framework reference — 6 frameworks compared (Backtrader, Zipline, VectorBT, LEAN, Freqtrade, NautilusTrader) with architecture details. (7) Pitfalls — look-ahead bias, survivorship bias, overfitting, transaction costs, data snooping, plus 4 Prover-specific pitfalls (infinite search, narrative fabrication, compounding bias, meta-overfitting). Recommends VectorBT (Phase 1) + Freqtrade (Phase 2) stack. Full data flow diagram through Prover brains.
+- **Key decisions:** Freqtrade IStrategy recommended for AI-generated strategies (DataFrame methods are LLM-friendly); VectorBT for screening, Freqtrade for validation; CPCV with PBO < 0.5 as hard gate; validation methodology fixed in RULE file (not modifiable by AI agents); economic thesis required before parameter search.
+- **Interface:** N/A (learning, not code)
+- **Known issues:** NautilusTrader not hands-on tested; VectorBT PRO not evaluated; CPCV Python library assessment needed; Freqtrade crypto-focused (equity/futures may need different framework); 5 open design questions for Prover (execution service, data freshness, strategy versioning, multi-asset, MVP timeframe).
+
+### LEARN-026
+- **Type:** LEARN
+- **File:** learnings/LEARN-026_inter-agent-communication-patterns.md
+- **Tags:** multi-agent, IPC, communication, context-passing, message-formats, serialization, shared-memory, token-efficiency, A2A, MCP, AutoGen, CrewAI, LangGraph, Claude-Code, OpenAI-Swarm, blackboard, stigmergy
+- **Links:** SPEC-001, LEARN-009, LEARN-015, LEARN-024, LEARN-002, LEARN-021
+- **Summary:** Comprehensive research synthesis on inter-process communication patterns for LLM/AI multi-agent systems. Covers 9 areas: (1) Context passing — full dump vs summary/compression vs delta/incremental, with compression ratios (10-20x Anthropic subagents, 70% Claude Code reduction, 73% protocol compression, 26-54% Acon). (2) Message formats — Google A2A (JSON-RPC 2.0, Agent Cards, typed Parts), AutoGen (GroupChatMessage, HandoffMessage with context list), CrewAI (Pydantic output schemas), LangGraph (TypedDict state + reducers), OpenAI Swarm (stateless, context vars). (3) Serialization — markdown (LLM-native), JSON with schema validation, YAML frontmatter + markdown body as optimal hybrid. (4) Shared memory — blackboard pattern (maps to INDEX-MASTER), stigmergy (maps to file deposits), file-based (our architecture), database-backed (Mem0/Zep), in-memory (LangGraph). (5) Token-efficient techniques — context filtering (highest impact), protocol compression, structured output constraints, summary distillation, tiered memory. (6) Real implementations — Anthropic research system (90.2% improvement, 15x cost, Opus+Sonnet), Claude Code subagents (70% reduction, 20K overhead), AutoGen/CrewAI/LangGraph/Swarm/tick-md details. (7) MCP vs A2A protocol landscape. (8) Improved CONTEXT-PACK v2 and RESULT v2 templates with YAML frontmatter, token budgets, and capability advertisement headers. (9) Eight key takeaways including: context isolation beats sharing, 1-2K token returns are standard, markdown+git is legitimate, Agent Card pattern should be adopted.
+- **Key decisions:** Recommends YAML frontmatter + markdown body for CONTEXT-PACK/RESULT v2 formats; capability advertisement headers in INDEX-MASTER for automated routing; LangGraph-style reducer pattern for merging concurrent specialist results; token budget envelope (~750 tokens CONTEXT-PACK, ~1100-1500 tokens RESULT).
+- **Interface:** N/A (learning, not code). Defines proposed v2 message templates for SPEC-001 inter-brain communication.
+- **Known issues:** A2A protocol still evolving (v0.3); MCP agent-to-agent extensions on 2026 roadmap only; Acon/SDE are academic; 15x token overhead is Anthropic's number for research tasks, may differ for our use case.
+
+### LEARN-027
+- **Type:** LEARN
+- **File:** learnings/LEARN-027_multi-agent-orchestration-patterns.md
+- **Tags:** multi-agent, orchestration, choreography, fan-out, fan-in, task-decomposition, aggregation, error-handling, context-management, LangGraph, CrewAI, AutoGen, OpenAI, prover
+- **Links:** SPEC-001, LEARN-009, LEARN-015, LEARN-026, LEARN-024
+- **Summary:** Research synthesis of multi-agent orchestration patterns from 6 production frameworks (LangGraph, CrewAI, AutoGen, OpenAI Agents SDK, Microsoft Agent Framework, Google ADK). Covers 8 areas: (1) Fan-out/fan-in — LangGraph superstep semantics (atomic failure, reducers), 137x speedup benchmark, Microsoft anti-pattern (no shared mutable state). (2) Choreography vs orchestration — hybrid consensus as industry best practice ("orchestrate via code, delegate to LLM"), framework positioning table. (3) Task decomposition — 4 strategies: role-based (CrewAI), graph-based (LangGraph), dynamic task ledger (Microsoft Magentic), conversation-based (AutoGen); Microsoft complexity hierarchy (direct call → single agent → multi-agent). (4) Result aggregation — 5 strategies (voting, weighted, LLM synthesis, concat+dedup, conflict agent); maker-checker with iteration caps; **41-86.7% failure rate** for unstructured coordination. (5) Framework details — OpenAI Agents SDK (manager+handoff), LangGraph (state+reducers+checkpoints), CrewAI (Crews+Flows), AutoGen (GroupChat+speaker selection), Microsoft (5 declarative patterns), Google ADK. (6) Error handling — 7 patterns: retry+backoff, circuit breakers (Salesforce 40%/60s), failure classification, graceful degradation, output validation, timeouts, checkpointing. (7) Context management — 6 strategies: context isolation (Manus, highest impact), observation masking (JetBrains, as good as LLM summarization), compaction, blackboard (=INDEX-MASTER), system prompt swapping, hierarchical. (8) Prover-specific takeaways: code orchestration + LLM reasoning, fan-out with reducer merge, circuit breakers, observation masking over summarization, context isolation as #1 principle.
+- **Key decisions:** Recommends code-level orchestration for Prover workflow graph with LLM flexibility within specialists; fan-out with append reducers; maker-checker with iteration caps; circuit breakers for specialist failures; observation masking preferred over LLM summarization; complexity hierarchy (start single-agent, escalate to multi-brain only when needed).
+- **Interface:** N/A (learning, not code)
+- **Known issues:** Framework APIs evolve rapidly (point-in-time Feb 2026); 41-86.7% failure statistic methodology not deeply evaluated; observation masking is one study; no hands-on benchmarking.
+
+### LEARN-028
+- **Type:** LEARN
+- **File:** learnings/LEARN-028_context7-architecture-analysis.md
+- **Tags:** context7, MCP, library-docs, architecture, search, reranking, coder-brain, upstash, vector-search
+- **Links:** LEARN-013, LEARN-002, LEARN-023, SPEC-001
+- **Summary:** Architecture analysis of Context7 (Upstash) — MCP server providing up-to-date library docs to AI coding assistants. 33K+ libraries indexed on 10-15 day rolling crawl. Split architecture: thin open-source MCP client (2 tools, ~2 files of logic) + thick proprietary backend (crawling, parsing, LLM enrichment, Upstash Vector multi-model embeddings, c7score 5-metric reranker, Redis cache). Two MCP tools: `resolve-library-id` (maps to fat-index search) and `get-library-docs` (maps to brain file read, with token budget parameter). 5-stage data pipeline: parse → enrich (LLM adds explanations) → vectorize (adaptive models by content complexity) → rerank (c7score) → cache. Recent architecture update achieved 65% token reduction and 38% latency reduction by moving filtering from LLM to backend. Seven patterns transferable to Coder brain: two-tool resolution, token-budgeted responses, query-aware reranking, enrichment at index time (=fat index), backend filtering > LLM filtering, adaptive embeddings, rolling freshness. **Context7 and Coder brain are complementary**: Context7 answers "how does this library work?" while brain answers "how does OUR project use it and why?" Ideal: both as MCP servers to same AI assistant.
+- **Key decisions:** Context7 validates brain MCP server design (two-tool pattern, token budgets, pre-enrichment). Recommended integration: Context7 for external library docs + Coder brain for project-specific knowledge. Six concrete next steps for brain MCP server informed by Context7 patterns.
+- **Interface:** N/A (learning, not code)
+- **Known issues:** Backend is proprietary (can't inspect internals); c7score uses Vertex AI/Gemini (vendor-locked); "96% token savings" claim unverified; pre-1.0 MCP server.
+
+### LEARN-024
+- **Type:** LEARN
+- **File:** learnings/LEARN-024_context-repositories-and-context-engineering-patterns.md
+- **Tags:** context-repositories, context-engineering, letta, memgpt, anthropic, memory-architecture, git-worktrees, progressive-disclosure, compaction, sub-agents
+- **Links:** LEARN-002, LEARN-004, LEARN-005, LEARN-011, SPEC-000
+- **Summary:** Deep dive into Letta's Context Repositories blog post + embedded links (Anthropic context engineering framework, MemGPT paper, Letta Code docs/repo). Extends LEARN-002/011 with 17 specific new patterns not previously deposited. Letta implementation details: git worktrees for multi-agent isolation, background reflection (auto-deposit), memory defragmentation as first-class operation, `system/` always-loaded directory, YAML frontmatter per file, concurrent subagent initialization. Anthropic framework details: attention budget as n² cost, context rot as gradient (not cliff), compaction art (recall vs precision), sub-agent 10-20x compression ratio (1-2K token returns), Goldilocks zone for system prompts, hybrid pre-load + JIT approach. MemGPT: interrupt-based control flow, virtual context illusion. Includes full comparison table (our brain vs Letta vs Anthropic patterns) and 5-item gap analysis: git worktree isolation, background reflection, formalized defrag, concurrent init, per-file frontmatter.
+- **Key decisions:** None — research synthesis. Five gaps identified for future work.
+- **Interface:** N/A (learning, not code)
+- **Known issues:** Letta Code is TypeScript (may not transfer to Python brain.py). MemGPT paper (Oct 2023) predates current Letta evolution.
 
 ---
 

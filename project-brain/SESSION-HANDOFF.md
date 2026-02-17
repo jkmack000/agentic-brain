@@ -1,67 +1,53 @@
 # SESSION-HANDOFF
-<!-- written: 2026-02-16 -->
-<!-- session-type: WORK + PLANNING -->
-<!-- trigger: manual /brain-handoff -->
+<!-- written: 2026-02-17 -->
+<!-- session-type: RESEARCH -->
+<!-- trigger: session work complete -->
 
 ## What Was Being Done
-Session covered three phases: (1) implementation work (content hashing dedup, RULE file extraction), (2) infrastructure (GitHub repo creation), (3) high-level architecture planning for the Prover multi-brain system.
+Research session: 4-topic parallel research for Prover build knowledge, plus Context7 ingestion. Budget cap: 200K tokens.
 
 ## Current State
-- **Status:** COMPLETED (implementation), PLANNING (Prover)
+- **Status:** COMPLETED (Batch 1 + Context7), DEFERRED (Batch 2)
 - **What's done:**
-  - Content hashing dedup implemented in brain.py, verified working
-  - 4 RULE files deposited (RULE-001 through RULE-004, 27 tool-use patterns)
-  - INDEX-MASTER.md updated (27→31 files)
-  - GitHub repo created and pushed: https://github.com/jkmack000/agentic-brain (public, HTTPS)
-  - gh CLI installed and authenticated as jkmack000
-  - Prover architecture discussed at high level (not yet deposited)
-- **What's left:**
-  - Prover multi-brain architecture needs to be deposited as a SPEC
-  - Build orchestrator brain (copy/refinement of agentic-brain)
-  - Build coder brain from context7 repository
-  - Build frontend brain (stack TBD)
-  - Donchian bot brain already exists, needs trading system domain enrichment
+  - LEARN-025: Backtesting engine architecture — event-driven vs vectorized, 6 frameworks compared, hybrid two-phase pipeline (VectorBT screening → Freqtrade validation), CPCV with PBO < 0.5 as hard gate, 4 Prover-specific pitfalls
+  - LEARN-026: Inter-agent communication patterns — A2A protocol, 6 framework IPC patterns, CONTEXT-PACK v2 and RESULT v2 templates with YAML frontmatter, token budget envelope (~750/~1300 tokens)
+  - LEARN-027: Multi-agent orchestration — 6 production frameworks, fan-out/fan-in with reducers, 41-86.7% failure rate for unstructured coordination, 7 error handling patterns, observation masking = LLM summarization but cheaper
+  - LEARN-028: Context7 architecture — MCP doc server analysis, 7 transferable patterns, Context7 + brain are complementary
+  - INDEX-MASTER.md updated (33→37 files, 4 new fat index entries)
+  - LOG-002 timeline entry written
+  - Root artifact cleaned up (multi-agent-orchestration-research.md deleted)
+  - All changes committed: NO (not yet committed)
+- **What's left (deferred for budget):**
+  - Batch 2 topic 4: Git worktree workflows for parallel agents (SPEC-001 Gap 1)
+  - Batch 2 topic 5: BM25 + hybrid search implementation patterns (brain.py improvement)
+  - Batch 2 topic 6: File-based knowledge management at scale (Zettelkasten, Obsidian, Logseq patterns)
 
-## Uncommitted Decisions
-- **Prover is the project name** for the multi-brain backtesting system
-- **Three specialist brains:** Donchian (trading domain), Coder (from context7), Frontend (HMI/UI)
-- **Agentic-brain is the meta-brain** — it documents how brains work and will be the basis for the orchestrator
-- **Orchestrator brain** — will be built from agentic-brain, either a copy or refined version. Lives separately from agentic-brain.
-- **Workflow:** Orchestrator fans out to specialist brains → gathers context packages → coordinates implementation (Donchian specs strategy → Coder builds engine → Frontend builds interface)
+## Key Decisions Made This Session
+1. **Freqtrade IStrategy** (DataFrame methods) recommended for AI-generated strategies — LLM-friendly
+2. **CPCV with PBO < 0.5** as hard validation gate — methodology fixed in RULE file, not modifiable by AI
+3. **YAML frontmatter + markdown body** for CONTEXT-PACK v2 / RESULT v2 inter-brain messages
+4. **Context isolation** is the #1 multi-agent architecture principle
+5. **Code-level orchestration + LLM flexibility** within specialists for Prover
+6. **Observation masking > LLM summarization** for context management between agents
+7. **Context7 + Coder brain** are complementary (external docs vs project knowledge)
+8. **Token budget envelope:** ~750 tokens CONTEXT-PACK, ~1100-1500 tokens RESULT
 
 ## Discoveries Not Yet Deposited
-- Agent SDK (LEARN-014), subagents (LEARN-009), and agent teams (LEARN-015) are already ingested — confirmed sufficient for orchestrator build
-- Need a new format for inter-brain communication (RESET files are close but designed for session bootstrap, not agent-to-agent messaging — discussed as "BRIEF" or "CONTEXT-PACK")
-- Three routing strategies identified: hardcoded mapping, fat-index capability advertisement, learned RULE-based routing
+- None — all research deposited as LEARN files
 
-## Open Questions
-- What is context7 exactly? (repo link needed to plan coder brain ingestion)
-- Frontend stack preference? (React/Next.js? Charting library? TradingView?)
-- Does the orchestrator do one fan-out or iterative queries? (Coder may need to ask Donchian clarifying questions)
-- Where do backtest results get deposited? (Which brain learns from test outcomes?)
-- How to handle cross-brain conflicts? (e.g., Coder says event-driven, Donchian data volume implies vectorized)
+## Open Questions (carried forward)
+- Frontend stack preference?
 - Is Prover the whole system or just the backtester?
-- SSH key on GitHub — user deferred
+- Who runs backtests? Subagents can't execute long processes. Need execution service outside Claude Code.
+- Data freshness — how does OHLCV data get refreshed?
+- Strategy versioning — git tags? Dedicated VERSION file?
+- SSH key on GitHub — deferred
 - Reverse SSH (Windows ← 192.168.1.208) — carried forward
-
-## Files Modified This Session
-- `project-brain/brain.py` — content hashing dedup
-- `project-brain/.content-hashes.json` — created (31 entries)
-- `project-brain/INDEX-MASTER.md` — 4 RULE entries, count 27→31
-- `project-brain/logs/LOG-002_project-timeline.md` — timeline entries
-
-## Files Added to Brain This Session
-- RULE-001 — hooks configuration patterns (11 patterns)
-- RULE-002 — context and session management (9 patterns)
-- RULE-003 — skills and CLAUDE.md patterns (6 patterns)
-- RULE-004 — hooks safe modification workflow
-
-## Dead Ends (if any)
-- Nested .git in project-brain/ blocked git add — removed
-- SSH push failed (key not on GitHub) — HTTPS workaround
-- gh auth scope refresh for SSH key upload — user deferred
 
 ## Recommended Next Session
 - **Type:** WORK
-- **Load:** SESSION-HANDOFF.md, INDEX-MASTER.md, LEARN-009, LEARN-014, LEARN-015
-- **First action:** Deposit Prover architecture as SPEC (capture the uncommitted decisions above before they're lost). Then either: scaffold coder brain from context7, or build the orchestrator brain.
+- **Load:** SESSION-HANDOFF.md, INDEX-MASTER.md
+- **First action:** Commit new files to git. Then either:
+  - (A) Start building Prover — scaffold new repo, create orchestrator brain
+  - (B) Continue research — Batch 2 topics (git worktrees, BM25, Zettelkasten)
+  - (C) Update SPEC-001 with new architecture decisions from LEARN-025/026/027/028

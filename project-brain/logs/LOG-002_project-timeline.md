@@ -484,3 +484,34 @@ Running chronological record of all project sessions, milestones, ingestions, an
   - Three specialist brains + orchestrator architecture
   - Agentic-brain is the meta-brain, orchestrator built from it separately
 - **Blockers/dead ends:** None — planning session, all decisions captured in SESSION-HANDOFF.md for deposit as SPEC next session
+
+### 2026-02-17 — RESEARCH — Prover Architecture Knowledge Batch
+- **Duration:** ~30min
+- **Key actions:**
+  - Executed 4-topic parallel research for Prover build knowledge (200K token budget)
+  - Launched 4 research agents in parallel: backtesting architecture, multi-agent orchestration, inter-agent IPC, Context7 ingestion
+  - LEARN-025 (backtesting): 6 frameworks analyzed, hybrid two-phase pipeline (VectorBT screening → Freqtrade validation) recommended, CPCV with PBO < 0.5 as hard gate, 4 Prover-specific pitfalls identified
+  - LEARN-026 (IPC): Google A2A protocol, 6 framework IPC patterns, CONTEXT-PACK v2 and RESULT v2 templates with YAML frontmatter, token budget envelope defined (~750 CONTEXT-PACK, ~1100-1500 RESULT), 9 key takeaways
+  - LEARN-027 (orchestration): 6 production frameworks, fan-out/fan-in with reducers, 41-86.7% multi-agent failure rate finding, 7 error handling patterns, 6 context management strategies (observation masking = LLM summarization for cheaper)
+  - LEARN-028 (Context7): Architecture analysis of Upstash's MCP doc server, 7 transferable patterns for Coder brain, Context7 + brain are complementary not competing
+  - Updated INDEX-MASTER.md (count 33→37, 4 new fat index entries)
+  - Batch 2 topics (git worktrees, BM25 implementation, Zettelkasten at scale) deferred to stay within 200K budget
+- **Files created:**
+  - LEARN-025 (backtesting engine architecture)
+  - LEARN-026 (inter-agent communication patterns)
+  - LEARN-027 (multi-agent orchestration patterns)
+  - LEARN-028 (Context7 architecture analysis)
+- **Files modified:**
+  - INDEX-MASTER.md (4 entries added, count 33→37)
+  - LOG-002 (this entry)
+  - SESSION-HANDOFF.md
+- **Files deleted:**
+  - multi-agent-orchestration-research.md (root artifact, content moved to LEARN-027)
+- **Decisions made:**
+  - Freqtrade IStrategy for AI-generated strategies (LLM-friendly DataFrame methods)
+  - CPCV with PBO < 0.5 as hard validation gate (not modifiable by AI agents)
+  - YAML frontmatter + markdown body for CONTEXT-PACK/RESULT v2 formats
+  - Context isolation as #1 multi-agent architecture principle
+  - Code-level orchestration + LLM flexibility within specialists for Prover
+  - Context7 + Coder brain complementary (external docs vs project-specific knowledge)
+- **Blockers/dead ends:** Agent output files sometimes empty on first read (recurring bug, resume-to-recover works); Batch 2 deferred for budget
