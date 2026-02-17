@@ -640,3 +640,50 @@ Running chronological record of all project sessions, milestones, ingestions, an
   - Synthesis consolidation distinguished from maintenance consolidation
 - **Blockers/dead ends:**
   - Plan mode entered for SPEC-002 but never used — architect agent handling it separately
+
+### 2026-02-17 — WORK — Quorum Sensing P0+P1 Implementation + Skill Testing
+- **Duration:** ~30min
+- **Key actions:**
+  - Deposited LEARN-032 (quorum sensing framework — 7 rules) and SPEC-003 (P0-P3 implementation plan)
+  - Implemented P0.1: OPEN QUESTIONS section in INDEX-MASTER (17 questions seeded from SPEC-001, SPEC-002, SPEC-003, RULE-002/003, SESSION-HANDOFF)
+  - Implemented P0.2: TENSIONS section in INDEX-MASTER (4 tensions: 2 RESOLVED, 2 OPEN)
+  - Implemented P0.3: Backlinks field added to all 43 fat index entries (full reverse link map computed from all files' frontmatter)
+  - Implemented P1.1+P1.2: Updated /brain-deposit skill — min 3 links enforcement, open questions prompt, backlink propagation on deposit
+  - Implemented P1.3+P1.4: Updated /brain-status skill — quiet file detection (0 backlinks), tag cluster detection (5+ files), open questions/tensions counts
+  - Tested /brain-status: full report generated — 43 files, 8 quiet files, 7 tag clusters (claude-code largest at 14), 17 open questions, 2 open tensions
+  - Tested /brain-deposit dedup: correctly SKIPPED ephemeral data (quiet file list) with clear reasoning
+  - Tested /brain-deposit full flow: deposited LEARN-033 (graph topology) — all 9 steps fired successfully (parse→dedup→number→template→links→open Qs→write→index+backlinks→confirm)
+  - Committed and pushed: 436601b
+- **Files created:**
+  - LEARN-032 (quorum sensing framework for knowledge management)
+  - SPEC-003 (quorum-capable brain implementation plan)
+  - LEARN-033 (brain graph topology from first backlink analysis)
+- **Files modified:**
+  - INDEX-MASTER.md (backlinks on all entries, 3 new sections, 3 new file entries, total 41→44)
+  - ~/.claude/skills/brain-deposit/SKILL.md (P1.1+P1.2: link check, open questions, backlink propagation)
+  - ~/.claude/skills/brain-status/SKILL.md (P1.3+P1.4: quiet files, tag clusters, tensions/questions counts)
+  - SESSION-HANDOFF.md, LOG-002 (this entry)
+- **Decisions made:**
+  - P0+P1 implementation order validated — P0 structural changes enabled P1 skill enhancements
+  - Skills at user-level (~/.claude/skills/) not tracked by git — noted as limitation
+  - LEARN-033 deposited as genuine new knowledge (graph topology), not ephemeral status output
+- **Blockers/dead ends:** None
+
+### 2026-02-17 — WORK — Chat Review + Knowledge Capture Gap Discovery
+- **Duration:** ~5min (continuation of above session)
+- **Key actions:**
+  - End-of-session chat review identified 5 undeposited items
+  - Deposited LEARN-034 (knowledge capture gap + three-layer solution + chat log review pattern)
+  - Created `.claude/rules/brain-deposit-as-you-go.md` (Layer 1: 7 triggers for immediate deposit)
+  - Stop hook validated in production (caught stale handoff, blocked exit)
+  - Updated INDEX-MASTER (LEARN-034 entry, backlinks, 2 new open questions, total 44→45)
+- **Files created:**
+  - LEARN-034 (knowledge capture gap and chat log review pattern)
+  - .claude/rules/brain-deposit-as-you-go.md (deposit-as-you-go behavioral rule)
+- **Files modified:**
+  - INDEX-MASTER.md (LEARN-034 entry, backlinks updated on 5 files, 2 open questions added)
+  - SESSION-HANDOFF.md, LOG-002 (this entry)
+- **Decisions made:**
+  - Three-layer knowledge capture: deposit-as-you-go rule (Layer 1, implemented), chat log review (Layer 2, next session), /brain-checkpoint skill (Layer 3, deferred)
+  - Chat logs are a recoverable knowledge source — review workflow to be built next session
+- **Blockers/dead ends:** None

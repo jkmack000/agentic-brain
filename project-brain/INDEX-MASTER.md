@@ -1,7 +1,7 @@
 # INDEX-MASTER
 <!-- type: INDEX -->
 <!-- updated: 2026-02-17 -->
-<!-- total-files: 43 -->
+<!-- total-files: 45 -->
 <!-- Load this file at the start of every Claude Code session. -->
 
 ## How to Use This Index
@@ -38,7 +38,7 @@ _None yet. Sub-indexes will be created when file count exceeds ~75._
 - **File:** specs/SPEC-000_project-brain-architecture.md
 - **Tags:** architecture, overview, memory-system, fat-index, master-spec
 - **Links:** _(foundational — linked by everything)_
-- **Backlinks:** SPEC-001, SPEC-003, LEARN-001, LEARN-002, LEARN-003, LEARN-004, LEARN-005, LEARN-006, LEARN-007, LEARN-008, LEARN-009, LEARN-010, LEARN-011, LEARN-012, LEARN-013, LEARN-014, LEARN-015, LEARN-016, LEARN-017, LEARN-018, LEARN-019, LEARN-020, LEARN-021, LEARN-022, LEARN-023, LEARN-024, LEARN-025, LEARN-030, LEARN-031, LEARN-032, LOG-001, LOG-002, LOG-003 _(33 inbound — foundational hub)_
+- **Backlinks:** SPEC-001, SPEC-003, LEARN-001, LEARN-002, LEARN-003, LEARN-004, LEARN-005, LEARN-006, LEARN-007, LEARN-008, LEARN-009, LEARN-010, LEARN-011, LEARN-012, LEARN-013, LEARN-014, LEARN-015, LEARN-016, LEARN-017, LEARN-018, LEARN-019, LEARN-020, LEARN-021, LEARN-022, LEARN-023, LEARN-024, LEARN-025, LEARN-030, LEARN-031, LEARN-032, LEARN-033, LEARN-034, LOG-001, LOG-002, LOG-003 _(35 inbound — foundational hub)_
 - **Summary:** Defines the entire Project Brain LLM memory system. Covers fat indexing methodology, file type system (SPEC/CODE/RULE/LEARN/LOG/RESET), directory structure, session workflows (search → reset → work), brain-search.py CLI spec, and the phase plan. First application target is a multi-timeframe Donchian trading bot. This is the root document — load it to understand how the memory system works.
 - **Key decisions:** Fat index over thin index; standalone CLI over Obsidian plugin; search/work session split; typed file system with 6 types; hierarchical index navigation for scale.
 - **Interface:** N/A (architecture spec, not code)
@@ -60,7 +60,7 @@ _None yet. Sub-indexes will be created when file count exceeds ~75._
 - **File:** specs/SPEC-003_quorum-capable-brain-implementation-plan.md
 - **Tags:** quorum-sensing, implementation, INDEX-MASTER, brain-deposit, brain-status, backlinks, tensions, open-questions, clusters
 - **Links:** LEARN-032, SPEC-000, LEARN-031, LEARN-003
-- **Backlinks:** LEARN-032
+- **Backlinks:** LEARN-032, LEARN-033, LEARN-034
 - **Summary:** Prescriptive implementation plan for the 7-rule quorum sensing framework (LEARN-032). Four priority tiers: P0 (add OPEN QUESTIONS, TENSIONS, backlinks sections to INDEX-MASTER), P1 (enforce min 3 links + open questions in /brain-deposit, add cluster + quiet-file detection to /brain-status), P2 (synthesis vs maintenance consolidation distinction, vitality scoring, CLUSTERS section), P3 (sub-index design along cluster boundaries). All changes additive — no existing functionality removed. P0 is zero-risk structural additions; P1 enforces quality at deposit time; P2 needs backlink data to be meaningful; P3 premature until ~75+ files.
 - **Key decisions:** P0→P3 ordering; backlinks as new fat index field; 3 tension states (OPEN/BLOCKING/RESOLVED); sub-index split by mental squeeze point not file count; retired files need human review.
 - **Interface:** INDEX-MASTER gains 3 sections (Open Questions, Tensions, Clusters) + Backlinks field per entry. /brain-deposit gains link minimum + open questions prompt. /brain-status gains cluster + quiet-file + vitality reporting.
@@ -228,7 +228,7 @@ _None yet._
 - **File:** learnings/LEARN-010_claude-code-architecture-internals.md
 - **Tags:** claude-code, architecture, agentic-loop, tools, context-window, sessions, checkpoints
 - **Links:** SPEC-000, LEARN-005, LEARN-006, LEARN-013, LEARN-014, LEARN-017
-- **Backlinks:** LEARN-013, LEARN-014, LEARN-017, LEARN-018, RULE-002
+- **Backlinks:** LEARN-013, LEARN-014, LEARN-017, LEARN-018, RULE-002, LEARN-034
 - **Summary:** Claude Code architecture overview from official docs. Agentic loop: gather context → take action → verify results (phases blend, Claude chains dozens of actions). Claude Code = the agentic harness providing tools, context management, and execution environment. Five tool categories: file operations, search, execution, web, code intelligence (plugins). Session model: each session starts fresh (no cross-session memory except auto memory + CLAUDE.md), sessions tied to directory, branch-aware (switch branches = new files same history), resume/fork support. Context window management: auto-compaction clears old tool outputs then summarizes, preserves requests + key code, may lose early instructions → put persistent rules in CLAUDE.md. Skills load on demand, subagents get fresh context. Two safety mechanisms: checkpoints (every edit snapshots, Esc+Esc to rewind, local to session, separate from git) and permissions (4 modes via Shift+Tab: default, auto-accept edits, plan mode, delegate mode).
 - **Key decisions:** Six brain-relevant takeaways: agentic loop validates search→work separation; session independence is why brains exist; compaction = information loss (validates SESSION-HANDOFF); checkpoints as safety net for brain operations; fork sessions for brain experiments; MCP context cost monitoring important for brain MCP wrapper.
 - **Interface:** N/A (learning, not code)
@@ -239,7 +239,7 @@ _None yet._
 - **File:** learnings/LEARN-011_fat-index-convergence-validation.md
 - **Tags:** validation, architecture, fat-index, convergence, auto-memory, subagents, context-repositories
 - **Links:** SPEC-000, LEARN-002, LEARN-006, LEARN-009
-- **Backlinks:** LEARN-024, LEARN-032, SPEC-001
+- **Backlinks:** LEARN-024, LEARN-032, SPEC-001, LEARN-033
 - **Summary:** Cross-cutting finding: three independently-designed systems converge on our fat-index architecture. (1) Claude Code auto memory (200-line MEMORY.md index + topic files), (2) subagent persistent memory (same pattern, three scopes), (3) Letta Context Repositories (git-backed, file-based, progressive disclosure). All use the same core principle: a summary layer that answers "do I need to open this?" without paying token cost. Strong external validation of brain system's core design. Implications for interoperability, marketing positioning, and architecture confidence.
 - **Key decisions:** None — strategic validation finding. Carry forward into product positioning.
 - **Interface:** N/A (learning, not code)
@@ -327,7 +327,7 @@ _None yet._
 - **File:** learnings/LEARN-019_claude-code-brain-integration-layers-1-3.md
 - **Tags:** claude-code, integration, CLAUDE-md, rules, skills, hooks, automation, brain-delivery, testing, windows, matcher-format
 - **Links:** SPEC-000, LEARN-005, LEARN-006, LEARN-007, LEARN-008, LOG-003
-- **Backlinks:** RULE-001, RULE-003, RULE-004
+- **Backlinks:** RULE-001, RULE-003, RULE-004, LEARN-034
 - **Summary:** Documents implementation AND test results of Claude Code native integration (Layers 1-3). Eight files: CLAUDE.md (@path import of INIT.md), 3 rules, 4 skills, 4 hooks. **Tested:** Layer 1 (CLAUDE.md + rules) fully working including @path with spaces in Windows paths. Layer 2 (skills) all 4 working after fixing `disable-model-invocation: true → false`; skills also fail CLI `/` resolution when project path contains spaces — workaround is copying to user-level `~/.claude/skills/`. Layer 3 (hooks) **CRITICAL FIX:** `matcher` must be a string regex or omitted — using JSON objects (`{}`, `{"tools": [...]}`) causes a Settings Error that silently disables ALL hooks. Stop hook FAILED due to this — session exited without blocking. Fixed: PostToolUse matcher changed to `"Edit|Write"` string; all other matchers omitted. Contains gotchas section covering: `disable-model-invocation` visibility, `chr(92)` pattern, hooks snapshot at startup, hooks format migration (corrected), and skills spaces-in-path bug.
 - **Key decisions:** @path imports INIT.md (not INDEX-MASTER — too large); `disable-model-invocation: false`; PostToolUse uses `"Edit|Write"` string matcher + `chr(92)` path normalization; hooks use matcher-based format with **string matchers only**; skills copied to user-level `~/.claude/skills/` for CLI resolution.
 - **Interface:** N/A (learning, not code)
@@ -459,7 +459,7 @@ _None yet._
 - **File:** learnings/LEARN-031_file-based-knowledge-management-at-scale.md
 - **Tags:** zettelkasten, obsidian, logseq, knowledge-management, scaling, consolidation, graph, MOC, atomic-notes, progressive-summarization, maintenance
 - **Links:** SPEC-000, LEARN-002, LEARN-003, LEARN-012
-- **Backlinks:** SPEC-001, SPEC-003, LEARN-032
+- **Backlinks:** SPEC-001, SPEC-003, LEARN-032, LEARN-033
 - **Summary:** Research synthesis of file-based knowledge management patterns for LLM memory systems. Covers Zettelkasten (5 core principles, fleeting/literature/permanent pipeline, emergence from cross-domain links, digital adaptations — 40% retrieval improvement), Obsidian (vault structure, MOCs with "mental squeeze point" trigger, Dataview metadata querying, scaling thresholds up to 40K+ notes — graph view is bottleneck, not file operations), Logseq (outliner model, block-level linking, namespaces, journal-first workflow — we correctly chose Obsidian/page model for LLM consumption). Scaling thresholds: 50-100 (fat index essential), 100-300 (first consolidation), 300-500 (sub-indexes), 500-1000 (Evernote Effect danger zone), 1000+ (automated search required). Knowledge graph patterns: link density benchmarks (2-3 minimum, 4-6 good), hub note priority maintenance, clustering for auto-organization. LLM-optimized adaptations: fat index = MOC equivalent, A-MEM NeurIPS 2025 academic validation, RAG chunking alignment (fat entries at optimal 50-150 tokens), context positioning (INDEX-MASTER early, task files last). Consolidation: Forte's 5-layer progressive summarization mapped to brain, gardening metaphors, maintenance cadence (time/event/metric triggers), merge vs split vs archive decision table. Prioritized improvements table and scaling roadmap from 37 to 1000+ files.
 - **Key decisions:** Architecture validated by A-MEM (NeurIPS 2025), Letta, Claude auto memory (4th independent convergence). Sub-index creation triggered by "mental squeeze point" not arbitrary file count. Evernote Effect is biggest long-term risk — consolidation every 20-30 files is correct.
 - **Interface:** N/A (learning, not code)
@@ -470,11 +470,33 @@ _None yet._
 - **File:** learnings/LEARN-032_quorum-sensing-framework-for-knowledge-management.md
 - **Tags:** quorum-sensing, knowledge-management, biological-analogy, framework, indexing, contradictions, decay, consolidation, brain-architecture
 - **Links:** SPEC-000, SPEC-003, LEARN-002, LEARN-003, LEARN-011, LEARN-031
-- **Backlinks:** SPEC-003
+- **Backlinks:** SPEC-003, LEARN-033, LEARN-034
 - **Summary:** Seven rules for quorum-capable LLM knowledge management, derived from biological quorum sensing analogy. Rules: (1) every file must emit signal (fat index required), (2) maximize binding sites (min 3 links per deposit), (3) declare open questions as chemoattractant gradients, (4) deposit contradictions with 3-state tracking (OPEN/BLOCKING/RESOLVED), (5) consolidate at cluster quorum not arbitrary count, (6) topological decay not temporal (connections matter, not age — human-reviewed only), (7) index is the medium (INDEX-MASTER gains OPEN QUESTIONS, TENSIONS, CLUSTERS sections). Includes Grok comparison (convergent on signal emission + contradictions, divergent on decay — we chose topological), token overhead assessment (~10K/5% current context), sub-index workflow impact (one extra hop, transparent to skills), and safety strategy (git branches + tags, no parallel brains).
 - **Key decisions:** Topological over temporal decay; 3-state tension tracking; adversarial evidence accumulation for contradictions; mental squeeze point triggers consolidation; INDEX-MASTER becomes coordination medium not just lookup table.
 - **Interface:** N/A (framework, not code). Implementation plan in SPEC-003.
 - **Known issues:** Framework is theoretical — not yet validated through implementation. Token overhead estimate needs verification after P0 implementation.
+
+### LEARN-034
+- **Type:** LEARN
+- **File:** learnings/LEARN-034_knowledge-capture-gap-and-chat-log-review-pattern.md
+- **Tags:** knowledge-capture, chat-logs, session-management, deposit-workflow, meta-insight, brain-architecture, usability
+- **Links:** LEARN-032, SPEC-003, LEARN-019, SPEC-000, LEARN-010
+- **Backlinks:** _(none)_
+- **Summary:** Identifies a critical knowledge capture gap: at production pace, manual deposit discipline fails — insights generated in conversation evaporate unless someone remembers to deposit them. Documents three-layer solution: (1) deposit-as-you-go rule (implemented as `.claude/rules/` file, 7 triggers for immediate deposit), (2) chat log review (Claude Code stores local transcripts — recoverable knowledge source for post-session extraction), (3) automated `/brain-checkpoint` skill (not yet built — would scan conversation for undeposited knowledge before session end). Also validates stop hook fired successfully in production (caught stale handoff). Shifts brain capture model from "pull" (user remembers) to "push" (system prompts).
+- **Key decisions:** Three-layer capture solution; deposit-as-you-go as Layer 1 (cheapest, immediate); chat log review as Layer 2 (recovery); /brain-checkpoint as Layer 3 (deferred).
+- **Interface:** N/A (learning, not code). Layer 1 is `.claude/rules/brain-deposit-as-you-go.md`.
+- **Known issues:** Chat log location/format not documented. Layer 1 may slow fast sessions. Layer 3 not designed. No measurement of typical undeposited knowledge per session.
+
+### LEARN-033
+- **Type:** LEARN
+- **File:** learnings/LEARN-033_brain-graph-topology-first-backlink-analysis.md
+- **Tags:** graph-topology, backlinks, hub-structure, quiet-files, link-density, quorum-sensing, empirical
+- **Links:** LEARN-032, SPEC-003, LEARN-031, LEARN-011, SPEC-000
+- **Backlinks:** _(none)_
+- **Summary:** First empirical topology data from the brain's link graph after P0.3 backlink implementation. Hub-and-spoke structure: SPEC-000 (33 inbound, foundational hub), LEARN-005 (16 inbound, secondary hub), LEARN-002 (11 inbound, tertiary). 8 quiet files (0 inbound) cluster by type: 75% of RULEs are quiet (leaf-type — they consume knowledge but aren't referenced), 12.5% of LEARNs are quiet (recent research not yet consumed). Average ~3.5 forward links/file, median ~2 inbound. Largest tag cluster: `claude-code` at 14 files. Validates LEARN-032 Rule 6 (topological decay detection works). RULEs may need different quiet-file treatment since they're structurally terminal.
+- **Key decisions:** None — empirical observation. RULEs flagged as potentially leaf-type by nature (not decaying). SPEC-002 flagged for link enrichment.
+- **Interface:** N/A (learning, not code)
+- **Known issues:** Three open questions: does hub structure change after consolidation, what backlink count separates quiet from healthy, are quiet RULEs structural or problematic.
 
 ---
 
@@ -537,6 +559,11 @@ _None yet._
 | 15 | Retired files: git-delete or move to archive/ directory? | SPEC-003 | 2026-02-17 | open |
 | 16 | Optimal CLAUDE.md size threshold for brain projects? | RULE-003 | 2026-02-15 | open |
 | 17 | Optimal compaction threshold for brain sessions? | RULE-002 | 2026-02-15 | open |
+| 18 | Does hub structure change after consolidation? | LEARN-033 | 2026-02-17 | open |
+| 19 | What backlink count separates "quiet" from "healthy"? | LEARN-033 | 2026-02-17 | open |
+| 20 | Are quiet RULEs a structural pattern (leaf-type) or a problem? | LEARN-033 | 2026-02-17 | open |
+| 21 | Where are Claude Code chat logs stored locally and what's their format? | LEARN-034 | 2026-02-17 | open |
+| 22 | How much knowledge typically goes undeposited per session? | LEARN-034 | 2026-02-17 | open |
 
 ---
 
