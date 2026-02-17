@@ -442,3 +442,26 @@ Running chronological record of all project sessions, milestones, ingestions, an
   - LOG-002 (this entry)
 - **Decisions made:** None — direct user request
 - **Blockers/dead ends:** None
+
+### 2026-02-16 — INFRA — GitHub Repo Creation + Initial Commit
+- **Duration:** ~15min
+- **Key actions:**
+  - Removed nested .git from project-brain/ (cause of `git add` failure)
+  - Installed gh CLI v2.86.0 via winget, authenticated as jkmack000
+  - Set git identity (jkmack000, noreply email)
+  - Created initial commit: 55 files, 6,370 lines
+  - Created public GitHub repo: https://github.com/jkmack000/agentic-brain
+  - Pushed via HTTPS (SSH failed — key not registered on GitHub)
+  - Configured `gh auth setup-git` as HTTPS credential helper
+- **Files modified:**
+  - Removed project-brain/.git (nested git repo)
+  - SESSION-HANDOFF.md, LOG-002 (this entry)
+- **Decisions made:**
+  - Repo name: "agentic-brain" (user specified)
+  - Public repo (user specified)
+  - HTTPS push (SSH key registration deferred by user)
+  - Excluded donchian-channel-breakout.pdf and nul artifact from commit
+- **Blockers/dead ends:**
+  - Nested .git in project-brain/ blocked git add — removed
+  - SSH push failed (key not on GitHub) — switched to HTTPS
+  - gh ssh-key add needs admin:public_key scope — user deferred
