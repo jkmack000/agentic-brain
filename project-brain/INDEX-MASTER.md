@@ -1,7 +1,7 @@
 # INDEX-MASTER
 <!-- type: INDEX -->
 <!-- updated: 2026-02-17 -->
-<!-- total-files: 40 -->
+<!-- total-files: 41 -->
 <!-- Load this file at the start of every Claude Code session. -->
 
 ## How to Use This Index
@@ -52,6 +52,16 @@ _None yet. Sub-indexes will be created when file count exceeds ~75._
 - **Key decisions:** Option B first, evolve to A; orchestrator-only brain writes; YAML+markdown for inter-brain protocol; VectorBT+Freqtrade+CPCV stack; PBO < 0.5 hard gate; economic thesis required before parameter search; centralized INDEX-MASTER (Gap 5 resolved); code-level orchestration + LLM flexibility in specialists.
 - **Interface:** Defines CONTEXT-PACK v2 (orchestrator→specialist, ~750 tokens) and RESULT v2 (specialist→orchestrator, ~1500 tokens) message formats with YAML frontmatter.
 - **Known issues:** Four open questions: frontend stack, Prover scope, data freshness, strategy versioning. Agent teams experimental (7x cost). Subagents can't recurse. Freqtrade crypto-focused. Claude Code worktree support is feature request #24850.
+
+### SPEC-002
+- **Type:** SPEC
+- **File:** specs/SPEC-002_coder-brain-architecture.md
+- **Tags:** coder-brain, prover, coding-agent, python, freqtrade, ccxt, context7, code-generation, testing, validation, guardrails
+- **Links:** SPEC-001, LEARN-025, LEARN-028
+- **Summary:** Architecture for the Coder brain — a Python coding agent that receives designs from Architect/Planner agents and produces working, tested code for the trading infrastructure stack (Freqtrade, CCXT, ta-lib, VectorBT). Defines three-tier knowledge hierarchy (brain files → Context7 MCP → GitHub), 11 knowledge sources to ingest with priorities, full brain file structure (7 LEARNs, 5 CODEs, 4 RULEs seed files). Specifies input/output via CONTEXT-PACK/RESULT v2 formats. Write pipeline: brain search → Context7 query → few-shot → SCoT reasoning → template-fill (strategies) or full generation (other code). Test pipeline: unit + integration + property tests with pre-built fixtures. Validation pipeline: AST parse → import whitelist → pytest/dry-run, max 3 iteration rounds. Security: strict import whitelist for strategies (no network, filesystem, exec), relaxed for data pipelines. Three-phase ingestion plan: seed (Freqtrade, CCXT, ta-lib) → expand (VectorBT, Optuna, pytest) → accumulate (error patterns, validated snippets).
+- **Key decisions:** Knowledge-first over guess-and-check; template-fill for IStrategy, full gen for non-strategy; whitelist-never-blacklist for imports; 30s timeout + 512MB memory limit; three-tier knowledge hierarchy; brain files as first source of truth over Context7.
+- **Interface:** Receives CONTEXT-PACK (task_type: implement|test|fix|refactor, plan_ref from Architect/Planner). Returns RESULT (files written, validation evidence, discoveries).
+- **Known issues:** 7 open questions (Architect/Planner communication, CCXT async/sync, short support, multi-timeframe, VectorBT template, GitHub ingestion method, CCXT exchange scope). Freqtrade dry-run requires installation. ta-lib problematic on Windows. VectorBT validation not yet designed.
 
 ---
 
