@@ -10,7 +10,7 @@ dependencies = [
 ]
 
 [project.scripts]
-brain = "brain_search:main"
+brain = "brain:main"
 
 [tool.setuptools]
-py-modules = ["brain_search"]
+py-modules = ["brain"]

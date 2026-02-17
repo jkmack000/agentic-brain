@@ -1,57 +1,54 @@
 # SESSION-HANDOFF
 <!-- written: 2026-02-17 -->
 <!-- session-type: WORK -->
-<!-- trigger: P2+P3 implementation complete — all SPEC-003 tiers done -->
+<!-- trigger: stop-hook — stale handoff detected -->
 
 ## What Was Being Done
-Implementing SPEC-003 P2+P3: quorum sensing consolidation, vitality scoring, CLUSTERS section, and first sub-index.
+Cleanup tasks from previous session handoff (delete superseded file, fix pyproject.toml), verified brain.py sub-index support already works, scaffolded the Coder brain project directory, and researched Sandbox Agent SDK.
 
 ## Current State
-- **Status:** P2+P3 COMPLETE — all four SPEC-003 priority tiers (P0-P3) now implemented
+- **Status:** COMPLETED
 - **What's done:**
-  - P2.1: Consolidation guide in SPEC-003 (maintenance vs synthesis modes)
-  - P2.2: Vitality scoring in brain-status skill, retirement workflow in SPEC-003, archive/ directory created
-  - P2.3: CLUSTERS section added to INDEX-MASTER (8 clusters, claude-code largest at 15)
-  - P3.1: First sub-index `indexes/INDEX-claude-code.md` created (15 files)
-  - INDEX-MASTER restructured: 15 entries moved to sub-index, cluster summary added
-  - OQs #13/#14/#15 resolved in INDEX-MASTER
-  - brain-search and brain-status skills updated for sub-index awareness
-  - SPEC-003 implementation status updated (all tiers complete)
-  - LOG-002 timeline entry appended
+  - Deleted `coder.agent.project.md` (superseded by SPEC-002)
+  - Fixed `pyproject.toml`: `brain_search` → `brain` in `[project.scripts]` and `[tool.setuptools]`
+  - Verified brain.py already supports sub-indexes via `collect_all_entries()` — search returns all 43 files across INDEX-MASTER and sub-index
+  - Scaffolded `coder-brain/` project directory:
+    - `CLAUDE.md` — full agent configuration (role, domain stack, knowledge hierarchy, code writing workflow, validation pipeline, security guardrails, inter-brain protocol)
+    - `project-brain/` — brain.py init scaffold (all directories, templates, brain.py, INIT.md)
+    - `INDEX-MASTER.md` — enhanced with capability advertisements per SPEC-001
+  - Researched Sandbox Agent SDK (sandboxagent.dev) — universal HTTP API for running coding agents in sandboxes
 - **What's left:**
-  - Git commit all changes (nothing committed this session)
-  - Previous session's uncommitted changes also need committing (3 new files + 12 enrichments from chat log review)
-  - Skipped from previous session: delete `coder.agent.project.md`, fix rank-bm25 dep in pyproject.toml
-  - brain.py needs update to parse sub-index files for BM25 search (currently only reads INDEX-MASTER)
-  - Vitality threshold observation: tag component provides high floor — no non-RULE files below 2.0. May need threshold adjustment or tag weight reduction.
+  - Coder brain needs knowledge ingestion (Phase 1: Freqtrade docs, ta-lib, CCXT)
+  - LEARN-035/036 from agentic-brain contain seed research to adapt into coder brain deposits
+  - Sandbox Agent research not deposited (user hasn't confirmed deposit)
+  - Vitality threshold tuning still deferred
+  - `/brain-checkpoint` skill (Layer 3 of capture solution — deferred)
 
 ## Uncommitted Decisions
-- None — all deposited in SPEC-003 and INDEX-MASTER
+- None — cleanup and scaffolding only
 
 ## Discoveries Not Yet Deposited
-- claude-code cluster is 15 files (not 14 as previously reported in LEARN-033): LEARN-004 and LOG-003 also have the tag, RULE-001 does not
-- Vitality floor effect: even zero-link files with 5+ tags score above 2.0 due to tag×0.5 component
+- **Sandbox Agent SDK** — open-source Rust CLI/SDK for running coding agents (Claude Code, Codex, OpenCode, Amp, Pi) in sandboxes with HTTP/SSE control. Directly relevant to SPEC-001 multi-brain architecture: could serve as execution layer for specialist agents with session persistence, MCP server support per session, agent-agnostic API. Addresses sub-agent statelessness limitation. Full research notes in conversation.
+- **brain.py sub-index support already complete** — `collect_all_entries()` at line 220 already scans `indexes/INDEX-*.md` files. Previous handoff incorrectly listed this as remaining work.
 
 ## Open Questions (Carried Forward)
-- All tracked in INDEX-MASTER Open Questions table (24 items, 3 more resolved this session: #13, #14, #15)
-
-## Files Created This Session
-- `project-brain/indexes/INDEX-claude-code.md` — first sub-index (15 claude-code files)
-- `project-brain/archive/.gitkeep` — empty archive directory
+- All tracked in INDEX-MASTER Open Questions table (24 items, 5 resolved, 2 partial/preliminary, 17 open)
 
 ## Files Modified This Session
-- SPEC-003 (consolidation guide, vitality, retirement, sub-index spec, status, changelog)
-- INDEX-MASTER.md (CLUSTERS section, Sub-Indexes section, 15 entries moved, OQs resolved, SPEC-003 entry updated)
-- `~/.claude/skills/brain-status/SKILL.md` (vitality, retirement, clusters, sub-index awareness)
-- `~/.claude/skills/brain-search/SKILL.md` (sub-index fallback)
-- LOG-002 (timeline entry)
+- `coder.agent.project.md` — DELETED (superseded by SPEC-002)
+- `project-brain/pyproject.toml` — fixed module references (`brain_search` → `brain`)
+
+## Files Added to Brain This Session
+- `coder-brain/CLAUDE.md` — Coder agent project configuration
+- `coder-brain/project-brain/` — full brain scaffold (brain.py init)
+
+## Dead Ends
+- None
 
 ## Recommended Next Session
-- **Type:** COMMIT + VERIFICATION
-- **Load:** SESSION-HANDOFF.md, INDEX-MASTER.md
+- **Type:** WORK
+- **Load:** SESSION-HANDOFF.md, INDEX-MASTER.md, SPEC-002
 - **First action:**
-  1. `git add` all changed files and commit (P2+P3 implementation + previous session's uncommitted changes)
-  2. Run `/brain-status` to verify new reporting (vitality, clusters, retirement candidates)
-  3. Run `/brain-search claude code hooks` to verify sub-index search works
-  4. Consider updating brain.py to parse sub-index files for BM25 search
-  5. Cleanup: delete `coder.agent.project.md`, fix rank-bm25 in pyproject.toml
+  1. Decide whether to deposit Sandbox Agent research as LEARN file
+  2. Begin Coder brain knowledge ingestion (LEARN-035/036 as seed, then Freqtrade docs)
+  3. Or: commit current changes and move to other Prover work

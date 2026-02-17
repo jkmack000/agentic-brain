@@ -747,3 +747,26 @@ Running chronological record of all project sessions, milestones, ingestions, an
   - claude-code cluster is 15 files (corrected from plan's 14)
   - Sub-index entries include vitality scores (not present in main INDEX-MASTER entries)
 - **Blockers/dead ends:** None — SPEC-003 P0 through P3 all complete
+
+### 2026-02-17 — WORK — Cleanup + Coder Brain Scaffold + Sandbox Agent Research
+- **Duration:** ~15min
+- **Key actions:**
+  - Deleted `coder.agent.project.md` (superseded by SPEC-002)
+  - Fixed `pyproject.toml`: `brain_search` → `brain` in scripts and setuptools sections
+  - Verified brain.py sub-index support already working (collect_all_entries reads indexes/*.md)
+  - Scaffolded `coder-brain/` project via `brain.py init "Coder Brain"`
+  - Created `coder-brain/CLAUDE.md` with full agent configuration based on SPEC-002 (role, domain stack, knowledge hierarchy, validation pipeline, security guardrails, inter-brain protocol)
+  - Enhanced coder brain INDEX-MASTER with capability advertisements per SPEC-001
+  - Researched Sandbox Agent SDK (sandboxagent.dev) — universal HTTP API for running coding agents in sandboxes, relevant to SPEC-001 multi-brain execution layer
+- **Files created:**
+  - `coder-brain/CLAUDE.md` (Coder agent project configuration)
+  - `coder-brain/project-brain/` (full brain scaffold — brain.py, INDEX-MASTER, INIT, templates)
+- **Files modified:**
+  - `project-brain/pyproject.toml` (fixed module references)
+  - SESSION-HANDOFF.md, LOG-002 (this entry)
+- **Files deleted:**
+  - `coder.agent.project.md` (superseded by SPEC-002)
+- **Decisions made:**
+  - Coder brain lives at `coder-brain/` as sibling to `project-brain/` within agentic-brain repo (can be extracted to own repo later)
+  - INDEX-MASTER includes capability advertisements (capabilities, input-types, output-types, token-budget, domain) for future automated routing
+- **Blockers/dead ends:** None

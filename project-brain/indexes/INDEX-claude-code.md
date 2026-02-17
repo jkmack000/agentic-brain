@@ -117,7 +117,7 @@ This sub-index contains fat index entries for the `claude-code` cluster — 15 f
 - **File:** learnings/LEARN-014_claude-code-agent-sdk.md
 - **Tags:** claude-code, agent-sdk, headless, programmatic, automation, python, typescript, MCP-tools
 - **Links:** SPEC-000, LEARN-005, LEARN-010, LEARN-013
-- **Backlinks:** LEARN-005, LEARN-010, LEARN-018
+- **Backlinks:** LEARN-005, LEARN-010, LEARN-018, LEARN-037
 - **Vitality:** 17.0
 - **Summary:** Full Agent SDK reference (renamed from "Claude Code SDK"). Two packages: `pip install claude-agent-sdk` (Python), `npm install @anthropic-ai/claude-agent-sdk` (TypeScript). Two interfaces: `query()` (one-shot, no hooks/MCP) vs `ClaudeSDKClient` (multi-turn, hooks, custom MCP tools, interrupts). Key options: `system_prompt` preset+append, `setting_sources` (defaults to None — SDK does NOT load CLAUDE.md unless explicit), `max_turns`/`max_budget_usd` for cost caps, `output_format` for JSON schema validation, `agents` for programmatic subagents, `can_use_tool` for permission callbacks with input modification. In-process custom MCP tools via `@tool` decorator + `create_sdk_mcp_server()`. Programmatic hooks as Python callbacks (not shell scripts). `ResultMessage` includes `total_cost_usd` for cost tracking. 1M context beta via `betas=["context-1m-2025-08-07"]`. SDK is the correct infrastructure for brain automation.
 - **Key decisions:** Agent SDK identified as brain automation engine. Critical constraint: `setting_sources` defaults to None.

@@ -1,7 +1,7 @@
 # INDEX-MASTER
 <!-- type: INDEX -->
 <!-- updated: 2026-02-17 -->
-<!-- total-files: 48 (33 in INDEX-MASTER + 15 in INDEX-claude-code) -->
+<!-- total-files: 49 (34 in INDEX-MASTER + 15 in INDEX-claude-code) -->
 <!-- Load this file at the start of every Claude Code session. -->
 
 ## How to Use This Index
@@ -48,7 +48,7 @@ Every entry MUST answer: **"Do I need to open this file?"**
 - **File:** specs/SPEC-001_prover-multi-brain-architecture.md
 - **Tags:** prover, multi-brain, orchestrator, architecture, git-worktrees, sub-agents, coordination, backtesting
 - **Links:** SPEC-000, LEARN-024, LEARN-025, LEARN-026, LEARN-027, LEARN-028, LEARN-029, LEARN-031, LEARN-009, LEARN-011, LEARN-015
-- **Backlinks:** SPEC-002, LEARN-025, LEARN-026, LEARN-027, LEARN-028, LEARN-029
+- **Backlinks:** SPEC-002, LEARN-025, LEARN-026, LEARN-027, LEARN-028, LEARN-029, LEARN-037
 - **Summary:** Definitive architecture for Prover — the multi-brain backtesting system. Incorporates findings from LEARN-025 through LEARN-031. Defines 5 brains with roles. **Each agent = own project + own brain** (not brains within a shared project — token-efficient, each agent loads only its own brain). Three coordination options (worktrees/sub-agents/agent-teams) with recommended progression (B→A). CONTEXT-PACK v2 and RESULT v2 inter-brain protocol with YAML frontmatter, token budgets (~750/~1500 tokens), capability advertisement headers. Two-phase backtesting pipeline: VectorBT screening → Freqtrade validation → CPCV robust validation (PBO < 0.5 hard gate). Freqtrade IStrategy as AI-friendly strategy abstraction. Git worktree layout: bare repo with peer worktrees, `agent/<brain>/<task-id>` branch naming, `--no-ff` merges, orchestrator-only brain writes. Fan-out/fan-in orchestration with reducer merge, maker-checker quality gates, circuit breakers (3 failures → degrade). Six Prover guard rails as RULE files (max budget, PBO gate, thesis-before-search, fixed validation, convergence caps, narrative check). Coder brain design informed by Context7 (two-tool resolution, token-budgeted reads). Scaling thresholds from 50 to 1000+ files with consolidation cadence.
 - **Key decisions:** Option B first, evolve to A; orchestrator-only brain writes; YAML+markdown for inter-brain protocol; VectorBT+Freqtrade+CPCV stack; PBO < 0.5 hard gate; economic thesis required before parameter search; centralized INDEX-MASTER (Gap 5 resolved); code-level orchestration + LLM flexibility in specialists.
 - **Interface:** Defines CONTEXT-PACK v2 (orchestrator→specialist, ~750 tokens) and RESULT v2 (specialist→orchestrator, ~1500 tokens) message formats with YAML frontmatter.
@@ -253,7 +253,7 @@ _None yet._
 - **File:** learnings/LEARN-026_inter-agent-communication-patterns.md
 - **Tags:** multi-agent, IPC, communication, context-passing, message-formats, serialization, shared-memory, token-efficiency, A2A, MCP, AutoGen, CrewAI, LangGraph, Claude-Code, OpenAI-Swarm, blackboard, stigmergy
 - **Links:** SPEC-001, LEARN-009, LEARN-015, LEARN-024, LEARN-002, LEARN-021
-- **Backlinks:** LEARN-027
+- **Backlinks:** LEARN-027, LEARN-037
 - **Summary:** Comprehensive research synthesis on inter-process communication patterns for LLM/AI multi-agent systems. Covers 9 areas: (1) Context passing — full dump vs summary/compression vs delta/incremental, with compression ratios (10-20x Anthropic subagents, 70% Claude Code reduction, 73% protocol compression, 26-54% Acon). (2) Message formats — Google A2A (JSON-RPC 2.0, Agent Cards, typed Parts), AutoGen (GroupChatMessage, HandoffMessage with context list), CrewAI (Pydantic output schemas), LangGraph (TypedDict state + reducers), OpenAI Swarm (stateless, context vars). (3) Serialization — markdown (LLM-native), JSON with schema validation, YAML frontmatter + markdown body as optimal hybrid. (4) Shared memory — blackboard pattern (maps to INDEX-MASTER), stigmergy (maps to file deposits), file-based (our architecture), database-backed (Mem0/Zep), in-memory (LangGraph). (5) Token-efficient techniques — context filtering (highest impact), protocol compression, structured output constraints, summary distillation, tiered memory. (6) Real implementations — Anthropic research system (90.2% improvement, 15x cost, Opus+Sonnet), Claude Code subagents (70% reduction, 20K overhead), AutoGen/CrewAI/LangGraph/Swarm/tick-md details. (7) MCP vs A2A protocol landscape. (8) Improved CONTEXT-PACK v2 and RESULT v2 templates with YAML frontmatter, token budgets, and capability advertisement headers. (9) Eight key takeaways including: context isolation beats sharing, 1-2K token returns are standard, markdown+git is legitimate, Agent Card pattern should be adopted.
 - **Key decisions:** Recommends YAML frontmatter + markdown body for CONTEXT-PACK/RESULT v2 formats; capability advertisement headers in INDEX-MASTER for automated routing; LangGraph-style reducer pattern for merging concurrent specialist results; token budget envelope (~750 tokens CONTEXT-PACK, ~1100-1500 tokens RESULT).
 - **Interface:** N/A (learning, not code). Defines proposed v2 message templates for SPEC-001 inter-brain communication.
@@ -264,7 +264,7 @@ _None yet._
 - **File:** learnings/LEARN-027_multi-agent-orchestration-patterns.md
 - **Tags:** multi-agent, orchestration, choreography, fan-out, fan-in, task-decomposition, aggregation, error-handling, context-management, LangGraph, CrewAI, AutoGen, OpenAI, prover
 - **Links:** SPEC-001, LEARN-009, LEARN-015, LEARN-026, LEARN-024
-- **Backlinks:** _(none)_
+- **Backlinks:** LEARN-037
 - **Summary:** Research synthesis of multi-agent orchestration patterns from 6 production frameworks (LangGraph, CrewAI, AutoGen, OpenAI Agents SDK, Microsoft Agent Framework, Google ADK). Covers 8 areas: (1) Fan-out/fan-in — LangGraph superstep semantics (atomic failure, reducers), 137x speedup benchmark, Microsoft anti-pattern (no shared mutable state). (2) Choreography vs orchestration — hybrid consensus as industry best practice ("orchestrate via code, delegate to LLM"), framework positioning table. (3) Task decomposition — 4 strategies: role-based (CrewAI), graph-based (LangGraph), dynamic task ledger (Microsoft Magentic), conversation-based (AutoGen); Microsoft complexity hierarchy (direct call → single agent → multi-agent). (4) Result aggregation — 5 strategies (voting, weighted, LLM synthesis, concat+dedup, conflict agent); maker-checker with iteration caps; **41-86.7% failure rate** for unstructured coordination. (5) Framework details — OpenAI Agents SDK (manager+handoff), LangGraph (state+reducers+checkpoints), CrewAI (Crews+Flows), AutoGen (GroupChat+speaker selection), Microsoft (5 declarative patterns), Google ADK. (6) Error handling — 7 patterns: retry+backoff, circuit breakers (Salesforce 40%/60s), failure classification, graceful degradation, output validation, timeouts, checkpointing. (7) Context management — 6 strategies: context isolation (Manus, highest impact), observation masking (JetBrains, as good as LLM summarization), compaction, blackboard (=INDEX-MASTER), system prompt swapping, hierarchical. (8) Prover-specific takeaways: code orchestration + LLM reasoning, fan-out with reducer merge, circuit breakers, observation masking over summarization, context isolation as #1 principle.
 - **Key decisions:** Recommends code-level orchestration for Prover workflow graph with LLM flexibility within specialists; fan-out with append reducers; maker-checker with iteration caps; circuit breakers for specialist failures; observation masking preferred over LLM summarization; complexity hierarchy (start single-agent, escalate to multi-brain only when needed).
 - **Interface:** N/A (learning, not code)
@@ -380,6 +380,17 @@ _None yet._
 - **Interface:** N/A (learning, not code). Informs Coder brain write + validation pipeline (SPEC-002).
 - **Known issues:** Academic benchmarks may differ from real-world. smolagents HuggingFace-specific. All framework APIs point-in-time Feb 2026.
 
+### LEARN-037
+- **Type:** LEARN
+- **File:** learnings/LEARN-037_sandbox-agent-sdk-remote-coding-agent-execution.md
+- **Tags:** sandbox-agent, multi-agent, execution, isolation, HTTP, session-persistence, MCP, agent-agnostic, prover, infrastructure
+- **Links:** SPEC-001, LEARN-026, LEARN-027, LEARN-014
+- **Backlinks:** _(none)_
+- **Summary:** Architecture analysis of Sandbox Agent (sandboxagent.dev) — open-source Rust CLI/SDK providing a universal HTTP/SSE API for running coding agents (Claude Code, Codex, OpenCode, Amp, Pi) in isolated sandboxes (E2B, Daytona, Docker, Vercel, Cloudflare). Key features: agent-agnostic API, session persistence (SQLite/Postgres/Rivet), session replay on reconnect, custom MCP tools and Skills per session, file system API, Inspector UI debugger, OpenTelemetry observability, RBAC security. Identified as potential **Option D** for SPEC-001 coordination architecture — solves sub-agent statelessness (Option B limitation), provides per-session MCP tools (brain-search per sandbox), and HTTP control for orchestrator. Advantages over sub-agents: persistence, per-session tools, agent flexibility, visual debugging. Limitations: TypeScript SDK only, additional infrastructure, HTTP latency, v0.2.x maturity. Recommended evaluation: test locally, verify MCP tool support, compare latency vs sub-agents.
+- **Key decisions:** None yet — research only. Evaluation deferred until Prover Phase 1 MVP validates sub-agent approach.
+- **Interface:** N/A (learning, not code)
+- **Known issues:** v0.2.x (pre-1.0), TypeScript SDK only (no Python), API may change. 4 open questions about CONTEXT-PACK compatibility, latency, parallel servers, and file system access.
+
 ---
 
 ## LOG Files
@@ -439,6 +450,8 @@ _None yet._
 | 22 | How much knowledge typically goes undeposited per session? | LEARN-034 | 2026-02-17 | **partial** — first data: ~4 items/session (33 across 8) |
 | 23 | How do independent agent-projects coordinate? Shared git repo with worktrees or separate repos with CONTEXT-PACK via filesystem/MCP? | SPEC-001 | 2026-02-17 | open |
 | 24 | Should skill files be copied into the repo for version control? (currently at `~/.claude/skills/` outside git) | LEARN-019 | 2026-02-17 | open |
+| 25 | Can Sandbox Agent sessions receive CONTEXT-PACK messages via the prompt API? | LEARN-037 | 2026-02-17 | open |
+| 26 | What's the latency overhead of Sandbox Agent HTTP control vs native sub-agent spawning? | LEARN-037 | 2026-02-17 | open |
 
 ---
 
