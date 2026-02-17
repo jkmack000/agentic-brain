@@ -230,24 +230,148 @@ def collect_all_entries(brain_root: Path) -> list[dict]:
     return entries
 
 
+
+# ---------------------------------------------------------------------------
+# Text processing — stopwords, stemming, tokenization
+# ---------------------------------------------------------------------------
+
+STOPWORDS = frozenset({
+    "the", "a", "an", "is", "are", "was", "were", "be", "been", "being",
+    "have", "has", "had", "do", "does", "did", "will", "would", "could",
+    "should", "may", "might", "can", "shall", "to", "of", "in", "for",
+    "on", "with", "at", "by", "from", "as", "into", "through", "during",
+    "before", "after", "above", "below", "between", "and", "but", "or",
+    "not", "no", "nor", "so", "yet", "both", "each", "this", "that",
+    "these", "those", "it", "its", "they", "them", "their", "we", "our",
+    "you", "your", "he", "she", "his", "her", "which", "what", "when",
+    "where", "who", "whom", "how", "all", "any", "some", "none", "if",
+    "then", "than", "too", "very", "just", "also", "about", "up", "out",
+})
+
+
+def stem(word: str) -> str:
+    """Lightweight suffix stemmer for English. Not a full Porter stemmer,
+    but handles the most common inflections found in technical documentation.
+    """
+    if len(word) <= 3:
+        return word
+    # Order matters — try longest suffixes first
+    if word.endswith("ational"):
+        return word[:-7] + "ate"
+    if word.endswith("ization"):
+        return word[:-7] + "ize"
+    if word.endswith("iveness"):
+        return word[:-7] + "ive"
+    if word.endswith("fulness"):
+        return word[:-7] + "ful"
+    if word.endswith("ousness"):
+        return word[:-7] + "ous"
+    if word.endswith("ement") and len(word) > 7:
+        return word[:-5]
+    if word.endswith("ment") and len(word) > 6:
+        return word[:-4]
+    if word.endswith("ation") and len(word) > 7:
+        return word[:-5] + "e"
+    if word.endswith("ating"):
+        return word[:-3] + "e"
+    if word.endswith("ling") and len(word) > 5 and word[-5] != "l":
+        return word[:-3] + "e"
+    if word.endswith("ying"):
+        return word[:-4] + "y"
+    if word.endswith("ting") and len(word) > 5 and not word.endswith("sting"):
+        base = word[:-3]
+        # Skip if base ends with 't' — let the general -ing rule handle it
+        # (e.g., "setting" -> "sett" -> general rule deduplicates -> "set")
+        if not base.endswith("t"):
+            return base
+    if word.endswith("sses"):
+        return word[:-2]
+    if word.endswith("ies") and len(word) > 4:
+        return word[:-3] + "y"
+    if word.endswith("ness") and len(word) > 5:
+        return word[:-4]
+    if word.endswith("less"):
+        return word[:-4]
+    if word.endswith("able") and len(word) > 5:
+        return word[:-4]
+    if word.endswith("ible") and len(word) > 5:
+        return word[:-4]
+    if word.endswith("ally"):
+        return word[:-4] + "al"
+    if word.endswith("ing") and len(word) > 4:
+        base = word[:-3]
+        if len(base) >= 2 and base[-1] == base[-2]:
+            return base[:-1]  # "running" -> "run", "setting" -> "set"
+        if len(base) > 2:
+            return base
+    if word.endswith("ment") and len(word) > 5:
+        return word[:-4]
+    if word.endswith("ful") and len(word) > 4:
+        return word[:-3]
+    if word.endswith("ous") and len(word) > 4:
+        return word[:-3]
+    if word.endswith("ive") and len(word) > 4:
+        return word[:-3]
+    if word.endswith("ized"):
+        return word[:-4] + "ize"
+    if word.endswith("ised"):
+        return word[:-4] + "ise"
+    if word.endswith("tion"):
+        return word[:-4] + "t"
+    if word.endswith("ed") and len(word) > 3:
+        base = word[:-2]
+        if base.endswith("i"):
+            return base[:-1] + "y"  # "applied" -> "apply"
+        if len(base) >= 2 and base[-1] == base[-2]:
+            return base[:-1]  # "stopped" -> "stop"
+        return base
+    if word.endswith("er") and len(word) > 4:
+        return word[:-2]
+    if word.endswith("ly") and len(word) > 4:
+        return word[:-2]
+    if word.endswith("es") and len(word) > 3:
+        if word.endswith("ches") or word.endswith("shes") or word.endswith("sses"):
+            return word[:-2]
+        return word[:-2]
+    if word.endswith("s") and not word.endswith("ss") and len(word) > 3:
+        return word[:-1]
+    return word
+
+
 def tokenize(text: str) -> list[str]:
-    """Lowercase and split text into tokens for BM25."""
-    return re.findall(r"[a-z0-9][-a-z0-9]*", text.lower())
+    """Tokenize text with hyphen expansion, stopword removal, and stemming.
+
+    Improvements over v1 (LEARN-030 Phase 1):
+    - Hyphenated terms expanded: "session-handoff" -> ["session", "handoff", "session-handoff"]
+    - Common English stopwords removed
+    - Lightweight suffix stemming to match inflections ("searching" -> "search")
+    """
+    raw_tokens = re.findall(r"[a-z0-9][-a-z0-9]*", text.lower())
+    expanded = []
+    for t in raw_tokens:
+        expanded.append(t)
+        if "-" in t:
+            expanded.extend(part for part in t.split("-") if part)
+    return [stem(t) for t in expanded if t not in STOPWORDS and len(t) > 1]
 
 
 def entry_to_corpus_doc(entry: dict) -> list[str]:
     """Convert a fat index entry to a tokenized document for BM25.
 
-    Tags and ID are repeated to give them natural weight — they're the
-    most curated fields and should influence ranking more than raw summary text.
+    Field repetition approximates field boosting (LEARN-030 Section 3):
+    - Tags 5x  — curated metadata, highest signal density
+    - ID 4x    — direct reference lookup (e.g., "LEARN-008")
+    - Title 3x — human-curated summary of content
+    - Summary 1x (base) — bulk curated content
+    - Type/file/known_issues 0.5x — low signal, included once
     """
     parts = []
-    # Tags repeated 3x — curated metadata, high signal
+    # Tags repeated 5x — curated metadata, highest signal
     tags = entry.get("tags", "")
-    parts.extend([tags] * 3)
-    # ID repeated 2x — direct reference
-    parts.extend([entry.get("id", "")] * 2)
-    # Summary — bulk of the content
+    parts.extend([tags] * 5)
+    # ID repeated 4x — direct reference
+    parts.extend([entry.get("id", "")] * 4)
+    # Summary — bulk of the content (1x, base weight)
     parts.append(entry.get("summary", ""))
     # Type and file — minor signal
     parts.append(entry.get("type", ""))
@@ -258,11 +382,16 @@ def entry_to_corpus_doc(entry: dict) -> list[str]:
 
 
 def build_bm25_index(entries: list[dict]):
-    """Build a BM25 index from fat index entries. Returns (BM25Okapi, corpus)."""
+    """Build a BM25 index from fat index entries. Returns BM25Okapi instance.
+
+    Parameters tuned for fat-index corpus (LEARN-030):
+    - k1=1.0 (lower than default 1.5 — short docs, term repetition rare)
+    - b=0.4  (lower than default 0.75 — entries are similar length)
+    """
     from rank_bm25 import BM25Okapi
 
     corpus = [entry_to_corpus_doc(e) for e in entries]
-    bm25 = BM25Okapi(corpus)
+    bm25 = BM25Okapi(corpus, k1=1.0, b=0.4)
     return bm25
 
 

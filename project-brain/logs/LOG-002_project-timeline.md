@@ -542,3 +542,27 @@ Running chronological record of all project sessions, milestones, ingestions, an
 - **Blockers/dead ends:**
   - All 3 research agents couldn't write files (permission denied in subagents) — had to resume agents to extract content and write files from main session
   - Article ingestion agent couldn't fetch URL (permission denied) — analysis based on training data knowledge
+
+### 2026-02-17 — WORK — brain.py Search Upgrade + SPEC-001 Research Integration
+- **Duration:** ~20min
+- **Key actions:**
+  - Upgraded brain.py tokenizer (LEARN-030 Phase 1): stopword removal (60+ words), lightweight suffix stemmer (handles -ing, -ed, -tion, -ness, -ment, etc.), hyphen expansion ("session-handoff" → ["session", "handoff", "session-handoff"])
+  - Tuned BM25 parameters: k1=1.0, b=0.4 (optimized for short, uniform-length fat index entries)
+  - Updated field boosting weights: tags 5x (was 3x), ID 4x (was 2x), matching LEARN-030 recommendations
+  - Fixed stemmer edge cases: double-letter dedup ("running"→"run", "setting"→"set")
+  - Tested search improvements: "session-handoff" recall improved from 5→29 results, "searching BM25 improvements" from 13→25 results, precision on "hooks configuration" maintained (top 3 unchanged)
+  - Updated SPEC-001 with findings from LEARN-025 through LEARN-031: backtesting pipeline (two-phase VectorBT→Freqtrade→CPCV), CONTEXT-PACK/RESULT v2 formats, orchestration patterns, git worktree layout, scaling thresholds, Prover guard rails, Coder brain design
+  - Updated INDEX-MASTER.md: SPEC-001 fat index entry enriched, links updated
+  - Resolved Gap 5 (frontmatter decision) as completed — centralized INDEX-MASTER confirmed
+- **Files modified:**
+  - `project-brain/brain.py` (tokenizer: STOPWORDS, stem(), tokenize() rewrite; BM25: k1/b tuning; field weights: tags 5x, ID 4x)
+  - `project-brain/specs/SPEC-001_prover-multi-brain-architecture.md` (major expansion — backtesting pipeline, communication protocol v2, orchestration patterns, guard rails, scaling thresholds, Coder brain design)
+  - `project-brain/INDEX-MASTER.md` (SPEC-001 entry updated)
+  - `project-brain/logs/LOG-002_project-timeline.md` (this entry)
+- **Decisions made:**
+  - k1=1.0, b=0.4 for brain.py BM25 (LEARN-030 recommendation)
+  - Tags 5x, ID 4x field boosting (up from 3x/2x)
+  - Lightweight custom stemmer over external dependency (zero new deps)
+  - SPEC-001 now the definitive Prover architecture doc (incorporates 7 LEARN files)
+- **Blockers/dead ends:**
+  - Stemmer imperfect on some words ("configuring"→"configur") but consistent between corpus and query, so retrieval unaffected
