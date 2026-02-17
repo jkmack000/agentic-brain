@@ -1,0 +1,157 @@
+{
+  "learnings/LEARN-001_semantic-compression-context-extension.md": {
+    "hash": "aec0c425d19782848c58891be5bcbec0f3ce00620715138cc32e545fb1754897",
+    "id": "LEARN-001",
+    "updated": "2026-02-15"
+  },
+  "learnings/LEARN-002_competitive-landscape-memory-indexing-systems.md": {
+    "hash": "e3b7fc8db5ca716adab1d7f17d80dfbdf3de1354ec73d32ae40468bf7dbafcec",
+    "id": "LEARN-002",
+    "updated": "2026-02-14"
+  },
+  "learnings/LEARN-003_qualitative-research-methods-for-knowledge-systems.md": {
+    "hash": "29f601ba1218ac2b9b0b2bdb13b72894e05df51b5aba0171488133f854b8f61d",
+    "id": "LEARN-003",
+    "updated": "2026-02-14"
+  },
+  "learnings/LEARN-004_context-engineering-for-claude-code.md": {
+    "hash": "16ab91ccb1e4e0ea36aa353d1ec3a15c169f8652dedf8b6a58fe3d7def7a227c",
+    "id": "LEARN-004",
+    "updated": "2026-02-14"
+  },
+  "learnings/LEARN-005_claude-code-official-best-practices.md": {
+    "hash": "2eaeb7a36e449c87f15bb12d42b413f70f7f952507931644d141cddc6343b2f0",
+    "id": "LEARN-005",
+    "updated": "2026-02-14"
+  },
+  "learnings/LEARN-006_claude-code-memory-system.md": {
+    "hash": "d4575e7e1d4d174cd11011d464f3e94346f9ee858ca4cc5c683459f1bcc4cce0",
+    "id": "LEARN-006",
+    "updated": "2026-02-14"
+  },
+  "learnings/LEARN-007_claude-code-skills-system.md": {
+    "hash": "96ebc44be21f1991fb0ee7697e0460406e67fdf68425d72d12d829dc135551e2",
+    "id": "LEARN-007",
+    "updated": "2026-02-14"
+  },
+  "learnings/LEARN-008_claude-code-hooks-system.md": {
+    "hash": "81c1a130aa5e919be462f9a143970431e22c9cc7a5e76ec5bc6475340ec154a4",
+    "id": "LEARN-008",
+    "updated": "2026-02-14"
+  },
+  "learnings/LEARN-009_claude-code-subagents-system.md": {
+    "hash": "63af57963d53514c17452596ebbb1dbd2d8fb687a82611cce81abc00ce3705ad",
+    "id": "LEARN-009",
+    "updated": "2026-02-14"
+  },
+  "learnings/LEARN-010_claude-code-architecture-internals.md": {
+    "hash": "91b0bcc34e437cd7542015a18f4d82c1b150baf5d50523c4ad6d17a987c1ce2b",
+    "id": "LEARN-010",
+    "updated": "2026-02-14"
+  },
+  "learnings/LEARN-011_fat-index-convergence-validation.md": {
+    "hash": "fed17557763243625b6ce65bc0e543c43f313013c4993668e12fd6905234fa38",
+    "id": "LEARN-011",
+    "updated": "2026-02-14"
+  },
+  "learnings/LEARN-012_brain-operational-drift-and-sync.md": {
+    "hash": "baead995f8d3be5ba3096d6a7a8797deec706de171a283f5d95cee431a01f4d4",
+    "id": "LEARN-012",
+    "updated": "2026-02-14"
+  },
+  "learnings/LEARN-013_claude-code-mcp-system.md": {
+    "hash": "c020e3d0d2b4de02beb0b4a8fc4f185a6fa8019bb9601e55119ff9059fa1093b",
+    "id": "LEARN-013",
+    "updated": "2026-02-14"
+  },
+  "learnings/LEARN-014_claude-code-agent-sdk.md": {
+    "hash": "d7ff0960509c7854a17719e9a4e01a66b14441be68afd93d3064bc6d4bf7489d",
+    "id": "LEARN-014",
+    "updated": "2026-02-14"
+  },
+  "learnings/LEARN-015_claude-code-agent-teams.md": {
+    "hash": "34443d0a392096fccb802813a2b1e8836692db3918708701f8507d9d60176bb8",
+    "id": "LEARN-015",
+    "updated": "2026-02-14"
+  },
+  "learnings/LEARN-016_claude-code-plugin-system.md": {
+    "hash": "aa09be0db423cc26333aac8094c594489e5b54f1515b6faea3fd013c01d360d8",
+    "id": "LEARN-016",
+    "updated": "2026-02-14"
+  },
+  "learnings/LEARN-017_claude-code-costs-settings-environment.md": {
+    "hash": "cc17d03b7988829f3196fe6f32980b66fa69f82190ce95fac8732b478491a750",
+    "id": "LEARN-017",
+    "updated": "2026-02-14"
+  },
+  "learnings/LEARN-018_claude-code-common-workflows-and-patterns.md": {
+    "hash": "48534c932b726d66b4e6ae9904853dc8b4b7aa11e5b5e78f8e0ecfe4e2cd0244",
+    "id": "LEARN-018",
+    "updated": "2026-02-14"
+  },
+  "learnings/LEARN-019_claude-code-brain-integration-layers-1-3.md": {
+    "hash": "9c91e1037cc2b27bd9a6f683005fac9714ec0a371ad3c7684b3b5680aa71da0a",
+    "id": "LEARN-019",
+    "updated": "2026-02-15"
+  },
+  "learnings/LEARN-020_mem0-dspy-llm-driven-memory-crud.md": {
+    "hash": "8b07d486c09ce5c838a2550789f09d5f0d7aef23d242f8c8e78d3793d686f390",
+    "id": "LEARN-020",
+    "updated": "2026-02-15"
+  },
+  "learnings/LEARN-021_langchain-langgraph-architecture-memory-retrieval.md": {
+    "hash": "abb982e54e797f6b0eade8b0538bd4a25fa21b955eed2d76efa406902d1d4f11",
+    "id": "LEARN-021",
+    "updated": "2026-02-15"
+  },
+  "learnings/LEARN-022_dspy-optimizers-teleprompters.md": {
+    "hash": "9bbd913afb33727d17a41b6222567b183f34796ea17d1b5a78411839a382a30a",
+    "id": "LEARN-022",
+    "updated": "2026-02-15"
+  },
+  "learnings/LEARN-023_qmd-local-hybrid-search-engine.md": {
+    "hash": "3f4e62594ac6f346d6c0b5658a336c86fce217ecf97ffe8e5aa06a7669d2168a",
+    "id": "LEARN-023",
+    "updated": "2026-02-15"
+  },
+  "logs/LOG-001_brain-hub-shared-repository-idea.md": {
+    "hash": "3deaf240e8c08b07cc763d6a61df9d41bf3b6ba2fa1e91795af0b7c2b511a3d3",
+    "id": "LOG-001",
+    "updated": "2026-02-14"
+  },
+  "logs/LOG-002_project-timeline.md": {
+    "hash": "2940c17b342235825024aa11a29838d158c9fa914f65ffb108c9de0df391e4ea",
+    "id": "LOG-002",
+    "updated": "2026-02-16"
+  },
+  "logs/LOG-003_brain-to-claude-code-delivery-mechanisms.md": {
+    "hash": "59034f767c6c832a9033f64a8c182464c52b76c54380ab58f9bb667a0e264aaa",
+    "id": "LOG-003",
+    "updated": "2026-02-14"
+  },
+  "rules/RULE-001_hooks-configuration-patterns.md": {
+    "hash": "2cda37987dab223041a0a056d717a9f380151db80781d26bfcfc82a48391a071",
+    "id": "RULE-001",
+    "updated": "2026-02-16"
+  },
+  "rules/RULE-002_context-and-session-management.md": {
+    "hash": "b108e86c21b8794c1c27f08dcfed0b108f46d9c01fa4370c434de8ab37139c38",
+    "id": "RULE-002",
+    "updated": "2026-02-16"
+  },
+  "rules/RULE-003_skills-and-claude-md-patterns.md": {
+    "hash": "297dce2f5b3b430bdc1194a0235ebf5986aff017d18308d520923c76562e65ab",
+    "id": "RULE-003",
+    "updated": "2026-02-16"
+  },
+  "rules/RULE-004_hooks-safe-modification-workflow.md": {
+    "hash": "fa7b075c022ee2660519ee1985b692be8349692f71f9d1e9e68caa67e6574032",
+    "id": "RULE-004",
+    "updated": "2026-02-16"
+  },
+  "specs/SPEC-000_project-brain-architecture.md": {
+    "hash": "e83f5f8614e73f003cac38ade7a913e5ee73ae6a9ae0611f6eac98b73cfa29db",
+    "id": "SPEC-000",
+    "updated": "2026-02-15"
+  }
+}
