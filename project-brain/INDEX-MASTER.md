@@ -1,7 +1,7 @@
 # INDEX-MASTER
 <!-- type: INDEX -->
 <!-- updated: 2026-02-17 -->
-<!-- total-files: 49 (34 in INDEX-MASTER + 15 in INDEX-claude-code) -->
+<!-- total-files: 47 (32 in INDEX-MASTER + 15 in INDEX-claude-code) -->
 <!-- Load this file at the start of every Claude Code session. -->
 
 ## How to Use This Index
@@ -358,27 +358,8 @@ _None yet._
 - **Interface:** N/A (learning, not code)
 - **Known issues:** Open question: does hub structure change after consolidation? Preliminary finding: RULEs are structurally leaf-type (not decaying). `claude-code` cluster (14 files) is first sub-index candidate.
 
-### LEARN-035
-- **Type:** LEARN
-- **File:** learnings/LEARN-035_freqtrade-istrategy-technical-reference.md
-- **Tags:** freqtrade, IStrategy, trading, code-generation, python, callbacks, hyperopt, signals, coder-brain
-- **Links:** SPEC-002, SPEC-001, LEARN-025
-- **Backlinks:** LEARN-036
-- **Summary:** Complete technical reference for Freqtrade's IStrategy interface — the target abstraction for AI-generated strategies. Covers: 3 required methods (populate_indicators/entry_trend/exit_trend) with exact signatures, DataFrame OHLCV columns, 15+ optional callback methods with full signatures (custom_stoploss, custom_exit, adjust_trade_position, leverage, etc.), parameter optimization interface (IntParameter/DecimalParameter/BooleanParameter/CategoricalParameter with constructor args), signal column conventions, trailing stop mechanics, ROI table format, indicator libraries (TA-Lib, technical, pandas-ta), complete minimal strategy example, and 10 code generation constraints. This is the seed knowledge for the Coder brain's planned LEARN-001 (SPEC-002 Phase 1).
-- **Key decisions:** Template-fill for IStrategy (fill only populate method bodies); hyperopt parameters cannot be used in populate_indicators; always include volume > 0 guard.
-- **Interface:** N/A (reference, not code). Consumed by Coder brain write pipeline.
-- **Known issues:** TA-Lib problematic on Windows. Freqtrade crypto-focused. Recovered from subagent transcript — may need verification against latest Freqtrade docs.
-
-### LEARN-036
-- **Type:** LEARN
-- **File:** learnings/LEARN-036_llm-code-generation-patterns-for-trading-strategies.md
-- **Tags:** code-generation, LLM, trading, validation, security, sandbox, prompting, few-shot, SCoT, competitive-analysis, coder-brain
-- **Links:** SPEC-002, SPEC-001, LEARN-035, LEARN-025
-- **Backlinks:** _(none)_
-- **Summary:** Quantitative research synthesis on LLM code generation for trading strategies. Prompting: SCoT +13.79% Pass@1, few-shot ~80% over zero-shot, prompt format varies 40%. Iteration: LLMLOOP pass@1 71%→80.85%, Self-Refine -30% errors, 3-5 iterations optimal, GPT-4o-mini 53%→75%, Gemini-flash 57%→89%. Validation: AST hallucination detection, Bandit security linting, smolagents LocalPythonExecutor (AST interpreter, best fit for strategy validation), 4-tier sandbox hierarchy (RestrictedPython < smolagents < gVisor < Firecracker). **Cross-project finding: LLM API hallucination is the consistent failure mode — every successful project required a validation layer.** NexusTrade JSON-out pattern (24K users, LLM never generates executable code). 5 open-source strategy generation projects + EMNLP 2025 paper (53.17% return on SSE50). Template-based generation recommended (eliminates structural errors, limits bugs to logic only).
-- **Key decisions:** Knowledge-first beats guess-and-check (empirically validated); template-fill eliminates largest error classes; whitelist imports never blacklist; smolagents as validation model.
-- **Interface:** N/A (learning, not code). Informs Coder brain write + validation pipeline (SPEC-002).
-- **Known issues:** Academic benchmarks may differ from real-world. smolagents HuggingFace-specific. All framework APIs point-in-time Feb 2026.
+<!-- LEARN-035: Retired 2026-02-17 — migrated to coder-brain as LEARN-001 (Freqtrade IStrategy reference) -->
+<!-- LEARN-036: Retired 2026-02-17 — migrated to coder-brain as LEARN-002 (LLM code generation patterns) -->
 
 ### LEARN-037
 - **Type:** LEARN

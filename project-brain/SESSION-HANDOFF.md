@@ -19,7 +19,7 @@ Cleanup tasks from previous session handoff (delete superseded file, fix pyproje
   - Researched Sandbox Agent SDK (sandboxagent.dev) — universal HTTP API for running coding agents in sandboxes
 - **What's left:**
   - Coder brain needs knowledge ingestion (Phase 1: Freqtrade docs, ta-lib, CCXT)
-  - LEARN-035/036 from agentic-brain contain seed research to adapt into coder brain deposits
+  - ~~LEARN-035/036 from agentic-brain~~ DONE — migrated to coder-brain as LEARN-001/002, originals retired to archive/
   - Sandbox Agent research not deposited (user hasn't confirmed deposit)
   - Vitality threshold tuning still deferred
   - `/brain-checkpoint` skill (Layer 3 of capture solution — deferred)
