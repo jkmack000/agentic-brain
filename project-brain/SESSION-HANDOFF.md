@@ -1,49 +1,54 @@
 # SESSION-HANDOFF
 <!-- written: 2026-02-17 -->
-<!-- session-type: INGESTION -->
-<!-- trigger: stop-hook — session ending -->
+<!-- session-type: INGESTION + INFRA -->
+<!-- trigger: manual — user requested -->
 
 ## What Was Being Done
-Ingesting three Anthropic engineering blog articles into the agentic-brain Project Brain. User requested ingestion of: (1) "Building Effective Agents", (2) "Claude Code Best Practices", (3) "Building Agents with the Claude Agent SDK".
+Ingesting Anthropic engineering blog articles into agentic-brain, then separating coder-brain into its own independent repo.
 
 ## Current State
-- **Status:** COMPLETED — all three articles processed
+- **Status:** COMPLETED
 - **What's done:**
-  - Article 1 ("Building Effective Agents"): Deposited as LEARN-038 — Anthropic's official agent taxonomy (workflows vs agents), 5 canonical workflow patterns, ACI concept, tool engineering > prompt engineering, simplicity-first principle
-  - Article 2 ("Claude Code Best Practices"): SKIPPED — fully duplicates LEARN-005 (same article, URL redirected to new docs site)
-  - Article 3 ("Building Agents with Claude Agent SDK"): Deposited as LEARN-039 — context gathering hierarchy, verification taxonomy, tool prominence principle, feedback loop
-  - Explained augmented LLM concept to user mid-session
-  - INDEX-MASTER.md updated (47→49 files, backlinks propagated)
-  - claude-code sub-index updated (15→16 members)
-  - LOG-002 timeline entries appended for both deposits
+  - Article 1 ("Building Effective Agents"): Deposited as LEARN-038 — official agent taxonomy, 5 workflow patterns, ACI concept, tool engineering > prompt engineering
+  - Article 2 ("Claude Code Best Practices"): SKIPPED — duplicate of LEARN-005
+  - Article 3 ("Building Agents with Claude Agent SDK"): Deposited as LEARN-039 — context gathering hierarchy, verification taxonomy, tool prominence principle
+  - Coder-brain extracted to independent repo at `C:\coder-brain` (github.com/jkmack000/coder-brain)
+  - Coder-brain removed from agentic-brain repo — no more shared filesystem
+  - All changes committed and pushed to both repos
 - **What's left:**
-  - Phase 2 coder-brain ingestion still pending (CCXT, VectorBT, Optuna, pytest advanced) — carried forward from previous sessions
+  - Phase 2 coder-brain ingestion (CCXT, VectorBT, Optuna, pytest advanced) — now done in the coder-brain repo
+  - SPEC-002 (coder-brain architecture) still references `coder-brain/` path — may need update to reflect new repo location
+  - INDEX-MASTER references to coder-brain files are now cross-repo (no action needed, just awareness)
 
 ## Uncommitted Decisions
-- None — all deposited
+- None — all committed
 
 ## Discoveries Not Yet Deposited
-- None — all ingested content deposited or skipped with reasoning
+- None
 
 ## Open Questions
-- All carried forward from INDEX-MASTER (26 items, no new questions this session)
+- All carried forward from INDEX-MASTER (26 items)
+- New awareness: SPEC-002 path references may need updating for new repo layout
 
 ## Files Modified This Session
-- `project-brain/INDEX-MASTER.md` — 2 new entries (LEARN-038, sub-index ref update), backlinks on LEARN-026/027/037, SPEC-001, LEARN-038, count 47→49
-- `project-brain/indexes/INDEX-claude-code.md` — LEARN-039 entry, member count 15→16, backlinks on LEARN-005/009/010/014
-- `project-brain/logs/LOG-002_project-timeline.md` — 2 timeline entries appended
+- `project-brain/INDEX-MASTER.md` — LEARN-038/039 entries, backlinks, count 47→49
+- `project-brain/indexes/INDEX-claude-code.md` — LEARN-039 entry, 15→16 members
+- `project-brain/logs/LOG-002_project-timeline.md` — 2 timeline entries
+- `project-brain/SESSION-HANDOFF.md` — this file
+- Removed `coder-brain/` directory (25 files) from agentic-brain repo
 
 ## Files Added to Brain This Session
-- LEARN-038 — Anthropic building effective agents: official taxonomy, 5 workflow patterns, ACI, tool engineering
-- LEARN-039 — Anthropic Agent SDK practical design patterns: context gathering hierarchy, verification taxonomy
+- LEARN-038 — Anthropic building effective agents taxonomy
+- LEARN-039 — Anthropic Agent SDK practical design patterns
 
 ## Dead Ends
-- Claude Code best practices URL redirects to docs site (code.claude.com/docs/en/best-practices) — content identical to what was already in LEARN-005, correctly skipped
+- Claude Code best practices URL redirects to docs site — content identical to LEARN-005, correctly skipped
+- SSH push failed for coder-brain repo — switched to HTTPS (same pattern as before)
 
 ## Recommended Next Session
-- **Type:** INGESTION
-- **Load:** coder-brain/project-brain/INDEX-MASTER.md, coder-brain/project-brain/specs/SPEC-001_coder-brain-architecture.md
+- **Type:** INGESTION (in coder-brain repo)
+- **Load:** `C:\coder-brain\project-brain\INDEX-MASTER.md`, `C:\coder-brain\project-brain\specs\SPEC-001_coder-brain-architecture.md`
 - **First action:**
-  1. Phase 2 coder-brain ingestion: CCXT, VectorBT, Optuna, pytest advanced
-  2. Research via parallel agents against docs sites
-  3. Deposit as coder-brain LEARN-008+ and CODE-004+
+  1. Open session in `C:\coder-brain` (not agentic-brain)
+  2. Phase 2 ingestion: CCXT, VectorBT, Optuna, pytest advanced
+  3. Research via parallel agents, deposit as LEARN-008+ and CODE-004+

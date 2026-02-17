@@ -857,3 +857,21 @@ Running chronological record of all project sessions, milestones, ingestions, an
   - LOG-002 (this entry)
 - **Decisions made:** None — ingested knowledge. Context gathering hierarchy and verification taxonomy most actionable.
 - **Blockers/dead ends:** WebFetch returned summarized content (not full article with code examples)
+
+### 2026-02-17 — INFRA — Extract Coder-Brain to Independent Repo
+- **Duration:** ~5min
+- **Key actions:**
+  - Copied `coder-brain/` from agentic-brain to `C:\coder-brain\`
+  - Created new GitHub repo: github.com/jkmack000/coder-brain (public)
+  - Initial commit: 25 files, 4,020 lines
+  - Removed `coder-brain/` from agentic-brain repo (git rm -r)
+  - Both repos pushed — full separation achieved
+- **Files created:**
+  - `C:\coder-brain\` — independent repo with own git history
+- **Files removed from agentic-brain:**
+  - `coder-brain/` directory (25 files)
+- **Decisions made:**
+  - Adjacent repos (Option A) over git submodules (Option B) — simpler, no Windows submodule pain
+  - Each agent = own repo per SPEC-001 architecture
+  - Inter-brain communication via CONTEXT-PACK/RESULT protocol, not shared filesystem
+- **Blockers/dead ends:** SSH push failed (key not on GitHub) — HTTPS workaround as before
