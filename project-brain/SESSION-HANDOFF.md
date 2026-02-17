@@ -1,39 +1,34 @@
 # SESSION-HANDOFF
 <!-- written: 2026-02-17 -->
-<!-- session-type: WORK -->
-<!-- trigger: context-limit — 80% usage, 3% free -->
+<!-- session-type: INGESTION -->
+<!-- trigger: stop-hook — session ending -->
 
 ## What Was Being Done
-Cleanup tasks, coder-brain scaffolding, Sandbox Agent SDK research + deposit, SPEC-001 update with Option D, and first knowledge migration from agentic-brain to coder-brain (retirement workflow).
+Coder brain Phase 1 deep ingestion — researching Freqtrade and ta-lib documentation via parallel agents, then depositing structured knowledge files (LEARNs, CODEs, RULEs, SPEC) into the coder-brain.
 
 ## Current State
-- **Status:** COMPLETED (this session's tasks) / READY for next phase
+- **Status:** COMPLETED — Phase 1 seed ingestion done
 - **What's done:**
-  - Deleted `coder.agent.project.md` (superseded by SPEC-002)
-  - Fixed `pyproject.toml`: `brain_search` → `brain` in scripts/setuptools
-  - Verified brain.py sub-index support already working
-  - Scaffolded `coder-brain/` project (CLAUDE.md + brain.py init + capability ads in INDEX-MASTER)
-  - Researched Sandbox Agent SDK → deposited as LEARN-037
-  - Added Option D (Sandbox Agent + Rivet actors) to SPEC-001 coordination architecture
-  - Migrated LEARN-035 → coder-brain LEARN-001 (Freqtrade IStrategy reference)
-  - Migrated LEARN-036 → coder-brain LEARN-002 (LLM code generation patterns)
-  - Originals retired to `project-brain/archive/` (first use of SPEC-003 retirement workflow)
-  - Agentic-brain: 49 → 47 files. Coder-brain: 0 → 2 files.
-  - All committed and pushed (4 commits: 3465d99, 7a98944, 6a06910)
+  - Launched 3 parallel research agents against freqtrade.io and ta-lib docs
+  - Agent 1: Freqtrade config + lifecycle → LEARN-003, LEARN-004
+  - Agent 2: Freqtrade data handling + backtesting CLI → LEARN-005, LEARN-006
+  - Agent 3: ta-lib indicator reference → LEARN-007
+  - Created CODE-001 (IStrategy template with 12 fill slots)
+  - Created CODE-002 (test scaffolding — conftest.py + 8 test patterns)
+  - Created CODE-003 (validated EMACrossoverRSI strategy as few-shot example)
+  - Created RULE-001 (import whitelist — strict/relaxed tiers)
+  - Created RULE-002 (code style conventions)
+  - Created RULE-003 (testing requirements — 3-stage pipeline, max 3 rounds)
+  - Created SPEC-001 (coder brain architecture)
+  - Updated coder-brain INDEX-MASTER.md with fat index entries for all 12 new files (total 2→14)
+  - Updated agentic-brain LOG-002 timeline
+  - Committed and pushed: ce8d803
 - **What's left:**
-  - **Coder brain Phase 1 ingestion** — next priority:
-    - LEARN-003: Freqtrade bot config (config.json, exchange setup, dry-run vs live)
-    - LEARN-004: Freqtrade bot lifecycle (startup, trading loop, shutdown, data refresh)
-    - LEARN-005: Freqtrade data handling (pairs, timeframes, downloading, custom data)
-    - LEARN-006: Freqtrade backtesting CLI (commands, parameters, result interpretation)
-    - LEARN-007: ta-lib indicator reference (function signatures, gotchas)
-    - CODE-001: IStrategy template with fill slots
-    - CODE-002: Test scaffolding (conftest.py, fixtures, strategy test patterns)
-    - CODE-003: Sample validated strategy (known-working example)
-    - RULE-001: Import whitelist
-    - RULE-002: Code style conventions
-    - RULE-003: Testing requirements
-    - SPEC-001: Coder brain architecture (adapted from agentic-brain SPEC-002)
+  - **Phase 2 ingestion** (next priority):
+    - CCXT unified API patterns (async/sync, exchange quirks, error handling)
+    - VectorBT vectorized backtesting API
+    - Optuna hyperparameter optimization + Freqtrade hyperopt integration
+    - pytest advanced patterns (parametrize, mocking exchange calls)
   - Vitality threshold tuning (deferred)
   - `/brain-checkpoint` skill (deferred)
 
@@ -41,41 +36,38 @@ Cleanup tasks, coder-brain scaffolding, Sandbox Agent SDK research + deposit, SP
 - None — all deposited and committed
 
 ## Discoveries Not Yet Deposited
-- None — LEARN-037 deposited, SPEC-001 updated
+- None — all research distilled into coder-brain files
 
 ## Open Questions (Carried Forward)
-- All tracked in INDEX-MASTER Open Questions table (26 items)
+- All tracked in agentic-brain INDEX-MASTER Open Questions table (26 items)
+- Coder-brain SPEC-001 has 6 open questions (inter-brain protocol, CCXT async/sync, short selling, multi-TF, VectorBT template, exchange scope)
 
 ## Files Modified This Session
-- `coder.agent.project.md` — DELETED
-- `project-brain/pyproject.toml` — fixed module references
-- `project-brain/INDEX-MASTER.md` — LEARN-037 entry, LEARN-035/036 retired, SPEC-001 summary updated, file count 48→47, OQs #25/#26 added
-- `project-brain/indexes/INDEX-claude-code.md` — LEARN-014 backlinks updated
-- `project-brain/specs/SPEC-001_prover-multi-brain-architecture.md` — Option D added, links updated
-- `project-brain/learnings/LEARN-037_sandbox-agent-sdk-remote-coding-agent-execution.md` — Rivet section added
-- `project-brain/SESSION-HANDOFF.md` — this file
-- `project-brain/logs/LOG-002_project-timeline.md` — timeline entries
+- `coder-brain/project-brain/INDEX-MASTER.md` — 12 new fat index entries (total 2→14)
+- `project-brain/logs/LOG-002_project-timeline.md` — timeline entry appended
 
 ## Files Added to Brain This Session
-- `project-brain/learnings/LEARN-037` — Sandbox Agent SDK research
-- `coder-brain/CLAUDE.md` — Coder agent project configuration
-- `coder-brain/project-brain/` — full brain scaffold
-- `coder-brain/project-brain/learnings/LEARN-001` — Freqtrade IStrategy (migrated)
-- `coder-brain/project-brain/learnings/LEARN-002` — LLM code gen patterns (migrated)
-
-## Files Retired This Session
-- `LEARN-035` → `archive/` (migrated to coder-brain LEARN-001)
-- `LEARN-036` → `archive/` (migrated to coder-brain LEARN-002)
+- coder-brain LEARN-003 (Freqtrade bot configuration)
+- coder-brain LEARN-004 (Freqtrade bot lifecycle)
+- coder-brain LEARN-005 (Freqtrade data handling)
+- coder-brain LEARN-006 (Freqtrade backtesting CLI)
+- coder-brain LEARN-007 (ta-lib indicator reference)
+- coder-brain CODE-001 (IStrategy template with fill slots)
+- coder-brain CODE-002 (test scaffolding)
+- coder-brain CODE-003 (sample validated strategy)
+- coder-brain RULE-001 (import whitelist)
+- coder-brain RULE-002 (code style conventions)
+- coder-brain RULE-003 (testing requirements)
+- coder-brain SPEC-001 (coder brain architecture)
 
 ## Dead Ends
 - None
 
 ## Recommended Next Session
 - **Type:** INGESTION
-- **Load:** SESSION-HANDOFF.md, coder-brain/project-brain/INDEX-MASTER.md
+- **Load:** coder-brain/project-brain/INDEX-MASTER.md, coder-brain/project-brain/specs/SPEC-001_coder-brain-architecture.md
 - **First action:**
-  1. Launch 2-3 parallel research agents against freqtrade.io docs for deep ingestion
-  2. Deposit as coder-brain LEARN-003 through LEARN-007
-  3. Then create CODE-001 (IStrategy template), CODE-002 (test scaffold), CODE-003 (sample strategy)
-  4. Then create RULE-001/002/003 and SPEC-001
-  5. Run coder-brain `brain.py status` to verify health
+  1. Phase 2 ingestion: CCXT, VectorBT, Optuna, pytest advanced
+  2. Research via parallel agents against docs sites
+  3. Deposit as coder-brain LEARN-008+ and CODE-004+
+  4. Run coder-brain `brain.py status` to verify health
