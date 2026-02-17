@@ -1,7 +1,7 @@
 # INDEX-MASTER
 <!-- type: INDEX -->
 <!-- updated: 2026-02-17 -->
-<!-- total-files: 37 -->
+<!-- total-files: 40 -->
 <!-- Load this file at the start of every Claude Code session. -->
 
 ## How to Use This Index
@@ -375,6 +375,36 @@ _None yet._
 - **Key decisions:** None — research synthesis. Five gaps identified for future work.
 - **Interface:** N/A (learning, not code)
 - **Known issues:** Letta Code is TypeScript (may not transfer to Python brain.py). MemGPT paper (Oct 2023) predates current Letta evolution.
+
+### LEARN-029
+- **Type:** LEARN
+- **File:** learnings/LEARN-029_git-worktree-workflows-for-parallel-agents.md
+- **Tags:** git, worktrees, parallel-agents, isolation, multi-brain, concurrent, prover
+- **Links:** SPEC-001, LEARN-024, LEARN-018
+- **Summary:** Comprehensive research on git worktree workflows for parallel AI agent sessions. Covers worktree mechanics (shared objects/refs, per-worktree HEAD/index, branch exclusivity constraint), 4 real-world systems (Letta Context Repos, ccswarm, Crystal, incident.io), concurrent safety analysis (lock files, object DB safety, 6-scenario risk matrix), Claude Code integration (multi-terminal sessions, `--add-dir` flag, branch awareness, programmatic launch). Practical Prover patterns: `agent/<brain-name>/<task-id>` branch naming, standard vs bare-repo directory layouts, complete orchestrator shell script, merge strategies (`--no-ff` for audit trail, test-before-merge). Three brain file coordination strategies evaluated — recommends Option C (orchestrator-only brain writes) aligned with SPEC-001 CONTEXT-PACK/RESULT pattern. Covers Windows gotchas (long paths, file locking, antivirus), submodule incompleteness, stale worktree detection, runtime isolation limits.
+- **Key decisions:** Recommends worktrees with branch-per-agent + orchestrator-only brain writes for Prover Phase 1; `--no-ff` merges for audit trail; bare-repo layout for many worktrees; automated cleanup after each session.
+- **Interface:** N/A (learning, not code)
+- **Known issues:** Claude Code native worktree support is an open feature request (#24850). Submodule support is incomplete. Runtime environment (ports, DBs, env vars) NOT isolated by worktrees.
+
+### LEARN-030
+- **Type:** LEARN
+- **File:** learnings/LEARN-030_bm25-hybrid-search-implementation-patterns.md
+- **Tags:** BM25, search, hybrid-search, vector-search, ranking, Python, brain-py, implementation, RRF, reranking, SQLite-FTS5
+- **Links:** LEARN-021, LEARN-023, SPEC-000
+- **Summary:** Research synthesis for improving brain.py search. Covers BM25 fundamentals (scoring formula, k1/b tuning for short docs: k1=1.0, b=0.4), 6 Python library comparison (rank-bm25, bm25s, SQLite FTS5, Whoosh-Reloaded, tantivy-py, lunr.py) with decision matrix. Field boosting strategy (tags 5x, ID 4x, title 3x, summary 1x). Hybrid search: RRF implementation (k=60, complete Python code), weighted blending alternative, minimal vector stack (fastembed + sqlite-vec + FTS5). Query expansion (pseudo-relevance feedback with code, HyDE, multi-query). Reranking (FlashRank 4-80MB options). Small-corpora patterns: BM25 alone sufficient when vocabulary is shared, add vectors for cross-brain search. 3-phase roadmap: (1) improve tokenizer now (stemming, stopwords, hyphen expansion), (2) migrate to SQLite FTS5 at 50-100 files for native field boosting, (3) add hybrid search at 100+ files or MCP server.
+- **Key decisions:** rank-bm25 adequate for current 37 files; SQLite FTS5 is best next step (zero deps, native field boosting, persistence); vector search premature at current scale; RRF over weighted blending for hybrid fusion.
+- **Interface:** N/A (learning, not code). Contains ready-to-use Python code for RRF, PRF, tokenizer, FTS5 schema.
+- **Known issues:** FTS5 k1/b hardcoded at 1.2/0.75 (not tunable). bm25s requires numpy/scipy. FlashRank reranking adds latency. All recommendations are for current scale (37 files) — reassess at 100+.
+
+### LEARN-031
+- **Type:** LEARN
+- **File:** learnings/LEARN-031_file-based-knowledge-management-at-scale.md
+- **Tags:** zettelkasten, obsidian, logseq, knowledge-management, scaling, consolidation, graph, MOC, atomic-notes, progressive-summarization, maintenance
+- **Links:** SPEC-000, LEARN-002, LEARN-003, LEARN-012
+- **Summary:** Research synthesis of file-based knowledge management patterns for LLM memory systems. Covers Zettelkasten (5 core principles, fleeting/literature/permanent pipeline, emergence from cross-domain links, digital adaptations — 40% retrieval improvement), Obsidian (vault structure, MOCs with "mental squeeze point" trigger, Dataview metadata querying, scaling thresholds up to 40K+ notes — graph view is bottleneck, not file operations), Logseq (outliner model, block-level linking, namespaces, journal-first workflow — we correctly chose Obsidian/page model for LLM consumption). Scaling thresholds: 50-100 (fat index essential), 100-300 (first consolidation), 300-500 (sub-indexes), 500-1000 (Evernote Effect danger zone), 1000+ (automated search required). Knowledge graph patterns: link density benchmarks (2-3 minimum, 4-6 good), hub note priority maintenance, clustering for auto-organization. LLM-optimized adaptations: fat index = MOC equivalent, A-MEM NeurIPS 2025 academic validation, RAG chunking alignment (fat entries at optimal 50-150 tokens), context positioning (INDEX-MASTER early, task files last). Consolidation: Forte's 5-layer progressive summarization mapped to brain, gardening metaphors, maintenance cadence (time/event/metric triggers), merge vs split vs archive decision table. Prioritized improvements table and scaling roadmap from 37 to 1000+ files.
+- **Key decisions:** Architecture validated by A-MEM (NeurIPS 2025), Letta, Claude auto memory (4th independent convergence). Sub-index creation triggered by "mental squeeze point" not arbitrary file count. Evernote Effect is biggest long-term risk — consolidation every 20-30 files is correct.
+- **Interface:** N/A (learning, not code)
+- **Known issues:** A-MEM is academic (not production-tested at scale). Obsidian scaling data is community-reported (not benchmarked). Progressive summarization touch-count tracking not yet implemented. File size guideline (<1000 tokens) conflicts with current LEARN files (most are 500-2000 tokens).
 
 ---
 

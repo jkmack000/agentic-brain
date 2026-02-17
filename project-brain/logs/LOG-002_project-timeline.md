@@ -515,3 +515,30 @@ Running chronological record of all project sessions, milestones, ingestions, an
   - Code-level orchestration + LLM flexibility within specialists for Prover
   - Context7 + Coder brain complementary (external docs vs project-specific knowledge)
 - **Blockers/dead ends:** Agent output files sometimes empty on first read (recurring bug, resume-to-recover works); Batch 2 deferred for budget
+
+### 2026-02-17 — RESEARCH — Batch 2 Deferred Topics + Article Review
+- **Duration:** ~30min
+- **Key actions:**
+  - Completed all 3 deferred Batch 2 research topics from previous session (200K token budget)
+  - Launched 3 parallel research agents: git worktrees, BM25/hybrid search, file-based knowledge management
+  - LEARN-029 (git worktrees): Worktree mechanics, 4 real-world systems (Letta, ccswarm, Crystal, incident.io), concurrent safety, Claude Code integration, Prover-specific patterns (branch naming, orchestrator script, brain file coordination — recommends orchestrator-only writes)
+  - LEARN-030 (BM25/search): 6 Python libraries compared, field boosting strategy, RRF hybrid fusion, query expansion, 3-phase roadmap (improve tokenizer → SQLite FTS5 → hybrid search)
+  - LEARN-031 (knowledge mgmt): Zettelkasten/Obsidian/Logseq patterns, scaling thresholds (50→5000+ files), A-MEM NeurIPS 2025 validation, progressive summarization, maintenance cadence, prioritized improvements
+  - Reviewed HatchWorks orchestration article — found fully subsumed by LEARN-026/027, no deposit needed
+  - Updated INDEX-MASTER.md (count 37→40, 3 new fat index entries)
+  - Verified project files intact after directory move (C:\Users\Jkmac\fuck windows\Desktop\LTM SPECS → C:\agentic-brain)
+- **Files created:**
+  - LEARN-029 (git worktree workflows for parallel agents)
+  - LEARN-030 (BM25 and hybrid search implementation patterns)
+  - LEARN-031 (file-based knowledge management at scale)
+- **Files modified:**
+  - INDEX-MASTER.md (3 entries added, count 37→40)
+  - LOG-002 (this entry)
+- **Decisions made:**
+  - Orchestrator-only brain writes for Prover (avoids merge conflicts in brain files)
+  - SQLite FTS5 as best next search upgrade (zero deps, native field boosting)
+  - Sub-index creation triggered by "mental squeeze point" not arbitrary file count
+  - HatchWorks article skip — duplicate of existing LEARN-026/027 coverage
+- **Blockers/dead ends:**
+  - All 3 research agents couldn't write files (permission denied in subagents) — had to resume agents to extract content and write files from main session
+  - Article ingestion agent couldn't fetch URL (permission denied) — analysis based on training data knowledge

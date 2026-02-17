@@ -1,39 +1,29 @@
 # SESSION-HANDOFF
 <!-- written: 2026-02-17 -->
 <!-- session-type: RESEARCH -->
-<!-- trigger: session work complete -->
+<!-- trigger: stop-hook -->
 
 ## What Was Being Done
-Research session: 4-topic parallel research for Prover build knowledge, plus Context7 ingestion. Budget cap: 200K tokens.
+Batch 2 research session: completing the 3 deferred research topics from previous session (git worktrees, BM25/hybrid search, file-based knowledge management at scale), plus reviewing a HatchWorks orchestration article for ingestion. 200K token budget.
 
 ## Current State
-- **Status:** COMPLETED (Batch 1 + Context7), DEFERRED (Batch 2)
+- **Status:** COMPLETED
 - **What's done:**
-  - LEARN-025: Backtesting engine architecture — event-driven vs vectorized, 6 frameworks compared, hybrid two-phase pipeline (VectorBT screening → Freqtrade validation), CPCV with PBO < 0.5 as hard gate, 4 Prover-specific pitfalls
-  - LEARN-026: Inter-agent communication patterns — A2A protocol, 6 framework IPC patterns, CONTEXT-PACK v2 and RESULT v2 templates with YAML frontmatter, token budget envelope (~750/~1300 tokens)
-  - LEARN-027: Multi-agent orchestration — 6 production frameworks, fan-out/fan-in with reducers, 41-86.7% failure rate for unstructured coordination, 7 error handling patterns, observation masking = LLM summarization but cheaper
-  - LEARN-028: Context7 architecture — MCP doc server analysis, 7 transferable patterns, Context7 + brain are complementary
-  - INDEX-MASTER.md updated (33→37 files, 4 new fat index entries)
+  - LEARN-029: Git worktree workflows for parallel agents — worktree mechanics, 4 real-world systems (Letta, ccswarm, Crystal, incident.io), concurrent safety, Claude Code integration, Prover patterns (branch naming, orchestrator script, brain file coordination). Recommends orchestrator-only brain writes (Option C).
+  - LEARN-030: BM25 and hybrid search implementation patterns — 6 Python libraries compared, field boosting strategy, RRF hybrid fusion code, query expansion (PRF), reranking options, 3-phase roadmap (improve tokenizer → SQLite FTS5 → hybrid search)
+  - LEARN-031: File-based knowledge management at scale — Zettelkasten/Obsidian/Logseq patterns, scaling thresholds (50→5000+), A-MEM NeurIPS 2025 validation, progressive summarization, maintenance cadence, prioritized improvements table and scaling roadmap
+  - HatchWorks orchestration article reviewed — fully subsumed by LEARN-026/027, no deposit needed
+  - INDEX-MASTER.md updated (37→40 files, 3 new fat index entries)
   - LOG-002 timeline entry written
-  - Root artifact cleaned up (multi-agent-orchestration-research.md deleted)
-  - All changes committed: NO (not yet committed)
-- **What's left (deferred for budget):**
-  - Batch 2 topic 4: Git worktree workflows for parallel agents (SPEC-001 Gap 1)
-  - Batch 2 topic 5: BM25 + hybrid search implementation patterns (brain.py improvement)
-  - Batch 2 topic 6: File-based knowledge management at scale (Zettelkasten, Obsidian, Logseq patterns)
+  - Verified project files intact after directory move (old location → C:\agentic-brain)
+  - All Batch 2 research topics now COMPLETE
+  - Changes NOT YET COMMITTED to git
 
-## Key Decisions Made This Session
-1. **Freqtrade IStrategy** (DataFrame methods) recommended for AI-generated strategies — LLM-friendly
-2. **CPCV with PBO < 0.5** as hard validation gate — methodology fixed in RULE file, not modifiable by AI
-3. **YAML frontmatter + markdown body** for CONTEXT-PACK v2 / RESULT v2 inter-brain messages
-4. **Context isolation** is the #1 multi-agent architecture principle
-5. **Code-level orchestration + LLM flexibility** within specialists for Prover
-6. **Observation masking > LLM summarization** for context management between agents
-7. **Context7 + Coder brain** are complementary (external docs vs project knowledge)
-8. **Token budget envelope:** ~750 tokens CONTEXT-PACK, ~1100-1500 tokens RESULT
+## Uncommitted Decisions
+- None — all decisions captured in LEARN files
 
 ## Discoveries Not Yet Deposited
-- None — all research deposited as LEARN files
+- Subagent file write permissions are unreliable — all 3 research agents failed to write files (had to resume and extract content to main session). This is a recurring operational pattern worth noting but not a new brain file.
 
 ## Open Questions (carried forward)
 - Frontend stack preference?
@@ -42,12 +32,26 @@ Research session: 4-topic parallel research for Prover build knowledge, plus Con
 - Data freshness — how does OHLCV data get refreshed?
 - Strategy versioning — git tags? Dedicated VERSION file?
 - SSH key on GitHub — deferred
-- Reverse SSH (Windows ← 192.168.1.208) — carried forward
+- Reverse SSH (Windows <- 192.168.1.208) — carried forward
+
+## Files Added to Brain This Session
+- LEARN-029 — git worktree workflows for parallel agents
+- LEARN-030 — BM25 and hybrid search implementation patterns
+- LEARN-031 — file-based knowledge management at scale
+
+## Files Modified This Session
+- INDEX-MASTER.md — 3 new fat index entries, count 37→40
+- LOG-002 — timeline entry for this session
+- SESSION-HANDOFF.md — this file
+
+## Dead Ends
+- All 3 research subagents failed to write files due to permission restrictions — had to resume each agent to extract content, then write from main session. Workaround is reliable but adds overhead.
+- Article ingestion agent couldn't fetch HatchWorks URL (permission denied) — fell back to training-data analysis. Adequate for dedup check but not ideal for novel content detection.
 
 ## Recommended Next Session
 - **Type:** WORK
 - **Load:** SESSION-HANDOFF.md, INDEX-MASTER.md
-- **First action:** Commit new files to git. Then either:
+- **First action:** Commit new files to git (LEARN-029/030/031 + INDEX-MASTER + LOG-002). Then either:
   - (A) Start building Prover — scaffold new repo, create orchestrator brain
-  - (B) Continue research — Batch 2 topics (git worktrees, BM25, Zettelkasten)
-  - (C) Update SPEC-001 with new architecture decisions from LEARN-025/026/027/028
+  - (B) Update SPEC-001 with architecture decisions from LEARN-025-031 (worktree patterns, orchestrator-only brain writes, search roadmap, scaling thresholds)
+  - (C) Implement brain.py improvements from LEARN-030 (tokenizer upgrade, stopwords, stemming — Phase 1 of search roadmap)
