@@ -566,3 +566,77 @@ Running chronological record of all project sessions, milestones, ingestions, an
   - SPEC-001 now the definitive Prover architecture doc (incorporates 7 LEARN files)
 - **Blockers/dead ends:**
   - Stemmer imperfect on some words ("configuring"→"configur") but consistent between corpus and query, so retrieval unaffected
+
+### 2026-02-17 — PLANNING — Bootstrap + Architect Agent + Multi-Brain Vision
+- **Duration:** ~10min
+- **Key actions:**
+  - Bootstrapped brain, confirmed architect agent already committed (737ce00 — previous handoff incorrectly said uncommitted)
+  - Discussed running architect agent in separate terminal (`claude agents architect "prompt"`)
+  - Drafted detailed Coder brain research prompt for architect agent
+  - Architecture discussion: user envisions each agent as its own project + brain (Coder brain = Python/Freqtrade/Context7 knowledge, Architect brain = architecture knowledge, etc.)
+  - Validated this as token-efficient — context isolation means each agent only loads its own domain knowledge
+  - Current agentic-brain becomes the meta-brain for building and coordinating all others
+- **Files created:** None
+- **Files modified:** SESSION-HANDOFF.md, LOG-002 (this entry)
+- **Decisions made:**
+  - Each Prover agent = own project directory + own brain (refines SPEC-001 multi-brain design toward stronger separation)
+  - Agentic-brain = meta-brain (architecture, coordination, orchestrator knowledge)
+- **Blockers/dead ends:** None
+
+### 2026-02-17 — RESEARCH — Coder Brain Architecture Research (Partial)
+- **Duration:** ~15min
+- **Key actions:**
+  - Began Coder brain architecture research + design task (4-task pipeline)
+  - Task 1 (internal brain research): COMPLETE — read SPEC-001, LEARN-025, LEARN-028 in full, extracted all Coder brain references
+  - Task 2 (Freqtrade IStrategy research): background agent launched (a7bfced), was running when session paused (27 tool calls, 23K tokens in progress)
+  - Task 3 (LLM code generation research): COMPLETE — background agent returned full synthesis. Key findings: template-based generation > full generation, NexusTrade JSON-out pattern (24K users, production), mandatory validation pipeline (AST parse → import whitelist → sandbox), whitelist-not-blacklist for imports, 3-5 iteration max, SCoT prompting (+13.79% Pass@1)
+  - Task 4 (SPEC-002 design): NOT STARTED — blocked by Task 2
+  - Session paused by user at session limit
+- **Files created:** None (research only)
+- **Files modified:**
+  - SESSION-HANDOFF.md (detailed handoff with all research findings)
+  - LOG-002 (this entry)
+- **Decisions made (emerging, not yet formalized):**
+  - Dual output mode: template-fill for IStrategy + JSON for VectorBT params
+  - IStrategy template with slots for 3 method bodies + parameter declarations
+  - Validation: AST parse → import whitelist → Freqtrade dry-run
+  - Import whitelist: numpy, pandas, talib, freqtrade.strategy, technical
+  - Context7 for live Freqtrade docs, brain for project-specific patterns
+  - Max 3 refinement rounds per generation
+- **Blockers/dead ends:**
+  - rank-bm25 not in uv.lock — `uv run --with rank-bm25` workaround used for brain search
+  - Freqtrade research agent completed after pause (30 tool calls, 42K tokens) — full IStrategy reference captured
+  - rank-bm25 not in uv.lock — `uv run --with rank-bm25` workaround used for brain search
+
+### 2026-02-17 — BOOTSTRAP — Quick Bootstrap + Immediate Exit
+- **Duration:** ~2min
+- **Key actions:**
+  - Bootstrapped brain (read SESSION-HANDOFF.md + INDEX-MASTER.md)
+  - Summarized previous session state to user (Coder brain research 3/4 complete, SPEC-002 synthesis pending)
+  - Stop hook fired — wrote handoff before exit
+- **Files created:** None
+- **Files modified:** SESSION-HANDOFF.md (refreshed), LOG-002 (this entry)
+- **Decisions made:** None
+- **Blockers/dead ends:** None
+
+### 2026-02-17 — RESEARCH + DESIGN — Quorum Sensing Knowledge Framework
+- **Duration:** ~45min
+- **Key actions:**
+  - Wrote full quorum sensing framework (7 rules for quorum-capable knowledge systems) mapping bacterial QS to LLM knowledge management
+  - Compared framework with Grok's take on same prompt — identified complementary strengths (Grok: infrastructure/tools, Claude: design philosophy/emergence conditions)
+  - Gap analysis: mapped all 7 rules against current brain implementation, identified Rule 6 (decay) as biggest gap, Rules 2-4 as partial
+  - Produced P0-P3 prioritized implementation plan (11 items)
+  - Extended Q&A refining: binding sites (= links + tags + backlinks), token overhead (~10K/5%), contradictions (adversarial evidence accumulation with OPEN/BLOCKING/RESOLVED states), decay (human-reviewed, topological not temporal), sub-indexes (one extra hop, transparent to skills), safety (git tags + branches, not parallel brains)
+  - SPEC-002 deferred to architect agent running in separate terminal
+- **Files created:** None (all conversational — deposit next session)
+- **Files modified:** SESSION-HANDOFF.md, LOG-002 (this entry)
+- **Decisions made:**
+  - 7 rules for quorum-capable knowledge adopted as design framework
+  - Contradictions use adversarial evidence accumulation (3 states: OPEN/BLOCKING/RESOLVED), BLOCKING triggers research
+  - Decay is human-reviewed only, topological not temporal, file-level only (never whole brains)
+  - INDEX-MASTER gets 3 new sections: OPEN QUESTIONS, TENSIONS, CLUSTERS
+  - Minimum 3 links per deposit enforced
+  - Git branching + tagged commits for safety (no parallel brains)
+  - Synthesis consolidation distinguished from maintenance consolidation
+- **Blockers/dead ends:**
+  - Plan mode entered for SPEC-002 but never used — architect agent handling it separately

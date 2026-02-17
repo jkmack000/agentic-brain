@@ -1,55 +1,102 @@
 # SESSION-HANDOFF
 <!-- written: 2026-02-17 -->
-<!-- session-type: WORK -->
-<!-- trigger: stop-hook -->
+<!-- session-type: RESEARCH + DESIGN -->
+<!-- trigger: user-requested — preparing for tagged commit + restart -->
 
 ## What Was Being Done
-Work session: (C) brain.py search improvements from LEARN-030 Phase 1, and (B) updating SPEC-001 with architecture decisions from LEARN-025 through LEARN-031. Also created a custom architect agent for future planning tasks.
+Two tracks: (1) SPEC-002 deferred to architect agent in separate terminal. (2) Quorum sensing framework for LLM knowledge management — full creative exploration, Grok comparison, gap analysis, implementation plan, and detailed Q&A refining the design.
 
 ## Current State
-- **Status:** COMPLETED (main tasks), one item uncommitted
+- **Status:** DESIGN COMPLETE — ready to implement
 - **What's done:**
-  - brain.py tokenizer upgraded: stopword removal (60+ words), lightweight suffix stemmer, hyphen expansion ("session-handoff" → ["session", "handoff", "session-handoff"])
-  - BM25 parameters tuned: k1=1.0, b=0.4 (optimized for short fat-index entries)
-  - Field boosting updated: tags 5x (was 3x), ID 4x (was 2x)
-  - Search tested: "session-handoff" 5→29 results, "searching BM25 improvements" 13→25, "hooks configuration" top-3 precision maintained
-  - SPEC-001 major update: backtesting pipeline (VectorBT→Freqtrade→CPCV), CONTEXT-PACK/RESULT v2 protocol, orchestration patterns, git worktree layout, guard rails, Coder brain design, scaling thresholds, Gap 5 resolved
-  - INDEX-MASTER.md SPEC-001 entry updated with enriched summary and expanded links
-  - LOG-002 timeline entry written
-  - All committed and pushed to origin/master (319bdbc)
-  - Created `.claude/agents/architect.md` — custom read-only planning agent (Opus, plan mode, brain-search/status skills)
-- **What's left:**
-  - Architect agent NOT YET COMMITTED (created but untested)
-  - Architect agent cannot be spawned via Task tool — must be invoked by user via `claude agents architect "prompt"`
-  - Coder brain planning deferred (was going to be architect agent's first test)
+  - 7 rules for quorum-capable knowledge (full framework)
+  - Grok vs Claude comparison analysis
+  - Gap analysis: all 7 rules mapped against current brain
+  - P0-P3 prioritized implementation plan
+  - User Q&A refining: binding sites clarified, token overhead assessed (~10K/5% current), contradiction handling refined (adversarial evidence accumulation, 3 states: OPEN/BLOCKING/RESOLVED), decay clarified (human-reviewed only, never automatic, topological not temporal), sub-index workflow impact assessed (one extra hop, transparent to skills), branching strategy confirmed (git branches + tags, not parallel brains)
+- **What's left:** Implement the plan (next session)
 
-## Uncommitted Decisions
-- Custom agents in `.claude/agents/` cannot be spawned by the Task tool — only built-in agent types (Bash, general-purpose, Explore, Plan, etc.) are available. Custom agents must be invoked by the user.
+## Design Decisions Made This Session
 
-## Discoveries Not Yet Deposited
-- Custom agent limitation: `.claude/agents/*.md` agents are user-invocable only, not programmable via Task tool. This affects SPEC-001's orchestrator design — orchestrator can't spawn custom specialist agents via Task, only built-in types. Workaround: use general-purpose agent with architect-style prompt embedded, or have user invoke agents manually.
-- Stemmer imperfections are acceptable for BM25 retrieval: "configuring"→"configur" doesn't match "configure" exactly, but consistency between corpus and query means the same stem appears on both sides, so retrieval works.
+### Quorum Sensing Framework — 7 Rules
+1. Every packet must emit signal (fat index entry required)
+2. Maximize binding sites (links, tags, backlinks — minimum 3 links per deposit)
+3. Declare open questions as chemoattractant gradients (required field, aggregated in INDEX-MASTER)
+4. Deposit contradictions, don't resolve prematurely (adversarial evidence accumulation)
+5. Consolidate at cluster quorum, not arbitrary count (synthesis ≠ dedup)
+6. Let decay work — topological not temporal, human-reviewed only (quiet → review → reconnect/confirm/retire)
+7. Index is the medium (INDEX-MASTER gets OPEN QUESTIONS, TENSIONS, CLUSTERS sections)
 
-## Open Questions (carried forward)
+### Contradiction Handling (Refined)
+- Tensions have 3 states: OPEN (accumulating evidence), BLOCKING (on critical path, triggers research), RESOLVED (one side won through weight)
+- Resolution is earned through asymmetric accretion, not premature consolidation
+- Losing side retired with full provenance ("we used to think X because A,B but Y proved correct because C,D,E,F,G")
+- BLOCKING tensions are research triggers — the system tells you where to spend tokens
+
+### Decay Mechanism (Refined)
+- Never automatic — `/brain-status` flags quiet files (0 inbound links), human reviews
+- Three review outcomes: reconnect (add missing links), confirm quiet (mark, leave in index), retire (archive, remove from index)
+- Topological not temporal — a 6-month file with 5 inbound links is alive, a yesterday file with 0 is decaying
+- Files only, never whole brains (dormancy ≠ irrelevance)
+
+### Sub-Index Strategy (Confirmed)
+- INDEX-MASTER becomes directory of cluster summaries (~50-100 lines)
+- Each sub-index is 200-300 lines
+- One extra hop in workflow, transparent to skills
+- Split triggered by "mental squeeze point" not arbitrary file count
+- Cross-cluster links preserved in master index
+
+### Safety Strategy
+- Git branching for structural experiments
+- Tagged commits before irreversible operations (e.g., `pre-quorum-implementation`)
+- No parallel brains — git history is the undo buffer
+
+## Prioritized Implementation Plan
+
+| Priority | Change | Rule |
+|----------|--------|------|
+| P0 | OPEN QUESTIONS section in INDEX-MASTER | 3 |
+| P0 | TENSIONS section in INDEX-MASTER | 4 |
+| P0 | Backlinks in fat index entries | 2 |
+| P1 | Min 3 links per deposit (update /brain-deposit skill) | 2 |
+| P1 | Required "what this doesn't answer" in deposit | 3 |
+| P1 | Tag cluster detection in /brain-status | 5 |
+| P1 | Quiet file detection in /brain-status | 6 |
+| P2 | Synthesis vs maintenance consolidation distinction | 5 |
+| P2 | Vitality scoring + retirement workflow | 6 |
+| P2 | CLUSTERS section in INDEX-MASTER | 7 |
+| P3 | Sub-index design along cluster boundaries | 7 |
+
+## Undeposited Knowledge
+- Full quorum sensing framework (7 rules + biological mapping) — deposit as LEARN-032
+- Grok comparison insights — include in LEARN-032
+- Gap analysis + implementation plan — deposit as SPEC-003 (prescriptive design changes)
+
+## Open Questions (Carried Forward)
 - Frontend stack preference?
 - Is Prover the whole system or just the backtester?
 - Data freshness — how does OHLCV data get refreshed?
 - Strategy versioning — git tags? Dedicated VERSION file?
+- Each agent = own project + own brain (not yet in SPEC-001)
+- Should quorum sensing framework be LEARN-032 or SPEC-003? (Recommend: LEARN for the framework, SPEC for the implementation plan)
 
 ## Files Modified This Session
-- `project-brain/brain.py` — tokenizer rewrite (STOPWORDS, stem(), tokenize()), BM25 k1/b tuning, field weights
-- `project-brain/specs/SPEC-001_prover-multi-brain-architecture.md` — major expansion with LEARN-025-031 findings
-- `project-brain/INDEX-MASTER.md` — SPEC-001 fat index entry updated
-- `project-brain/logs/LOG-002_project-timeline.md` — timeline entry
+- None (all output conversational)
 
-## Files Added This Session
-- `.claude/agents/architect.md` — custom planning agent (NOT YET COMMITTED)
+## Files Added to Brain This Session
+- None
 
 ## Dead Ends
-- Attempted to spawn architect agent via Task tool — failed with "Agent type 'architect' not found". Custom agents are user-invocable only.
-- Attempted general-purpose agent as workaround for architect test — user blocked it (too expensive / wrong direction before proving architect works)
+- Plan mode entered for SPEC-002, never used — deferred to architect agent
 
 ## Recommended Next Session
-- **Type:** WORK
+- **Type:** WORK (deposit + implement)
 - **Load:** SESSION-HANDOFF.md, INDEX-MASTER.md
-- **First action:** Commit `.claude/agents/architect.md`, then test it via `claude agents architect "Plan the Coder brain"`. If it works, deposit a LEARN file about custom agent capabilities/limitations. Then proceed to Coder brain planning using the architect agent.
+- **First action:**
+  1. Tagged commit exists at `pre-quorum-implementation`
+  2. Deposit LEARN-032 (quorum sensing framework + Grok comparison)
+  3. Deposit SPEC-003 (quorum-capable brain implementation plan)
+  4. Implement P0: add OPEN QUESTIONS, TENSIONS, backlinks to INDEX-MASTER
+  5. Implement P1: update /brain-deposit skill, /brain-status skill
+  6. Update INDEX-MASTER with new entries
+  7. Check architect agent output for SPEC-002
