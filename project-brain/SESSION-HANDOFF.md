@@ -1,46 +1,54 @@
 # SESSION-HANDOFF
 <!-- written: 2026-02-16 -->
-<!-- session-type: WORK -->
+<!-- session-type: WORK + PLANNING -->
 <!-- trigger: manual /brain-handoff -->
 
 ## What Was Being Done
-Three tasks: (1) content hashing dedup for brain.py, (2) extracting tool-use patterns into RULE files, (3) creating GitHub repo and initial commit.
+Session covered three phases: (1) implementation work (content hashing dedup, RULE file extraction), (2) infrastructure (GitHub repo creation), (3) high-level architecture planning for the Prover multi-brain system.
 
 ## Current State
-- **Status:** COMPLETED (all tasks)
+- **Status:** COMPLETED (implementation), PLANNING (Prover)
 - **What's done:**
-  - Content hashing implemented in brain.py: 5 helper functions, cmd_deposit integration (dupe warning + abort), cmd_reindex, cmd_status manifest health, argparse registration. Verified working.
-  - .content-hashes.json manifest created (31 entries)
-  - 26 tool-use patterns extracted from LEARN-005/008/010/018/019 into 4 RULE files (RULE-001 through RULE-004)
+  - Content hashing dedup implemented in brain.py, verified working
+  - 4 RULE files deposited (RULE-001 through RULE-004, 27 tool-use patterns)
   - INDEX-MASTER.md updated (27→31 files)
-  - Git repo initialized, nested .git in project-brain/ removed
-  - GitHub repo created: https://github.com/jkmack000/agentic-brain (public)
-  - Initial commit pushed (55 files, 6,370 lines) via HTTPS
-  - gh CLI installed (v2.86.0), authenticated as jkmack000
-  - Answered user questions: what an agent is (runtime loop), how brain gives agents depth, how to deposit tool-use patterns as RULEs
-- **What's left:** Nothing from this session
+  - GitHub repo created and pushed: https://github.com/jkmack000/agentic-brain (public, HTTPS)
+  - gh CLI installed and authenticated as jkmack000
+  - Prover architecture discussed at high level (not yet deposited)
+- **What's left:**
+  - Prover multi-brain architecture needs to be deposited as a SPEC
+  - Build orchestrator brain (copy/refinement of agentic-brain)
+  - Build coder brain from context7 repository
+  - Build frontend brain (stack TBD)
+  - Donchian bot brain already exists, needs trading system domain enrichment
 
 ## Uncommitted Decisions
-- None — all work committed and pushed
+- **Prover is the project name** for the multi-brain backtesting system
+- **Three specialist brains:** Donchian (trading domain), Coder (from context7), Frontend (HMI/UI)
+- **Agentic-brain is the meta-brain** — it documents how brains work and will be the basis for the orchestrator
+- **Orchestrator brain** — will be built from agentic-brain, either a copy or refined version. Lives separately from agentic-brain.
+- **Workflow:** Orchestrator fans out to specialist brains → gathers context packages → coordinates implementation (Donchian specs strategy → Coder builds engine → Frontend builds interface)
 
 ## Discoveries Not Yet Deposited
-- gh CLI on Windows: `winget install GitHub.cli --source winget` works, msstore source fails with cert error
-- SSH key not added to GitHub account — HTTPS with `gh auth setup-git` used as workaround. User deferred SSH setup.
-- Neither discovery warrants a LEARN file (local env issues, not reusable architecture knowledge)
+- Agent SDK (LEARN-014), subagents (LEARN-009), and agent teams (LEARN-015) are already ingested — confirmed sufficient for orchestrator build
+- Need a new format for inter-brain communication (RESET files are close but designed for session bootstrap, not agent-to-agent messaging — discussed as "BRIEF" or "CONTEXT-PACK")
+- Three routing strategies identified: hardcoded mapping, fat-index capability advertisement, learned RULE-based routing
 
 ## Open Questions
-- SSH key registration on GitHub — user will figure out later
-- Reverse SSH (Windows ← remote 192.168.1.208) — carried forward
-- Content hashing improvements: multi-query, vector embeddings, two-table schema (deferred, revisit at 100+ files)
-- Donchian bot Session B
-- MCP server wrapper for brain.py (#1 priority improvement)
-- Brain plugin packaging (user wants more usage first)
+- What is context7 exactly? (repo link needed to plan coder brain ingestion)
+- Frontend stack preference? (React/Next.js? Charting library? TradingView?)
+- Does the orchestrator do one fan-out or iterative queries? (Coder may need to ask Donchian clarifying questions)
+- Where do backtest results get deposited? (Which brain learns from test outcomes?)
+- How to handle cross-brain conflicts? (e.g., Coder says event-driven, Donchian data volume implies vectorized)
+- Is Prover the whole system or just the backtester?
+- SSH key on GitHub — user deferred
+- Reverse SSH (Windows ← 192.168.1.208) — carried forward
 
 ## Files Modified This Session
 - `project-brain/brain.py` — content hashing dedup
 - `project-brain/.content-hashes.json` — created (31 entries)
 - `project-brain/INDEX-MASTER.md` — 4 RULE entries, count 27→31
-- `project-brain/logs/LOG-002_project-timeline.md` — timeline entries appended
+- `project-brain/logs/LOG-002_project-timeline.md` — timeline entries
 
 ## Files Added to Brain This Session
 - RULE-001 — hooks configuration patterns (11 patterns)
@@ -49,11 +57,11 @@ Three tasks: (1) content hashing dedup for brain.py, (2) extracting tool-use pat
 - RULE-004 — hooks safe modification workflow
 
 ## Dead Ends (if any)
-- Nested .git in project-brain/ blocked `git add` — fixed by removing it
-- SSH push to GitHub failed (key not on account) — switched to HTTPS
-- gh auth refresh for admin:public_key scope — user deferred
+- Nested .git in project-brain/ blocked git add — removed
+- SSH push failed (key not on GitHub) — HTTPS workaround
+- gh auth scope refresh for SSH key upload — user deferred
 
 ## Recommended Next Session
 - **Type:** WORK
-- **Load:** SESSION-HANDOFF.md, INDEX-MASTER.md
-- **First action:** User's choice — MCP server wrapper, Donchian bot Session B, or SSH key setup
+- **Load:** SESSION-HANDOFF.md, INDEX-MASTER.md, LEARN-009, LEARN-014, LEARN-015
+- **First action:** Deposit Prover architecture as SPEC (capture the uncommitted decisions above before they're lost). Then either: scaffold coder brain from context7, or build the orchestrator brain.

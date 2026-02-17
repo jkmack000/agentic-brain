@@ -465,3 +465,22 @@ Running chronological record of all project sessions, milestones, ingestions, an
   - Nested .git in project-brain/ blocked git add — removed
   - SSH push failed (key not on GitHub) — switched to HTTPS
   - gh ssh-key add needs admin:public_key scope — user deferred
+
+### 2026-02-16 — PLANNING — Prover Multi-Brain Architecture
+- **Duration:** ~15min
+- **Key actions:**
+  - High-level architecture discussion for "Prover" — multi-brain backtesting system
+  - Defined three specialist brains: Donchian (trading domain, already exists), Coder (from context7), Frontend (HMI/UI)
+  - Agentic-brain designated as the meta-brain; orchestrator will be built from it
+  - Discussed orchestration workflow: fan-out to specialist brains → gather context packages → coordinate implementation
+  - Identified three routing strategies (hardcoded, fat-index capability ads, learned RULE-based)
+  - Identified need for inter-brain communication format (BRIEF/CONTEXT-PACK)
+  - Confirmed Agent SDK (LEARN-014), subagents (LEARN-009), agent teams (LEARN-015) already ingested for orchestrator build
+  - User clarified this is planning only — no implementation this session
+- **Files created:** None
+- **Files modified:** SESSION-HANDOFF.md, LOG-002 (this entry)
+- **Decisions made:**
+  - Prover = project name for the multi-brain backtesting system
+  - Three specialist brains + orchestrator architecture
+  - Agentic-brain is the meta-brain, orchestrator built from it separately
+- **Blockers/dead ends:** None — planning session, all decisions captured in SESSION-HANDOFF.md for deposit as SPEC next session
