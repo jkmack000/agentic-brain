@@ -2,11 +2,11 @@
 <!-- type: SUB-INDEX -->
 <!-- cluster-tag: claude-code -->
 <!-- updated: 2026-02-17 -->
-<!-- member-count: 15 -->
+<!-- member-count: 16 -->
 <!-- parent: INDEX-MASTER.md -->
 
 ## About This Sub-Index
-This sub-index contains fat index entries for the `claude-code` cluster — 15 files covering Claude Code internals, memory, skills, hooks, subagents, MCP, agent SDK, plugins, costs, workflows, architecture, and brain integration patterns.
+This sub-index contains fat index entries for the `claude-code` cluster — 16 files covering Claude Code internals, memory, skills, hooks, subagents, MCP, agent SDK, plugins, costs, workflows, architecture, and brain integration patterns.
 
 **When to load:** Load this sub-index when working on Claude Code integration tasks, brain delivery mechanisms, or any task involving Claude Code features.
 
@@ -33,7 +33,7 @@ This sub-index contains fat index entries for the `claude-code` cluster — 15 f
 - **File:** learnings/LEARN-005_claude-code-official-best-practices.md
 - **Tags:** claude-code, best-practices, context-management, CLAUDE-md, prompting, workflows, subagents, agent-sdk, hooks, skills, verification, session-management
 - **Links:** SPEC-000, LEARN-004, LEARN-013, LEARN-014, LEARN-017, LEARN-018, LEARN-013, LEARN-014, LEARN-017, LEARN-018
-- **Backlinks:** LEARN-006, LEARN-007, LEARN-008, LEARN-009, LEARN-010, LEARN-013, LEARN-014, LEARN-015, LEARN-016, LEARN-017, LEARN-018, LEARN-019, LEARN-024, LOG-003, RULE-002, RULE-003 _(16 inbound — secondary hub)_
+- **Backlinks:** LEARN-006, LEARN-007, LEARN-008, LEARN-009, LEARN-010, LEARN-013, LEARN-014, LEARN-015, LEARN-016, LEARN-017, LEARN-018, LEARN-019, LEARN-024, LOG-003, RULE-002, RULE-003, LEARN-039 _(17 inbound — secondary hub)_
 - **Vitality:** 60.0
 - **Summary:** Comprehensive operational playbook from Anthropic's official Claude Code best practices. Core constraint: context window is #1 resource. Covers 9 areas: (1) Verification as highest-leverage practice; (2) Explore→Plan→Implement→Commit 4-phase workflow with Plan Mode (Shift+Tab toggle); (3) Specific context in prompts; (4) CLAUDE.md authoring — include/exclude rules, @path imports, pruning; (5) Environment config — permissions, CLI tools, MCP, hooks, skills, subagents, plugins; (6) Communication — codebase questions, interview pattern; (7) Session management — course-correct after 2 failures, compaction; (8) Agent SDK (formerly headless mode) — `claude -p`, fan-out, writer/reviewer; (9) Five anti-patterns. Seven brain takeaways. **Note:** Topics introduced here are expanded in depth by later LEARNs: MCP (013), Agent SDK (014), costs/settings (017), workflows (018).
 - **Key decisions:** Seven actionable items. Most impactful: skills/CLAUDE.md @path as brain delivery mechanism; anti-patterns as depositworthy RULE file.
@@ -81,7 +81,7 @@ This sub-index contains fat index entries for the `claude-code` cluster — 15 f
 - **File:** learnings/LEARN-009_claude-code-subagents-system.md
 - **Tags:** claude-code, subagents, delegation, context-isolation, custom-agents, persistent-memory
 - **Links:** SPEC-000, LEARN-005, LEARN-007
-- **Backlinks:** LEARN-011, LEARN-015, LEARN-016, LEARN-026, LEARN-027, SPEC-001
+- **Backlinks:** LEARN-011, LEARN-015, LEARN-016, LEARN-026, LEARN-027, SPEC-001, LEARN-039
 - **Vitality:** 24.0
 - **Summary:** Full subagent system reference from official docs. Built-in agents: Explore (Haiku, read-only, fast), Plan (inherits, read-only), general-purpose (inherits, all tools), Bash, statusline-setup, Claude Code Guide. Custom agents via `.claude/agents/*.md` with YAML frontmatter: name, description, tools/disallowedTools, model, permissionMode (6 modes), maxTurns, skills (preloaded), mcpServers, hooks, memory. Four storage locations with priority: CLI flag → project → user → plugin. Key feature: **persistent memory** with three scopes (user/project/local) — MEMORY.md index (200 lines loaded) + topic files, independently converging on our fat-index architecture. Foreground vs background execution (Ctrl+B to background). Resumable subagents (preserves full conversation history). CLI-defined agents via `--agents` JSON for session-only testing. Task tool restrictions for controlling which subagents can be spawned. Subagents cannot spawn other subagents.
 - **Key decisions:** Six brain-relevant takeaways: brain-searcher subagent (Explore/Haiku for cheap lookups); persistent memory parallels brain system; brain-depositor subagent (Write access, Haiku); skills preloading for brain-aware agents; background subagents for brain maintenance; CLI-defined agents for brain CI/CD automation.
@@ -93,7 +93,7 @@ This sub-index contains fat index entries for the `claude-code` cluster — 15 f
 - **File:** learnings/LEARN-010_claude-code-architecture-internals.md
 - **Tags:** claude-code, architecture, agentic-loop, tools, context-window, sessions, checkpoints
 - **Links:** SPEC-000, LEARN-005, LEARN-006, LEARN-013, LEARN-014, LEARN-017
-- **Backlinks:** LEARN-013, LEARN-014, LEARN-017, LEARN-018, RULE-002, LEARN-034
+- **Backlinks:** LEARN-013, LEARN-014, LEARN-017, LEARN-018, RULE-002, LEARN-034, LEARN-039
 - **Vitality:** 27.5
 - **Summary:** Claude Code architecture overview from official docs. Agentic loop: gather context → take action → verify results (phases blend, Claude chains dozens of actions). Claude Code = the agentic harness providing tools, context management, and execution environment. Five tool categories: file operations, search, execution, web, code intelligence (plugins). Session model: each session starts fresh (no cross-session memory except auto memory + CLAUDE.md), sessions tied to directory, branch-aware (switch branches = new files same history), resume/fork support. Context window management: auto-compaction clears old tool outputs then summarizes, preserves requests + key code, may lose early instructions → put persistent rules in CLAUDE.md. Skills load on demand, subagents get fresh context. Two safety mechanisms: checkpoints (every edit snapshots, Esc+Esc to rewind, local to session, separate from git) and permissions (4 modes via Shift+Tab: default, auto-accept edits, plan mode, delegate mode).
 - **Key decisions:** Six brain-relevant takeaways: agentic loop validates search→work separation; session independence is why brains exist; compaction = information loss (validates SESSION-HANDOFF); checkpoints as safety net for brain operations; fork sessions for brain experiments; MCP context cost monitoring important for brain MCP wrapper.
@@ -117,7 +117,7 @@ This sub-index contains fat index entries for the `claude-code` cluster — 15 f
 - **File:** learnings/LEARN-014_claude-code-agent-sdk.md
 - **Tags:** claude-code, agent-sdk, headless, programmatic, automation, python, typescript, MCP-tools
 - **Links:** SPEC-000, LEARN-005, LEARN-010, LEARN-013
-- **Backlinks:** LEARN-005, LEARN-010, LEARN-018, LEARN-037
+- **Backlinks:** LEARN-005, LEARN-010, LEARN-018, LEARN-037, LEARN-039
 - **Vitality:** 17.0
 - **Summary:** Full Agent SDK reference (renamed from "Claude Code SDK"). Two packages: `pip install claude-agent-sdk` (Python), `npm install @anthropic-ai/claude-agent-sdk` (TypeScript). Two interfaces: `query()` (one-shot, no hooks/MCP) vs `ClaudeSDKClient` (multi-turn, hooks, custom MCP tools, interrupts). Key options: `system_prompt` preset+append, `setting_sources` (defaults to None — SDK does NOT load CLAUDE.md unless explicit), `max_turns`/`max_budget_usd` for cost caps, `output_format` for JSON schema validation, `agents` for programmatic subagents, `can_use_tool` for permission callbacks with input modification. In-process custom MCP tools via `@tool` decorator + `create_sdk_mcp_server()`. Programmatic hooks as Python callbacks (not shell scripts). `ResultMessage` includes `total_cost_usd` for cost tracking. 1M context beta via `betas=["context-1m-2025-08-07"]`. SDK is the correct infrastructure for brain automation.
 - **Key decisions:** Agent SDK identified as brain automation engine. Critical constraint: `setting_sources` defaults to None.
@@ -183,6 +183,18 @@ This sub-index contains fat index entries for the `claude-code` cluster — 15 f
 - **Key decisions:** @path imports INIT.md (not INDEX-MASTER — too large); `disable-model-invocation: false`; PostToolUse uses `"Edit|Write"` string matcher + `chr(92)` path normalization; hooks use matcher-based format with **string matchers only**; skills copied to user-level `~/.claude/skills/` for CLI resolution.
 - **Interface:** N/A (learning, not code)
 - **Known issues:** Prompt-type hooks unreliable for Stop events — use command-type with exit codes. PreCompact hook not testable on demand (simple echo, trivially correct). All other components fully tested and passing as of 2026-02-15 cleanup session. Duplicate skills resolved (project-level copies removed).
+
+### LEARN-039
+- **Type:** LEARN
+- **File:** learnings/LEARN-039_anthropic-agent-sdk-practical-design-patterns.md
+- **Tags:** anthropic, agent-sdk, agents, feedback-loop, context-gathering, verification, tool-design, code-generation, evaluation, practical-patterns
+- **Links:** LEARN-038, LEARN-014, LEARN-010, LEARN-005, LEARN-009
+- **Backlinks:** _(none)_
+- **Vitality:** 8.0
+- **Summary:** Anthropic's practical guide for building agents with the Claude Agent SDK. Complements LEARN-038 (what pattern) with HOW to implement. Four-stage feedback loop (gather → act → verify → iterate). **Context gathering hierarchy** ranked: agentic search (bash/grep, start here) > semantic search (fast, opaque) > subagents (parallel, isolated) > compaction (prevents exhaustion). File system structure IS context engineering. **Verification taxonomy** ranked: rules-based (linting, TypeScript) > visual (screenshots, Playwright) > LLM-as-judge (fuzzy, latency). **Tool prominence = prioritization** — position in context affects agent usage. Code generation > natural language for precise, composable, reusable outputs. Agent evaluation checklist: sufficient info? appropriate tools? creative alternatives? representative tests?
+- **Key decisions:** None — ingested knowledge. Context gathering hierarchy and verification taxonomy are most actionable for brain/Prover agent design.
+- **Interface:** N/A (learning, not code)
+- **Known issues:** WebFetch returned summarized content — full code examples not captured. Article may evolve with SDK.
 
 ---
 

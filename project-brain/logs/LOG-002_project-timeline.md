@@ -825,3 +825,35 @@ Running chronological record of all project sessions, milestones, ingestions, an
   - Phase 1 seed covers: IStrategy interface, config, lifecycle, data, backtesting, ta-lib indicators, code template, test scaffold, validated example, import whitelist, style conventions, testing requirements
   - Phase 2 next: CCXT, VectorBT, Optuna, pytest advanced
 - **Blockers/dead ends:** None — all 3 research agents returned successfully
+
+### 2026-02-17 — INGESTION — Anthropic "Building Effective Agents" Article
+- **Duration:** ~5min
+- **Key actions:**
+  - Fetched and ingested Anthropic's official engineering blog on agent design
+  - Dedup analysis: ~40% overlaps with LEARN-027 (orchestration patterns) and LEARN-026 (IPC), but unique on ACI concept, tool engineering emphasis, official taxonomy, evaluator-optimizer pattern
+  - Deposited LEARN-038: 5 canonical workflow patterns (prompt chaining with gates, routing, parallelization with sectioning/voting, orchestrator-worker, evaluator-optimizer), ACI (Agent-Computer Interface) concept, tool engineering > prompt engineering finding, simplicity-first principle
+  - Updated INDEX-MASTER.md (LEARN-038 entry, backlinks on LEARN-026/027/037 and SPEC-001, count 47→48)
+- **Files created:**
+  - LEARN-038 (Anthropic building effective agents — official taxonomy and design principles)
+- **Files modified:**
+  - INDEX-MASTER.md (new entry, 4 backlink updates, count 47→48)
+  - LOG-002 (this entry)
+- **Decisions made:** None — ingested knowledge. "Tool engineering > prompt engineering" flagged as most actionable insight.
+- **Blockers/dead ends:** None
+
+### 2026-02-17 — INGESTION — Anthropic "Building Agents with Claude Agent SDK" Article
+- **Duration:** ~5min
+- **Key actions:**
+  - Fetched Anthropic's practical agent-building guide (redirected from engineering blog to claude.com/blog)
+  - Dedup: LEARN-014 covers SDK API reference, LEARN-038 covers what-to-build taxonomy — this adds HOW-to-build patterns
+  - Skipped duplicate: Claude Code best practices article already fully captured in LEARN-005
+  - Deposited LEARN-039: feedback loop, context gathering hierarchy (agentic > semantic > subagents > compaction), verification taxonomy (rules-based > visual > LLM-as-judge), tool prominence principle
+  - Added to claude-code sub-index (15→16 members), updated INDEX-MASTER (48→49 total), backlinks on 5 files
+- **Files created:**
+  - LEARN-039 (Agent SDK practical design patterns — context gathering hierarchy, verification taxonomy)
+- **Files modified:**
+  - indexes/INDEX-claude-code.md (LEARN-039 entry, member count 15→16, 4 backlink updates)
+  - INDEX-MASTER.md (total 48→49, sub-index member ref updated, LEARN-038 backlink)
+  - LOG-002 (this entry)
+- **Decisions made:** None — ingested knowledge. Context gathering hierarchy and verification taxonomy most actionable.
+- **Blockers/dead ends:** WebFetch returned summarized content (not full article with code examples)

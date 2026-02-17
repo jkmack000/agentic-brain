@@ -1,7 +1,7 @@
 # INDEX-MASTER
 <!-- type: INDEX -->
 <!-- updated: 2026-02-17 -->
-<!-- total-files: 47 (32 in INDEX-MASTER + 15 in INDEX-claude-code) -->
+<!-- total-files: 49 (33 in INDEX-MASTER + 16 in INDEX-claude-code) -->
 <!-- Load this file at the start of every Claude Code session. -->
 
 ## How to Use This Index
@@ -24,7 +24,7 @@ Every entry MUST answer: **"Do I need to open this file?"**
 
 ### claude-code (Sub-Index)
 - **File:** indexes/INDEX-claude-code.md
-- **Members:** 15 files (LEARN-004, 005, 006, 007, 008, 009, 010, 013, 014, 015, 016, 017, 018, 019, LOG-003)
+- **Members:** 16 files (LEARN-004, 005, 006, 007, 008, 009, 010, 013, 014, 015, 016, 017, 018, 019, 039, LOG-003)
 - **Summary:** Claude Code internals — memory, skills, hooks, subagents, MCP, agent SDK, plugins, costs, workflows, architecture, brain integration. Load the sub-index when working on Claude Code integration tasks.
 - **Squeeze point:** Active — 15 files with overlapping summaries, largest cluster (31% of brain)
 
@@ -48,7 +48,7 @@ Every entry MUST answer: **"Do I need to open this file?"**
 - **File:** specs/SPEC-001_prover-multi-brain-architecture.md
 - **Tags:** prover, multi-brain, orchestrator, architecture, git-worktrees, sub-agents, coordination, backtesting
 - **Links:** SPEC-000, LEARN-024, LEARN-025, LEARN-026, LEARN-027, LEARN-028, LEARN-029, LEARN-031, LEARN-009, LEARN-011, LEARN-015, LEARN-037
-- **Backlinks:** SPEC-002, LEARN-025, LEARN-026, LEARN-027, LEARN-028, LEARN-029, LEARN-037
+- **Backlinks:** SPEC-002, LEARN-025, LEARN-026, LEARN-027, LEARN-028, LEARN-029, LEARN-037, LEARN-038
 - **Summary:** Definitive architecture for Prover — the multi-brain backtesting system. Incorporates findings from LEARN-025 through LEARN-031 and LEARN-037. Defines 5 brains with roles. **Each agent = own project + own brain** (not brains within a shared project — token-efficient, each agent loads only its own brain). Four coordination options: (A) git worktrees, (B) sub-agents, (C) agent teams, (D) Sandbox Agent + Rivet actors (LEARN-037). Recommended progression: B→A or D. CONTEXT-PACK v2 and RESULT v2 inter-brain protocol with YAML frontmatter, token budgets (~750/~1500 tokens), capability advertisement headers. Two-phase backtesting pipeline: VectorBT screening → Freqtrade validation → CPCV robust validation (PBO < 0.5 hard gate). Freqtrade IStrategy as AI-friendly strategy abstraction. Git worktree layout: bare repo with peer worktrees, `agent/<brain>/<task-id>` branch naming, `--no-ff` merges, orchestrator-only brain writes. Fan-out/fan-in orchestration with reducer merge, maker-checker quality gates, circuit breakers (3 failures → degrade). Six Prover guard rails as RULE files (max budget, PBO gate, thesis-before-search, fixed validation, convergence caps, narrative check). Coder brain design informed by Context7 (two-tool resolution, token-budgeted reads). Scaling thresholds from 50 to 1000+ files with consolidation cadence.
 - **Key decisions:** Option B first, evolve to A; orchestrator-only brain writes; YAML+markdown for inter-brain protocol; VectorBT+Freqtrade+CPCV stack; PBO < 0.5 hard gate; economic thesis required before parameter search; centralized INDEX-MASTER (Gap 5 resolved); code-level orchestration + LLM flexibility in specialists.
 - **Interface:** Defines CONTEXT-PACK v2 (orchestrator→specialist, ~750 tokens) and RESULT v2 (specialist→orchestrator, ~1500 tokens) message formats with YAML frontmatter.
@@ -253,7 +253,7 @@ _None yet._
 - **File:** learnings/LEARN-026_inter-agent-communication-patterns.md
 - **Tags:** multi-agent, IPC, communication, context-passing, message-formats, serialization, shared-memory, token-efficiency, A2A, MCP, AutoGen, CrewAI, LangGraph, Claude-Code, OpenAI-Swarm, blackboard, stigmergy
 - **Links:** SPEC-001, LEARN-009, LEARN-015, LEARN-024, LEARN-002, LEARN-021
-- **Backlinks:** LEARN-027, LEARN-037
+- **Backlinks:** LEARN-027, LEARN-037, LEARN-038
 - **Summary:** Comprehensive research synthesis on inter-process communication patterns for LLM/AI multi-agent systems. Covers 9 areas: (1) Context passing — full dump vs summary/compression vs delta/incremental, with compression ratios (10-20x Anthropic subagents, 70% Claude Code reduction, 73% protocol compression, 26-54% Acon). (2) Message formats — Google A2A (JSON-RPC 2.0, Agent Cards, typed Parts), AutoGen (GroupChatMessage, HandoffMessage with context list), CrewAI (Pydantic output schemas), LangGraph (TypedDict state + reducers), OpenAI Swarm (stateless, context vars). (3) Serialization — markdown (LLM-native), JSON with schema validation, YAML frontmatter + markdown body as optimal hybrid. (4) Shared memory — blackboard pattern (maps to INDEX-MASTER), stigmergy (maps to file deposits), file-based (our architecture), database-backed (Mem0/Zep), in-memory (LangGraph). (5) Token-efficient techniques — context filtering (highest impact), protocol compression, structured output constraints, summary distillation, tiered memory. (6) Real implementations — Anthropic research system (90.2% improvement, 15x cost, Opus+Sonnet), Claude Code subagents (70% reduction, 20K overhead), AutoGen/CrewAI/LangGraph/Swarm/tick-md details. (7) MCP vs A2A protocol landscape. (8) Improved CONTEXT-PACK v2 and RESULT v2 templates with YAML frontmatter, token budgets, and capability advertisement headers. (9) Eight key takeaways including: context isolation beats sharing, 1-2K token returns are standard, markdown+git is legitimate, Agent Card pattern should be adopted.
 - **Key decisions:** Recommends YAML frontmatter + markdown body for CONTEXT-PACK/RESULT v2 formats; capability advertisement headers in INDEX-MASTER for automated routing; LangGraph-style reducer pattern for merging concurrent specialist results; token budget envelope (~750 tokens CONTEXT-PACK, ~1100-1500 tokens RESULT).
 - **Interface:** N/A (learning, not code). Defines proposed v2 message templates for SPEC-001 inter-brain communication.
@@ -264,7 +264,7 @@ _None yet._
 - **File:** learnings/LEARN-027_multi-agent-orchestration-patterns.md
 - **Tags:** multi-agent, orchestration, choreography, fan-out, fan-in, task-decomposition, aggregation, error-handling, context-management, LangGraph, CrewAI, AutoGen, OpenAI, prover
 - **Links:** SPEC-001, LEARN-009, LEARN-015, LEARN-026, LEARN-024
-- **Backlinks:** LEARN-037
+- **Backlinks:** LEARN-037, LEARN-038
 - **Summary:** Research synthesis of multi-agent orchestration patterns from 6 production frameworks (LangGraph, CrewAI, AutoGen, OpenAI Agents SDK, Microsoft Agent Framework, Google ADK). Covers 8 areas: (1) Fan-out/fan-in — LangGraph superstep semantics (atomic failure, reducers), 137x speedup benchmark, Microsoft anti-pattern (no shared mutable state). (2) Choreography vs orchestration — hybrid consensus as industry best practice ("orchestrate via code, delegate to LLM"), framework positioning table. (3) Task decomposition — 4 strategies: role-based (CrewAI), graph-based (LangGraph), dynamic task ledger (Microsoft Magentic), conversation-based (AutoGen); Microsoft complexity hierarchy (direct call → single agent → multi-agent). (4) Result aggregation — 5 strategies (voting, weighted, LLM synthesis, concat+dedup, conflict agent); maker-checker with iteration caps; **41-86.7% failure rate** for unstructured coordination. (5) Framework details — OpenAI Agents SDK (manager+handoff), LangGraph (state+reducers+checkpoints), CrewAI (Crews+Flows), AutoGen (GroupChat+speaker selection), Microsoft (5 declarative patterns), Google ADK. (6) Error handling — 7 patterns: retry+backoff, circuit breakers (Salesforce 40%/60s), failure classification, graceful degradation, output validation, timeouts, checkpointing. (7) Context management — 6 strategies: context isolation (Manus, highest impact), observation masking (JetBrains, as good as LLM summarization), compaction, blackboard (=INDEX-MASTER), system prompt swapping, hierarchical. (8) Prover-specific takeaways: code orchestration + LLM reasoning, fan-out with reducer merge, circuit breakers, observation masking over summarization, context isolation as #1 principle.
 - **Key decisions:** Recommends code-level orchestration for Prover workflow graph with LLM flexibility within specialists; fan-out with append reducers; maker-checker with iteration caps; circuit breakers for specialist failures; observation masking preferred over LLM summarization; complexity hierarchy (start single-agent, escalate to multi-brain only when needed).
 - **Interface:** N/A (learning, not code)
@@ -366,11 +366,22 @@ _None yet._
 - **File:** learnings/LEARN-037_sandbox-agent-sdk-remote-coding-agent-execution.md
 - **Tags:** sandbox-agent, multi-agent, execution, isolation, HTTP, session-persistence, MCP, agent-agnostic, prover, infrastructure
 - **Links:** SPEC-001, LEARN-026, LEARN-027, LEARN-014
-- **Backlinks:** SPEC-001
+- **Backlinks:** SPEC-001, LEARN-038
 - **Summary:** Architecture analysis of Sandbox Agent (sandboxagent.dev) — open-source Rust CLI/SDK providing a universal HTTP/SSE API for running coding agents (Claude Code, Codex, OpenCode, Amp, Pi) in isolated sandboxes (E2B, Daytona, Docker, Vercel, Cloudflare). Key features: agent-agnostic API, session persistence (SQLite/Postgres/Rivet), session replay on reconnect, custom MCP tools and Skills per session, file system API, Inspector UI debugger, OpenTelemetry observability, RBAC security. Identified as potential **Option D** for SPEC-001 coordination architecture — solves sub-agent statelessness (Option B limitation), provides per-session MCP tools (brain-search per sandbox), and HTTP control for orchestrator. Advantages over sub-agents: persistence, per-session tools, agent flexibility, visual debugging. Limitations: TypeScript SDK only, additional infrastructure, HTTP latency, v0.2.x maturity. Recommended evaluation: test locally, verify MCP tool support, compare latency vs sub-agents.
 - **Key decisions:** None yet — research only. Evaluation deferred until Prover Phase 1 MVP validates sub-agent approach.
 - **Interface:** N/A (learning, not code)
 - **Known issues:** v0.2.x (pre-1.0), TypeScript SDK only (no Python), API may change. 4 open questions about CONTEXT-PACK compatibility, latency, parallel servers, and file system access.
+
+### LEARN-038
+- **Type:** LEARN
+- **File:** learnings/LEARN-038_anthropic-building-effective-agents-taxonomy.md
+- **Tags:** anthropic, agents, workflows, orchestration, taxonomy, tool-design, ACI, poka-yoke, simplicity, augmented-LLM, evaluator-optimizer
+- **Links:** LEARN-027, LEARN-026, SPEC-001, LEARN-037
+- **Backlinks:** LEARN-039
+- **Summary:** Anthropic's official agent design taxonomy from their engineering blog. Splits agentic systems into **workflows** (predefined code paths) vs **agents** (LLM-directed). Defines 5 canonical workflow patterns: prompt chaining (with gate checkpoints), routing, parallelization (sectioning/voting), orchestrator-worker, evaluator-optimizer (iterative refinement — distinct from binary maker-checker). Introduces **ACI (Agent-Computer Interface)** — applying HCI/poka-yoke principles to tool design. Critical finding: **Anthropic spent more optimization time on tools than prompts** for SWE-bench. Central thesis: simplicity first, start with raw LLM APIs, add frameworks only when needed. Augmented LLM (LLM + retrieval + tools + memory) as foundational building block. Overlaps with LEARN-027 on orchestrator-worker and parallelization but adds evaluator-optimizer, prompt chaining with gates, routing as named patterns, and the ACI/tool-engineering-first insight.
+- **Key decisions:** None — ingested knowledge. Tool engineering > prompt engineering is the most actionable insight for brain skill design and CONTEXT-PACK format investment.
+- **Interface:** N/A (learning, not code)
+- **Known issues:** High-level guidance with no code examples or benchmarks. Framework recommendations may shift. "Simplicity first" may tension with Prover's multi-brain complexity.
 
 ---
 
