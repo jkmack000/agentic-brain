@@ -46,9 +46,28 @@ A `/brain-checkpoint` skill or enhanced stop hook that scans the conversation fo
 - Layer 2 identified: chat log review pattern documented here for future sessions
 - Layer 3 deferred: `/brain-checkpoint` skill for future implementation
 
+## Chat Log Location and Format (Resolved)
+
+Claude Code stores full conversation transcripts as JSONL files:
+
+- **Primary location:** `~/.claude/projects/<project-path-with-dashes>/<session-uuid>.jsonl`
+- **Subagent transcripts:** `~/.claude/projects/<project>/<session-uuid>/subagents/agent-<hash>.jsonl`
+- **Large tool outputs:** `~/.claude/projects/<project>/<session-uuid>/tool-results/toolu_<id>.txt`
+- **User input history (all sessions):** `~/.claude/history.jsonl`
+
+**JSONL format:** Each line is one JSON object with fields:
+- `type`: `"user"` | `"assistant"` | `"progress"` | `"file-history-snapshot"` | `"tool_result"`
+- `message.content`: The actual text content (user messages or assistant responses with text/tool_use blocks)
+- `uuid`, `parentUuid`: For threading
+- `sessionId`, `timestamp`, `cwd`, `version`, `gitBranch`: Metadata
+
+**Chat log review workflow:** Start new session → load target session's JSONL → scan for `type: "user"` and `type: "assistant"` lines → extract insights not in existing brain files → deposit. Subagent transcripts are especially valuable — detailed research often evaporates when only summaries reach the main context.
+
+**First review results (2026-02-17):** Reviewed ~11MB across 8 sessions for this project. Found 33 unique undeposited knowledge items. Biggest losses were in subagent transcripts (detailed Freqtrade IStrategy reference, LLM code generation research) where rich research was consumed at summary level.
+
 ## Known Issues
 
-- Chat log location and format not yet documented (need to find and characterize the local transcript files)
+- ~~Chat log location and format not yet documented~~ → Resolved above
 - Layer 1 adds deposit overhead mid-conversation — may slow down fast-paced sessions
 - Layer 3 design not started — needs to decide: stop hook vs skill vs agent-based hook
-- No measurement of how much knowledge typically goes undeposited per session
+- No measurement of how much knowledge typically goes undeposited per session (first data point: 33 items across 8 sessions, ~4 per session average)

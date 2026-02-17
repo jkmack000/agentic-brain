@@ -687,3 +687,63 @@ Running chronological record of all project sessions, milestones, ingestions, an
   - Three-layer knowledge capture: deposit-as-you-go rule (Layer 1, implemented), chat log review (Layer 2, next session), /brain-checkpoint skill (Layer 3, deferred)
   - Chat logs are a recoverable knowledge source — review workflow to be built next session
 - **Blockers/dead ends:** None
+
+### 2026-02-17 — WORK — Chat Log Review + Lost Knowledge Ingestion
+- **Duration:** ~60min (long session, hit context limit)
+- **Key actions:**
+  - Found chat logs at `~/.claude/projects/C--agentic-brain/` — 8 sessions, ~11MB JSONL
+  - Launched 5 parallel subagents to review all sessions for undeposited knowledge
+  - Identified 33 unique items after dedup across all sessions
+  - Created 3 new files: LEARN-035 (Freqtrade IStrategy reference, recovered from session 4 subagent transcript), LEARN-036 (LLM code generation patterns, recovered from session 4 subagent transcript), RULE-005 (user prime directive + working style)
+  - Batch-enriched 12 existing files with Tier 2+3 items: SPEC-001, SPEC-003, LEARN-009, LEARN-010, LEARN-017, LEARN-019, LEARN-031, LEARN-032, LEARN-033, LEARN-034, RULE-002
+  - Updated INDEX-MASTER.md: 3 new entries, multiple summary updates, resolved OQs #5 and #21, added OQs #23 and #24, total 45→48
+  - Skipped 3 low-value items (29-31: coder.agent.project.md cleanup, rank-bm25 dep fix, duplicate content)
+- **Files created:**
+  - LEARN-035 (Freqtrade IStrategy technical reference — seed knowledge for Coder brain)
+  - LEARN-036 (LLM code generation patterns for trading strategies — SCoT, validation, sandboxing)
+  - RULE-005 (user prime directive: organized/trackable/provable > token efficiency, lane discipline)
+- **Files modified:**
+  - SPEC-001 (added agent=project section, inter-agent coordination OQ)
+  - SPEC-003 (added implementation status section)
+  - LEARN-009, LEARN-010, LEARN-017, LEARN-019, LEARN-031, LEARN-032, LEARN-033, LEARN-034 (various enrichments)
+  - RULE-002 (added deposit-first-implement-second pattern)
+  - INDEX-MASTER.md (3 new entries, 5+ summary updates, 2 OQs resolved, 2 OQs added)
+  - LOG-002 (this entry)
+- **Decisions made:**
+  - Chat log review validates LEARN-034's three-layer capture model — ~4 items/session average recovery rate
+  - Subagent transcripts are the richest source of lost knowledge (full research consumed only at summary level)
+  - LEARN-035/036 recovered from subagent JSONL files, not main session transcripts
+- **Blockers/dead ends:**
+  - Session hit context limit — LOG-002 append and handoff deferred to continuation session
+  - LOG-002 Edit failed first attempt (non-unique string match on "Blockers/dead ends: None" — 13 occurrences)
+
+### 2026-02-17 — WORK — Quorum Sensing P2+P3 Implementation
+- **Duration:** ~20min
+- **Key actions:**
+  - Implemented P2.1: Consolidation guide in SPEC-003 — maintenance vs synthesis modes with triggers, checklists, and when-not-to-consolidate rules
+  - Implemented P2.2: Vitality scoring formula (inbound×3 + outbound×1 + tags×0.5) in brain-status skill, retirement workflow in SPEC-003, created `project-brain/archive/.gitkeep`
+  - Resolved OQs #13 (CLUSTERS auto-generated), #14 (vitality thresholds: <2.0 review, <1.0 retirement, RULEs exempt), #15 (archive/ not git-delete)
+  - Implemented P2.3: Computed tag clusters via subagent (8 clusters with 5+ files), added CLUSTERS section to INDEX-MASTER with vitality data
+  - Implemented P3.1: Created first sub-index `indexes/INDEX-claude-code.md` (15 files, not 14 — LEARN-004 and LOG-003 also tagged claude-code, RULE-001 is not)
+  - Restructured INDEX-MASTER: moved 15 claude-code entries to sub-index, replaced with cluster summary in Sub-Indexes section
+  - Added sub-index format spec to SPEC-003 (location, structure, integration, cross-cluster links, search workflow)
+  - Updated brain-search skill to handle sub-indexes in fallback mode
+  - Updated brain-status skill to read sub-index files for complete file coverage
+  - Vitality analysis finding: tag component (0.5/tag) provides a floor — no non-RULE files fall below 2.0 threshold. Threshold may need adjustment.
+- **Files created:**
+  - `project-brain/indexes/INDEX-claude-code.md` (first sub-index — 15 claude-code files with vitality scores)
+  - `project-brain/archive/.gitkeep` (empty archive directory for retirement workflow)
+- **Files modified:**
+  - SPEC-003 (consolidation guide, vitality formula, retirement workflow, sub-index format spec, implementation status P2+P3 complete, changelog)
+  - INDEX-MASTER.md (CLUSTERS section, Sub-Indexes section, 15 entries moved to sub-index, OQs #13/#14/#15 resolved, SPEC-003 fat index entry updated, total-files annotation)
+  - `~/.claude/skills/brain-status/SKILL.md` (vitality scoring step, retirement candidates, clusters table, sub-index awareness)
+  - `~/.claude/skills/brain-search/SKILL.md` (sub-index fallback search)
+  - LOG-002 (this entry)
+- **Decisions made:**
+  - Vitality formula: inbound×3 + outbound×1 + tags×0.5 (topological, no recency)
+  - RULEs exempt from low-vitality flags (structurally leaf-type)
+  - CLUSTERS auto-generated by /brain-status
+  - Archive/ for retired files (not git-delete)
+  - claude-code cluster is 15 files (corrected from plan's 14)
+  - Sub-index entries include vitality scores (not present in main INDEX-MASTER entries)
+- **Blockers/dead ends:** None — SPEC-003 P0 through P3 all complete

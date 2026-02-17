@@ -108,6 +108,11 @@ Every file edit snapshots current contents. Esc+Esc to rewind. Local to session,
 
 ---
 
+## Operational Gotchas
+
+### `.claude/projects/` stale cache after project directory move
+When a project is moved to a new directory path, Claude Code's `~/.claude/projects/` directory retains a cache keyed by the old path (path encoded with dashes replacing slashes, e.g., `C--Users-jkmac-Desktop-old-path`). This stale cache persists and should be manually deleted after a project move.
+
 ## Key Takeaways for Brain System
 
 1. **Agentic loop validates search→work separation.** Claude's own architecture (gather→act→verify) mirrors our brain's search→reset→work pattern. Context-gathering is a distinct phase.

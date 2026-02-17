@@ -55,6 +55,11 @@ Protect the context window as the #1 resource — every tool call costs tokens y
 - **When:** Running Claude headlessly for automation and tracking costs
 - **Do:** Pass `--output-format json` to get `cost` and `duration` fields in response
 
+### Deposit first, implement second
+- **When:** A prior session generated knowledge (framework, design, analysis) that exists only in conversation/handoff
+- **Do:** Deposit undeposited knowledge into brain files BEFORE starting implementation work. This ensures knowledge survives even if the implementation session dies.
+- **Consequence:** Knowledge lives only in ephemeral context. If the session crashes mid-implementation, both the knowledge AND the implementation are lost.
+
 ## Exceptions
 - Subagent context isolation doesn't apply to the Task tool's returned summary — that does enter main context
 - Subagents cannot spawn other subagents (no recursive delegation)

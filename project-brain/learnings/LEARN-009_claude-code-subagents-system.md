@@ -167,6 +167,16 @@ Or CLI: `claude --disallowedTools "Task(Explore)"`
 
 ---
 
+## Gotchas
+
+### Custom agents cannot be spawned via Task tool
+Custom agents defined in `.claude/agents/*.md` are **user-invoked only** — the Task tool can only spawn built-in agent types (Explore, Plan, general-purpose, Bash, etc.). Attempting `subagent_type: "my-custom-agent"` in a Task call will fail. This constrains orchestration patterns that need custom agent personas.
+
+**Workaround:** Inject the custom agent's full system prompt and instructions into a general-purpose Task prompt. This preserves the agent's knowledge but loses: `permissionMode` constraints, skill preloading, turn limits, and model selection. Test this pattern before depending on it for orchestrator designs.
+
+### Background subagents denied Write permissions in default mode
+When launching subagents with `run_in_background: true` under the default permission mode, Write and Bash file-write operations are **denied** (permissions pre-approved at launch only covers read operations). All background subagents complete research successfully but cannot write files. **Workaround:** Resume the subagent in foreground to extract its content, or have the main agent read the subagent's output and write files itself.
+
 ## Key Takeaways for Brain System
 
 1. **Brain searcher subagent.** Create a custom `.claude/agents/brain-searcher.md` that has read-only access to brain files and uses Explore model (Haiku) for fast, cheap lookups. Keeps brain search out of main context.

@@ -88,12 +88,125 @@ These changes support the ongoing health of the brain.
 - **What:** When INDEX-MASTER exceeds mental squeeze point, split into sub-indexes aligned with detected clusters (not arbitrary alphabetical or type-based splits). INDEX-MASTER becomes a directory of cluster summaries. Cross-cluster links preserved in master.
 - **Trigger:** Not file count — the "mental squeeze point" where INDEX-MASTER can no longer be scanned in one pass without losing important distinctions.
 
+## Consolidation Guide
+
+### Two Modes
+
+| Mode | Purpose | Risk | Review Required? |
+|------|---------|------|-----------------|
+| **Maintenance** | Dedup, fix broken links, tighten summaries, update stale entries | Low — no information loss | No — routine housekeeping |
+| **Synthesis** | Merge cluster files into higher-level understanding, create new file(s), retire sources | Medium — files retired | Yes — human confirms retirements |
+
+### Maintenance Mode
+
+**Triggers:** Run maintenance when any of:
+- INDEX-MASTER has entries with stale summaries (file content has evolved past the fat index)
+- Broken backlinks detected (a file references a non-existent ID)
+- Tag inconsistencies (same concept tagged differently across files)
+- After a batch ingestion (new files may overlap with existing)
+
+**Checklist:**
+1. Run `/brain-status` — note orphans, ghosts, quiet files, count mismatches
+2. Fix all orphans (add fat index entry) and ghosts (remove entry or restore file)
+3. Scan quiet files — add missing backlinks where genuine references exist
+4. Compare duplicate-candidate entries (similar tags, overlapping summaries) — tighten without merging
+5. Verify all `<!-- links: -->` frontmatter matches actual references in file content
+6. Update INDEX-MASTER `total-files` count
+7. Rebuild content hashes (`uv run brain.py reindex`)
+8. Commit with message: "Maintenance consolidation: [summary]"
+
+### Synthesis Mode
+
+**Triggers:** Run synthesis when:
+- A tag cluster reaches "mental squeeze point" — fat index summaries can't capture distinctions between files
+- Multiple files say the same thing from different angles with no unique contribution
+- A cluster has accumulated enough knowledge to produce a higher-level understanding
+
+**Checklist:**
+1. Run `/brain-status` — identify the target cluster
+2. Read all files in the cluster (this is one of the few times opening many files is justified)
+3. Draft the synthesis file (new LEARN or SPEC) that captures the higher-level understanding
+4. Identify source files that are fully subsumed by the synthesis — mark as retirement candidates
+5. **Get human review** — present the synthesis + retirement list for approval
+6. Deposit the synthesis file via `/brain-deposit`
+7. Retire approved source files (see Retirement Workflow below)
+8. Update all backlinks that pointed to retired files → point to synthesis file
+9. Commit with message: "Synthesis consolidation: [cluster] — N files → 1, M retired"
+
+### Vitality Score
+
+Each file receives a vitality score measuring its connectedness in the brain graph:
+
+```
+vitality = (inbound_links × 3) + (outbound_links × 1) + (tag_count × 0.5)
+```
+
+- **Weights:** Inbound links matter most (being referenced = alive), outbound second, tags least
+- **No recency factor** — Rule 6: topological, not temporal
+- **Thresholds:**
+  - `vitality < 2.0` → "review candidate" — may need link enrichment or retirement
+  - `vitality < 1.0` → "retirement candidate" — likely orphaned or subsumed
+- **RULEs exempt from low-vitality flags** — they are structurally leaf-type (consume knowledge but aren't referenced; LEARN-033 finding)
+
+### Retirement Workflow
+
+1. `/brain-status` flags retirement candidates (vitality < 1.0, excluding RULEs)
+2. Human reviews and confirms which files to retire
+3. Move file to `project-brain/archive/` (preserves git history, recoverable)
+4. Remove fat index entry from INDEX-MASTER, add HTML comment: `<!-- retired: FILE-ID, YYYY-MM-DD, reason -->`
+5. Update backlinks on files that linked TO the retired file (remove or redirect to replacement)
+6. Update `total-files` count in INDEX-MASTER header
+7. Rebuild content hashes (`uv run brain.py reindex`)
+8. Append LOG-002 entry documenting the retirement
+9. Commit with message: "Retire FILE-ID: [reason]"
+
+### When NOT to Consolidate
+- Don't consolidate files that cover the same topic from genuinely different angles (e.g., competitive analysis vs implementation guide)
+- Don't consolidate across file types (a LEARN and a RULE about the same topic serve different purposes)
+- Don't consolidate during a work session — consolidation is a dedicated session type
+- Don't consolidate prematurely — wait for the mental squeeze point, not an arbitrary file count
+
+## Sub-Index Format Spec
+
+### When to Create a Sub-Index
+- A tag cluster reaches "mental squeeze point" — fat index summaries can't capture distinctions
+- Triggered by quality not count (though 10+ files in a cluster is a strong signal)
+- First sub-index created at 48 files: `claude-code` cluster (15 files, 31% of brain)
+
+### Sub-Index Structure
+- **Location:** `project-brain/indexes/INDEX-{cluster-name}.md`
+- **Header:** YAML-style HTML comments with type, cluster-tag, updated date, member-count, parent
+- **Content:** Full fat index entries for all member files (moved from INDEX-MASTER, not copied)
+- **Additions:** Vitality score per entry (not present in INDEX-MASTER entries)
+
+### INDEX-MASTER Integration
+- Individual file entries are removed from INDEX-MASTER (replaced with HTML comment noting the move)
+- A **cluster summary entry** is added to the Sub-Indexes section:
+  ```markdown
+  ### {cluster-name} (Sub-Index)
+  - **File:** indexes/INDEX-{cluster-name}.md
+  - **Members:** N files (FILE-ID, FILE-ID, ...)
+  - **Summary:** One-line description of what the cluster covers
+  - **Squeeze point:** Active/approaching/no
+  ```
+
+### Cross-Cluster Links
+- File IDs are globally unique — cross-references work regardless of which index contains the entry
+- A file in the claude-code sub-index can link to a file in INDEX-MASTER and vice versa
+- Backlinks reference file IDs, not index locations — no update needed when files move between indexes
+
+### Search Workflow with Sub-Indexes
+1. Scan INDEX-MASTER fat index entries (includes cluster summaries)
+2. If cluster summary matches query → load the sub-index
+3. Scan sub-index entries to find specific files
+4. One extra hop, but saves tokens by not loading 15+ entries on every session
+
 ## Rationale
 
 - **P0 first** because it's all additive structure in INDEX-MASTER — zero risk, immediate value, enables P1-P3.
 - **P1 second** because it enforces quality at deposit time — every future file benefits.
 - **P2 third** because it requires enough files + backlink data to be meaningful.
-- **P3 last** because the brain is ~41 files — sub-indexes are premature until ~75+.
+- **P3 last** because sub-indexes are triggered by squeeze point, not file count.
 
 ## Interface / Contract
 
@@ -111,10 +224,20 @@ These changes support the ongoing health of the brain.
 
 ## Open Questions
 
-- Should CLUSTERS section be auto-generated by `/brain-status` or manually maintained?
-- What vitality score threshold triggers the "review" flag?
-- Should retired files be git-deleted or moved to `archive/` directory?
+- ~~Should CLUSTERS section be auto-generated by `/brain-status` or manually maintained?~~ **RESOLVED:** Auto-generated by `/brain-status`, user pastes into INDEX-MASTER.
+- ~~What vitality score threshold triggers the "review" flag?~~ **RESOLVED:** vitality < 2.0 = review candidate, < 1.0 = retirement candidate. RULEs exempt (leaf-type).
+- ~~Should retired files be git-deleted or moved to `archive/` directory?~~ **RESOLVED:** Move to `project-brain/archive/` — preserves git history, recoverable.
+
+## Implementation Status
+
+- **P0:** COMPLETE (2026-02-17) — Open Questions (22 items), Tensions (4 items), Backlinks on all entries
+- **P1:** COMPLETE (2026-02-17) — `/brain-deposit` enforces min 3 links + open questions; `/brain-status` reports quiet files, tag clusters, tensions/questions counts. Tested in production — all 9 deposit steps validated, topology data produced correctly.
+- **P2:** COMPLETE (2026-02-17) — Consolidation guide (maintenance vs synthesis modes), vitality scoring formula (inbound×3 + outbound×1 + tags×0.5), retirement workflow with archive/, CLUSTERS section in INDEX-MASTER (8 clusters, claude-code largest at 15), OQs #13/#14/#15 resolved.
+- **P3:** COMPLETE (2026-02-17) — First sub-index created: `indexes/INDEX-claude-code.md` (15 files). INDEX-MASTER restructured: individual entries replaced with cluster summary + HTML comments. Sub-index format spec documented. Cross-cluster links preserved.
 
 ## Changelog
 
 - 2026-02-17: Created from SESSION-HANDOFF.md design decisions
+- 2026-02-17: P0+P1 implemented and validated in production
+- 2026-02-17: P2 implemented — consolidation guide, vitality scoring, retirement workflow, CLUSTERS section, archive/ directory, OQs resolved
+- 2026-02-17: P3 implemented — first sub-index (claude-code, 15 files), sub-index format spec, INDEX-MASTER restructured

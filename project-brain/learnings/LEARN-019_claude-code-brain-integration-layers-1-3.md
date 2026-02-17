@@ -58,6 +58,7 @@ Integration tested across two sessions (BUILD session + fresh TEST session after
 **Layer 3 — Hooks**
 - `SessionStart`: **PASS** — Confirmed working. Output appears in system-reminder as `'[Brain] Project Brain detected...'`.
 - `PreCompact`: **NOT TESTABLE** — Requires hitting ~95% context. Simple echo command — logic is trivially correct. Accepted as-is.
+- **2026-02-17 (production validation):** Stop hook fired successfully in production during quorum sensing session — correctly detected stale SESSION-HANDOFF.md and blocked exit. This validates the command-type approach from Fix 3.
 - `Stop`: **PASS (after 3 fixes)** — Command-type hook with deterministic file mtime check. Blocks exit if SESSION-HANDOFF.md not modified in last 30 min. Three bugs fixed to get here:
   1. **Matcher format (Fix 1):** All hooks had `matcher` as JSON objects (`{}`) instead of strings. Caused Settings Error on startup that silently disabled ALL hooks. Fix: omit `matcher` for Stop.
   2. **Response format (Fix 2):** Prompt-type hook instructed LLM to respond with `{"decision": "block"}` but prompt-type hooks require `{"ok": false, "reason": "..."}`. Fixed format but hook still didn't block.

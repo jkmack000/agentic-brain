@@ -21,6 +21,12 @@ Prover is a multi-brain backtesting system. Multiple specialist brains coordinat
 | **Coder** | Implementation — strategy code, framework integration, testing | Context7 MCP for library docs + project brain for patterns | Not built |
 | **Frontend** | HMI/UI for backtest visualization | Stack TBD | Not built |
 
+### Each Agent = Own Project + Own Brain
+
+Each specialist agent is its own **project directory** with its own brain, not just a brain-within-a-shared-project. The Coder brain would be a standalone project filled with Python and Context7-specific knowledge; the Donchian brain would be its own project with trading domain knowledge. This is token-efficient — each agent loads only its own brain at session start, not a monolithic shared brain.
+
+**Coordination between agent-projects:** An open design question — shared git repo with worktrees, or fully separate repos with CONTEXT-PACK messages passed via filesystem/MCP. See Open Questions.
+
 ### Orchestrator Role
 
 The orchestrator is the **only** brain that talks to the user directly and the **only** brain that writes to `project-brain/` files. It:
@@ -358,6 +364,7 @@ Consolidation every ~20-30 files is the correct cadence (validated by A-MEM Neur
 - Is Prover the whole system or just the backtester?
 - Data freshness — how does OHLCV data get refreshed?
 - Strategy versioning — git tags? Dedicated VERSION file?
+- How do independent agent-projects coordinate? Shared git repo with worktrees, or fully separate repos with CONTEXT-PACK messages via filesystem/MCP?
 
 ## Known Issues
 - Agent teams (Option C) is experimental and ~7x token cost — not viable yet

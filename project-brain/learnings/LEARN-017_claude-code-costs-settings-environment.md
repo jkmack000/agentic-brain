@@ -25,6 +25,8 @@ Existing LEARNs cover costs qualitatively (LEARN-004: "token economics"), settin
 
 Brain impact: 10-20% overhead from brain file loading = $0.60-$1.20/day. Brain maintenance via agent teams could cost $3-5+ per run.
 
+**Research session cost benchmarks (measured 2026-02-17):** Each web-research-to-LEARN-file topic costs ~30-40K tokens via subagent (including web searches, reading results, synthesizing). A batch of 3 research topics costs ~100-125K tokens total including housekeeping (INDEX-MASTER, LOG-002, handoff). Chat log review across 8 sessions (~11MB JSONL) consumed ~5 parallel subagents at ~100-130K tokens each.
+
 ### Rate Limits by Team Size
 | Team Size | TPM/User | RPM/User |
 |-----------|----------|----------|

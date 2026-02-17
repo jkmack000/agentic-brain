@@ -215,7 +215,7 @@ The Zettelkasten community coined this term for the failure mode where:
 
 ### Brain System Implications
 
-- **We are at ~37 files — approaching the first consolidation threshold (50-100).** INDEX-MASTER is already becoming a significant token cost to load. This is working but will need sub-indexes by ~75-100 files (aligns with existing plan).
+- **We are at ~45 files — approaching the first consolidation threshold (50-100).** INDEX-MASTER is already a significant token cost: 440 lines / ~10K tokens / ~5% of 200K context window (measured 2026-02-17). Comfortable at current scale with room to ~75-80 files before sub-indexes needed. Sub-index splits add one extra hop (transparent to skills).
 - **The Evernote Effect is our biggest long-term risk.** The brain system's value proposition collapses if maintenance cost grows faster than knowledge value. Current LEARN-002 trigger (consolidation every 20-30 files) is correct — don't relax it.
 - **Automated orphan detection should be added to brain.py.** A `brain.py health` command that checks for orphans, broken links, index staleness, and link density.
 - **File IDs must never change.** LEARN-021 must always be LEARN-021, even if its contents evolve. This is Zettelkasten's permanent ID principle and it prevents link rot.

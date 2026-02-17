@@ -64,8 +64,15 @@ Largest cluster: `claude-code` at 14 files — candidate for first sub-index if 
 - No immediate action on quiet files — most are explained by type (RULEs) or recency (batch 2 research).
 - SPEC-002 flagged for link enrichment when Coder brain work begins.
 
+## Findings
+
+### RULEs are structurally leaf-type (preliminary)
+The 75% quiet rate for RULEs is not decay — it's structural. RULEs consume knowledge from LEARNs and SPECs but are rarely referenced by other knowledge files. They are downstream endpoints (applied patterns), not hubs or connectors. This means quiet-file detection in `/brain-status` should treat RULEs differently: a quiet RULE is normal, a quiet LEARN is a flag.
+
+### `claude-code` cluster is first sub-index candidate
+At 14 files, the `claude-code` tag cluster is the largest and the first candidate for sub-indexing when the P3 threshold (SPEC-003) is reached. Monitor whether the fat index can still capture distinctions within this cluster.
+
 ## Known Issues
 
 - Does hub structure change after consolidation? (Unknown — need to re-run after next consolidation pass)
 - What backlink count separates "quiet" from "healthy"? (Currently using 0 as threshold — may need refinement)
-- Do quiet RULEs indicate a structural issue or just that RULEs are leaf-type by nature? (Evidence points to leaf-type, but sample size is only 4)

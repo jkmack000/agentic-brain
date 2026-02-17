@@ -57,6 +57,15 @@ A parallel Grok session exploring the same problem space revealed:
 - **Convergent:** Signal emission requirement, contradiction preservation, cluster-based consolidation
 - **Divergent:** Grok favored temporal decay (age-based), we chose topological (connection-based). Topological is superior because relevance is about relationships, not recency — a foundational architecture doc doesn't decay just because it's old.
 
+### Novel Ideas from Grok (Not in Our Framework)
+Three extensions acknowledged as valuable but not yet incorporated:
+1. **Controlled noise injection** — Random cross-domain queries as creative mutation (analogous to horizontal gene transfer). Could surface unexpected connections between brain clusters that pure link-following would miss.
+2. **Evolutionary pressure** — Generate multiple synthesis variants during consolidation and let them compete. Rather than one consolidation pass, run 2-3 and pick the best.
+3. **Multi-agent "species" differentiation** — Different agent types responding to different signal types, enabling complex ecosystems. Maps to Prover's specialist brains each having different quorum-sensing behaviors.
+
+### Emergent vs Explicit Quorum Detection
+A key design philosophy distinction: Grok built infrastructure that *mimics* quorum sensing (explicit detector + synthesizer agents), while our framework describes conditions that *are* quorum sensing (self-describing packets + emergent detection through the index). A session reading a fat index naturally focuses on dense clusters — that IS quorum detection. The best system uses both: Grok's infrastructure for detection and scaling, our packet design principles for ensuring what accretes is capable of emergence.
+
 ## Token Overhead Assessment
 
 Estimated ~10K additional tokens in INDEX-MASTER.md for OPEN QUESTIONS, TENSIONS, and CLUSTERS sections at current scale (~41 files). This is ~5% of current context budget — acceptable. Scales sub-linearly as consolidation reduces open items.
