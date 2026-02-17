@@ -792,3 +792,36 @@ Running chronological record of all project sessions, milestones, ingestions, an
   - Sandbox Agent as Phase 2+ Option D; Rivet = working memory, brain files = long-term memory
   - Coder domain knowledge migrates to coder-brain; SPEC-002 stays (architecture doc)
 - **Blockers/dead ends:** Context at 80% — Freqtrade deep ingestion deferred to next session
+
+### 2026-02-17 — INGESTION — Coder Brain Phase 1 Deep Ingestion
+- **Duration:** ~30min
+- **Key actions:**
+  - Launched 3 parallel research agents against Freqtrade and ta-lib docs
+  - Agent 1: Freqtrade config + lifecycle → LEARN-003, LEARN-004
+  - Agent 2: Freqtrade data handling + backtesting CLI → LEARN-005, LEARN-006
+  - Agent 3: ta-lib indicator reference → LEARN-007
+  - Created 3 CODE files: CODE-001 (IStrategy template with 12 fill slots), CODE-002 (test scaffolding with conftest.py + 8 test patterns), CODE-003 (validated EMACrossoverRSI strategy as few-shot example)
+  - Created 3 RULE files: RULE-001 (import whitelist — strict/relaxed tiers), RULE-002 (code style conventions), RULE-003 (testing requirements — 3-stage pipeline)
+  - Created SPEC-001 (coder brain architecture — position in agent chain, knowledge hierarchy, write pipeline, validation pipeline, security model, inter-brain protocol, ingestion roadmap)
+  - Updated coder-brain INDEX-MASTER.md with fat index entries for all 12 new files (total 2→14)
+  - Phase 1 seed ingestion COMPLETE — coder brain now has full Freqtrade reference knowledge
+- **Files created (in coder-brain/project-brain/):**
+  - LEARN-003 (Freqtrade bot configuration)
+  - LEARN-004 (Freqtrade bot lifecycle)
+  - LEARN-005 (Freqtrade data handling)
+  - LEARN-006 (Freqtrade backtesting CLI)
+  - LEARN-007 (ta-lib indicator reference)
+  - CODE-001 (IStrategy template with fill slots)
+  - CODE-002 (test scaffolding)
+  - CODE-003 (sample validated strategy)
+  - RULE-001 (import whitelist)
+  - RULE-002 (code style conventions)
+  - RULE-003 (testing requirements)
+  - SPEC-001 (coder brain architecture)
+- **Files modified:**
+  - coder-brain/project-brain/INDEX-MASTER.md (12 new fat index entries, total 2→14)
+  - project-brain/logs/LOG-002 (this entry)
+- **Decisions made:**
+  - Phase 1 seed covers: IStrategy interface, config, lifecycle, data, backtesting, ta-lib indicators, code template, test scaffold, validated example, import whitelist, style conventions, testing requirements
+  - Phase 2 next: CCXT, VectorBT, Optuna, pytest advanced
+- **Blockers/dead ends:** None — all 3 research agents returned successfully
