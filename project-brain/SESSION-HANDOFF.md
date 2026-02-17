@@ -1,57 +1,55 @@
 # SESSION-HANDOFF
 <!-- written: 2026-02-17 -->
-<!-- session-type: RESEARCH -->
+<!-- session-type: WORK -->
 <!-- trigger: stop-hook -->
 
 ## What Was Being Done
-Batch 2 research session: completing the 3 deferred research topics from previous session (git worktrees, BM25/hybrid search, file-based knowledge management at scale), plus reviewing a HatchWorks orchestration article for ingestion. 200K token budget.
+Work session: (C) brain.py search improvements from LEARN-030 Phase 1, and (B) updating SPEC-001 with architecture decisions from LEARN-025 through LEARN-031. Also created a custom architect agent for future planning tasks.
 
 ## Current State
-- **Status:** COMPLETED
+- **Status:** COMPLETED (main tasks), one item uncommitted
 - **What's done:**
-  - LEARN-029: Git worktree workflows for parallel agents — worktree mechanics, 4 real-world systems (Letta, ccswarm, Crystal, incident.io), concurrent safety, Claude Code integration, Prover patterns (branch naming, orchestrator script, brain file coordination). Recommends orchestrator-only brain writes (Option C).
-  - LEARN-030: BM25 and hybrid search implementation patterns — 6 Python libraries compared, field boosting strategy, RRF hybrid fusion code, query expansion (PRF), reranking options, 3-phase roadmap (improve tokenizer → SQLite FTS5 → hybrid search)
-  - LEARN-031: File-based knowledge management at scale — Zettelkasten/Obsidian/Logseq patterns, scaling thresholds (50→5000+), A-MEM NeurIPS 2025 validation, progressive summarization, maintenance cadence, prioritized improvements table and scaling roadmap
-  - HatchWorks orchestration article reviewed — fully subsumed by LEARN-026/027, no deposit needed
-  - INDEX-MASTER.md updated (37→40 files, 3 new fat index entries)
+  - brain.py tokenizer upgraded: stopword removal (60+ words), lightweight suffix stemmer, hyphen expansion ("session-handoff" → ["session", "handoff", "session-handoff"])
+  - BM25 parameters tuned: k1=1.0, b=0.4 (optimized for short fat-index entries)
+  - Field boosting updated: tags 5x (was 3x), ID 4x (was 2x)
+  - Search tested: "session-handoff" 5→29 results, "searching BM25 improvements" 13→25, "hooks configuration" top-3 precision maintained
+  - SPEC-001 major update: backtesting pipeline (VectorBT→Freqtrade→CPCV), CONTEXT-PACK/RESULT v2 protocol, orchestration patterns, git worktree layout, guard rails, Coder brain design, scaling thresholds, Gap 5 resolved
+  - INDEX-MASTER.md SPEC-001 entry updated with enriched summary and expanded links
   - LOG-002 timeline entry written
-  - Verified project files intact after directory move (old location → C:\agentic-brain)
-  - All Batch 2 research topics now COMPLETE
-  - Changes NOT YET COMMITTED to git
+  - All committed and pushed to origin/master (319bdbc)
+  - Created `.claude/agents/architect.md` — custom read-only planning agent (Opus, plan mode, brain-search/status skills)
+- **What's left:**
+  - Architect agent NOT YET COMMITTED (created but untested)
+  - Architect agent cannot be spawned via Task tool — must be invoked by user via `claude agents architect "prompt"`
+  - Coder brain planning deferred (was going to be architect agent's first test)
 
 ## Uncommitted Decisions
-- None — all decisions captured in LEARN files
+- Custom agents in `.claude/agents/` cannot be spawned by the Task tool — only built-in agent types (Bash, general-purpose, Explore, Plan, etc.) are available. Custom agents must be invoked by the user.
 
 ## Discoveries Not Yet Deposited
-- Subagent file write permissions are unreliable — all 3 research agents failed to write files (had to resume and extract content to main session). This is a recurring operational pattern worth noting but not a new brain file.
+- Custom agent limitation: `.claude/agents/*.md` agents are user-invocable only, not programmable via Task tool. This affects SPEC-001's orchestrator design — orchestrator can't spawn custom specialist agents via Task, only built-in types. Workaround: use general-purpose agent with architect-style prompt embedded, or have user invoke agents manually.
+- Stemmer imperfections are acceptable for BM25 retrieval: "configuring"→"configur" doesn't match "configure" exactly, but consistency between corpus and query means the same stem appears on both sides, so retrieval works.
 
 ## Open Questions (carried forward)
 - Frontend stack preference?
 - Is Prover the whole system or just the backtester?
-- Who runs backtests? Subagents can't execute long processes. Need execution service outside Claude Code.
 - Data freshness — how does OHLCV data get refreshed?
 - Strategy versioning — git tags? Dedicated VERSION file?
-- SSH key on GitHub — deferred
-- Reverse SSH (Windows <- 192.168.1.208) — carried forward
-
-## Files Added to Brain This Session
-- LEARN-029 — git worktree workflows for parallel agents
-- LEARN-030 — BM25 and hybrid search implementation patterns
-- LEARN-031 — file-based knowledge management at scale
 
 ## Files Modified This Session
-- INDEX-MASTER.md — 3 new fat index entries, count 37→40
-- LOG-002 — timeline entry for this session
-- SESSION-HANDOFF.md — this file
+- `project-brain/brain.py` — tokenizer rewrite (STOPWORDS, stem(), tokenize()), BM25 k1/b tuning, field weights
+- `project-brain/specs/SPEC-001_prover-multi-brain-architecture.md` — major expansion with LEARN-025-031 findings
+- `project-brain/INDEX-MASTER.md` — SPEC-001 fat index entry updated
+- `project-brain/logs/LOG-002_project-timeline.md` — timeline entry
+
+## Files Added This Session
+- `.claude/agents/architect.md` — custom planning agent (NOT YET COMMITTED)
 
 ## Dead Ends
-- All 3 research subagents failed to write files due to permission restrictions — had to resume each agent to extract content, then write from main session. Workaround is reliable but adds overhead.
-- Article ingestion agent couldn't fetch HatchWorks URL (permission denied) — fell back to training-data analysis. Adequate for dedup check but not ideal for novel content detection.
+- Attempted to spawn architect agent via Task tool — failed with "Agent type 'architect' not found". Custom agents are user-invocable only.
+- Attempted general-purpose agent as workaround for architect test — user blocked it (too expensive / wrong direction before proving architect works)
 
 ## Recommended Next Session
 - **Type:** WORK
 - **Load:** SESSION-HANDOFF.md, INDEX-MASTER.md
-- **First action:** Commit new files to git (LEARN-029/030/031 + INDEX-MASTER + LOG-002). Then either:
-  - (A) Start building Prover — scaffold new repo, create orchestrator brain
-  - (B) Update SPEC-001 with architecture decisions from LEARN-025-031 (worktree patterns, orchestrator-only brain writes, search roadmap, scaling thresholds)
-  - (C) Implement brain.py improvements from LEARN-030 (tokenizer upgrade, stopwords, stemming — Phase 1 of search roadmap)
+- **First action:** Commit `.claude/agents/architect.md`, then test it via `claude agents architect "Plan the Coder brain"`. If it works, deposit a LEARN file about custom agent capabilities/limitations. Then proceed to Coder brain planning using the architect agent.
