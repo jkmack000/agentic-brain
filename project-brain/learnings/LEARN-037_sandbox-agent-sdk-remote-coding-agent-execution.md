@@ -141,6 +141,16 @@ Sandbox Agent could serve as a **fourth coordination option** alongside the thre
 3. Can multiple Sandbox Agent servers run concurrently for parallel specialist brains?
 4. How does the agent's file system interact with the host — can it access brain files?
 
+## Rivet Actors — Brain Project Implications
+
+Rivet actors (one of Sandbox Agent's persistence backends) have specific implications for the brain system:
+
+- **Solves handoff loss:** Current model is lossy (SESSION-HANDOFF.md summarizes, next session reconstructs). Rivet actors hold full session state in memory between orchestrator calls — no lossy handoff needed between orchestrator rounds within a workflow.
+- **Natural SPEC-001 orchestrator fit:** Each specialist brain (Coder, Donchian, Frontend) as a Rivet actor. Orchestrator sends CONTEXT-PACKs via HTTP, actor maintains working context, brain files on disk remain the durable knowledge layer. Clean separation: Rivet = working memory, brain files = long-term memory.
+- **Session routing:** Rivet natively routes follow-up requests to the same actor — exactly what multi-step specialist workflows need.
+- **Friction:** Adds runtime infrastructure to a deliberately zero-infrastructure system. Risk of state divergence between actor memory and brain files. Over-engineering at current scale (1 user, 49 files, sub-agent MVP).
+- **Verdict:** Phase 2+ infrastructure layer. Doesn't change brain architecture — changes the execution layer wrapping it.
+
 ## Action Taken
 
 Research completed and deposited. No implementation yet — evaluation deferred until Prover Phase 1 MVP validates the sub-agent approach. If sub-agents prove limiting (statelessness, lack of per-session tools), Sandbox Agent is the next candidate.

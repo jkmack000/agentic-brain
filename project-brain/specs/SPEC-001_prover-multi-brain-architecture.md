@@ -3,7 +3,7 @@
 <!-- created: 2026-02-17 -->
 <!-- updated: 2026-02-17 -->
 <!-- tags: prover, multi-brain, orchestrator, architecture, git-worktrees, sub-agents, coordination, backtesting -->
-<!-- links: SPEC-000, LEARN-024, LEARN-025, LEARN-026, LEARN-027, LEARN-028, LEARN-029, LEARN-031, LEARN-009, LEARN-011, LEARN-015 -->
+<!-- links: SPEC-000, LEARN-024, LEARN-025, LEARN-026, LEARN-027, LEARN-028, LEARN-029, LEARN-031, LEARN-009, LEARN-011, LEARN-015, LEARN-037 -->
 
 ## Overview
 
@@ -95,11 +95,20 @@ Orchestrator (main session)
 
 Full independent Claude Code sessions connected by shared task list + mailbox. Deferred until agent teams exits experimental (~7x token cost).
 
+### Option D: Sandbox Agent + Rivet Actors (LEARN-037)
+
+Sandbox Agent (sandboxagent.dev) provides a universal HTTP/SSE API for running coding agents in isolated sandboxes. Each specialist brain runs as a sandboxed agent session, controlled by the orchestrator over HTTP. Rivet actors provide session persistence and routing.
+
+- **Pro:** Session persistence (solves Option B statelessness), per-session MCP tools (brain-search per sandbox), agent-agnostic (swap models per brain), Inspector UI for debugging, RBAC security
+- **Con:** Additional infrastructure (runtime dependency), TypeScript SDK only (no Python), HTTP latency vs local sub-agents, v0.2.x maturity
+- **Rivet actors as brain execution layer:** Each specialist brain as a Rivet actor. Orchestrator sends CONTEXT-PACKs via HTTP, actor maintains working context between rounds, brain files on disk remain durable knowledge layer. Clean separation: Rivet = working memory, brain files = long-term memory. Natively handles session routing for multi-step specialist workflows.
+- **Verdict:** Phase 2+ candidate. Doesn't change brain architecture — changes the execution layer. Over-engineering at current scale.
+
 ### Recommended Progression
 
 **Phase 1 (MVP):** Option B (sub-agents). Zero infrastructure to build, native to Claude Code, adequate for single-session backtesting.
 
-**Phase 2 (Persistence):** Option A (worktrees). When multi-session tasks require persistent state, auditable results, or concurrent file editing.
+**Phase 2 (Persistence):** Option A (worktrees) or Option D (Sandbox Agent). When multi-session tasks require persistent state, auditable results, or per-session tools. Option D preferred if HTTP latency is acceptable and session persistence proves more valuable than git audit trail.
 
 ## Inter-Brain Communication Protocol
 
