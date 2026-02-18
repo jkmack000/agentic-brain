@@ -410,10 +410,10 @@ Every entry MUST answer: **"Do I need to open this file?"**
 - **Tags:** MCP, FastMCP, stdio, development, gotchas, regex, registration, claude-code
 - **Links:** CODE-001, LEARN-013, LEARN-019
 - **Backlinks:** _(none)_
-- **Summary:** Five practical gotchas discovered building the Brain MCP Server. (1) MCP SDK v1.26.0 current, FastMCP is inside official `mcp` package (not separate). (2) stdio servers must NEVER print() to stdout — corrupts JSON-RPC stream silently. (3) FastMCP `instructions` field critical for Tool Search discoverability — without it, tools may never auto-activate. (4) `claude mcp add` cannot run from inside Claude Code session (nested session blocked) — must use normal terminal or edit settings JSON directly. (5) DOTALL+MULTILINE regex unreliable for markdown section extraction — line-by-line heading parser is robust alternative. Key takeaway: MCP server development has a steep "last mile" with undocumented gotchas.
+- **Summary:** Eight practical gotchas discovered building the Brain MCP Server. (1) MCP SDK v1.26.0 current, FastMCP is inside official `mcp` package (not separate). (2) stdio servers must NEVER print() to stdout — corrupts JSON-RPC stream silently. (3) FastMCP `instructions` field critical for Tool Search discoverability — without it, tools may never auto-activate. (4) `claude mcp add` cannot run from inside Claude Code session (nested session blocked) — must use normal terminal or edit settings JSON directly. (5) DOTALL+MULTILINE regex unreliable for markdown section extraction — line-by-line heading parser is robust alternative. (6) **Missing dependencies = silent server death** — if venv lacks required packages, server dies on startup with no error shown to user; `uv sync` fixes it. (7) Registration ≠ functional — `claude mcp add` succeeding doesn't mean the server can start or tools will appear. (8) User-scope MCP config location is opaque — not in `settings.json` or `.mcp.json`, use `claude mcp list` to inspect. Key takeaway: check dependencies first when tools don't appear.
 - **Key decisions:** None — gotchas/patterns, not design decisions.
 - **Interface:** N/A (learning, not code)
-- **Known issues:** Gotcha #2 (stdout corruption) is the most dangerous — completely silent failure mode.
+- **Known issues:** Gotchas #2 (stdout corruption) and #6 (silent dependency failure) are the most dangerous — both completely silent failure modes.
 
 ---
 

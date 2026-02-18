@@ -5,7 +5,7 @@
 <!-- links: CODE-001, LEARN-013, LEARN-019 -->
 
 ## Context
-Discovered during development and registration of the Brain MCP Server (CODE-001). Five practical gotchas that affect anyone building MCP servers for Claude Code.
+Discovered during development and registration of the Brain MCP Server (CODE-001). Eight practical gotchas that affect anyone building MCP servers for Claude Code.
 
 ## Discoveries
 
@@ -40,9 +40,28 @@ Discovered during development and registration of the Brain MCP Server (CODE-001
 - Pattern: accumulate lines into current section buffer, flush when next heading encountered
 - This applies broadly to any markdown processing, not just MCP servers
 
+### 6. Missing Dependencies = Silent Server Death
+- If the MCP server's Python dependencies aren't installed in its venv, the server **dies silently on startup**
+- Claude Code does NOT surface MCP server startup errors — tools simply don't appear
+- Root cause in our case: `mcp[cli]>=1.26.0` was in `pyproject.toml` but `uv sync` had never been run after adding it
+- **Diagnosis:** Check `.venv/Lib/site-packages/` for the expected package dist-info
+- **Fix:** Run `uv --directory <project-dir> sync` from a normal terminal, then restart Claude Code
+- This is the most common "tools don't appear" failure — check dependencies first
+
+### 7. `claude mcp add` Registration ≠ Server Functional
+- `claude mcp add` succeeding (or saying "already exists") only means the registration entry is stored
+- It does NOT validate that the server can actually start or that its dependencies are installed
+- Always verify end-to-end: registration exists AND server starts AND tools appear in session
+
+### 8. `claude mcp add --scope user` Config Location is Opaque
+- User-scope MCP registrations are NOT stored in `~/.claude/settings.json` or `~/.claude/.mcp.json`
+- The actual storage location is internal to Claude Code (possibly in a SQLite DB or internal config)
+- Project-scope registrations go to `.mcp.json` in the project root
+- If you need to inspect/edit user-scope registrations, `claude mcp list` from a normal terminal is the only reliable method
+
 ## Key Takeaway
-MCP server development has a steep "last mile" — the protocol is well-documented but stdio transport, Tool Search integration, and registration workflow have undocumented gotchas that cost hours to diagnose.
+MCP server development has a steep "last mile" — the protocol is well-documented but stdio transport, Tool Search integration, dependency management, and registration workflow have undocumented gotchas that cost hours to diagnose. **Check dependencies first** when tools don't appear.
 
 ## Known Issues
 - None of these are bugs to report — they're design constraints requiring awareness
-- Gotcha #2 (stdout corruption) is the most dangerous — completely silent failure mode
+- Gotcha #2 (stdout corruption) and #6 (silent dependency failure) are the most dangerous — both completely silent failure modes

@@ -1,49 +1,42 @@
 # SESSION-HANDOFF
-<!-- written: 2026-02-18 00:10 -->
-<!-- session-type: BOOTSTRAP — Quick start + status + MCP troubleshoot -->
-<!-- trigger: stop hook -->
+<!-- written: 2026-02-18 -->
+<!-- session-type: TEST — MCP server live verification -->
+<!-- trigger: stop hook (session ending) -->
 
 ## What Was Being Done
-User said "bootstrap" — read SESSION-HANDOFF.md and INDEX-MASTER.md, summarized brain state. Ran `/brain-status` (51 files, healthy). User then reported botched MCP server registration (multi-line paste broke command). Investigated: confirmed brain MCP server NOT registered — only `tradingview` in `~/.claude/settings.json`. Provided corrected single-line command.
+Testing the Brain MCP server tools in a fresh Claude Code session. Previous session confirmed server code and dependencies were working but MCP tools only load at startup, so a restart was required.
 
 ## Current State
-- **Status:** PAUSED (no active task)
+- **Status:** COMPLETED
 - **What's done:**
-  - Brain bootstrapped and status checked (51 files, 0 orphans, 0 ghosts)
-  - Confirmed MCP server registration failed (not in settings.json)
-  - Provided corrected registration command to user
-- **What's left:**
-  - **Register MCP server** (from normal terminal, NOT Claude Code):
-    ```bash
-    claude mcp add --scope user brain -- uv --directory "C:\agentic-brain\project-brain" run brain-mcp-server.py
-    ```
-  - Start new session to verify MCP tools work
-  - 5 discoveries from last session still undeposited (see below)
-  - Fix INDEX-MASTER line 29 sub-index note ("15 files" → "16 files")
+  - Brain MCP Server fully operational — all 3 tools verified end-to-end
+  - `search_brain("hooks")` — 10 ranked results, correct BM25 ranking (LEARN-008: 10.1, LEARN-005: 9.7, LEARN-019: 9.2)
+  - `read_file("LEARN-041")` — full markdown content returned (~1176 tokens), formatting intact
+  - `get_index()` — complete INDEX-MASTER returned (~16K tokens), all sections present
+  - LOG-002 updated with verification entry
+  - `.mcp.json` present in repo root (project-scope registration)
+- **What's left:** Nothing — MCP server testing is complete
 
 ## Uncommitted Decisions
 - None
 
 ## Discoveries Not Yet Deposited
-All deposited as LEARN-041 (2026-02-18).
+- MCP server successfully serving all 3 tools — no new gotchas discovered (clean verification)
+- `.mcp.json` confirmed in repo root — user did switch to `--scope project` (resolves open question from previous handoff)
 
 ## Open Questions
-- All 26 carried forward from INDEX-MASTER (no changes this session)
+- None new this session
 
 ## Files Modified This Session
-- None (read-only session)
+- `project-brain/logs/LOG-002_project-timeline.md` — appended MCP server live verification entry
 
 ## Files Added to Brain This Session
-- None
+- None (verification session only)
 
-## Dead Ends
-- User's multi-line paste of `claude mcp add` command broke in terminal — must be pasted as single line
+## Dead Ends (if any)
+- None
 
 ## Recommended Next Session
 - **Type:** WORK
-- **Load:** INDEX-MASTER.md, CODE-001
-- **First action:**
-  1. Register MCP server from normal terminal (single-line paste)
-  2. Verify MCP tools in new Claude Code session
-  3. Deposit the 5 undeposited discoveries
-  4. Fix INDEX-MASTER line 29 sub-index note
+- **Load:** INDEX-MASTER.md, CODE-001 (Brain MCP Server design doc)
+- **First action:** With MCP server operational, the biggest infrastructure milestone is done. Next priorities from INDEX-MASTER open questions: Prover architecture work (OQs #1-4, #6-12, #23), or coder-brain Phase 2 ingestion (CCXT, VectorBT, Optuna). User's choice.

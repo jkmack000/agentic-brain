@@ -934,3 +934,35 @@ Running chronological record of all project sessions, milestones, ingestions, an
   - LOG-002 (this entry)
 - **Decisions made:** All 5 discoveries in one LEARN file (same development context, not worth splitting)
 - **Blockers/dead ends:** None
+
+### 2026-02-18 — VERIFY + DEPOSIT — MCP Server Dependency Fix Confirmed
+- **Duration:** ~5min
+- **Key actions:**
+  - User ran `uv --directory "C:\agentic-brain\project-brain" sync` — resolved 44 packages, mcp[cli] now installed
+  - Verified `from mcp.server.fastmcp import FastMCP` imports successfully
+  - Enriched LEARN-041 with 3 new gotchas (#6 silent dependency failure, #7 registration ≠ functional, #8 opaque user-scope config location) — now 8 gotchas total
+  - Updated INDEX-MASTER.md fat index entry for LEARN-041
+  - MCP server ready for live testing in next fresh session
+- **Files modified:**
+  - LEARN-041 (enriched: 5→8 gotchas)
+  - INDEX-MASTER.md (LEARN-041 entry updated)
+  - LOG-002 (this entry)
+  - SESSION-HANDOFF.md
+- **Decisions made:** None — verification and deposit session
+- **Blockers/dead ends:** Must start new Claude Code session to test MCP tools (tools loaded at startup only)
+
+### 2026-02-18 — TEST — Brain MCP Server Live Verification
+- **Duration:** ~5min
+- **Key actions:**
+  - Fresh session started — MCP tools loaded successfully at startup
+  - Tested all 3 MCP tools:
+    - `search_brain("hooks")` — returned 10 ranked results, top hits LEARN-008 (10.1), LEARN-005 (9.7), LEARN-019 (9.2). BM25 ranking correct.
+    - `read_file("LEARN-041")` — returned full markdown content (~1176 tokens), all 8 gotchas present with formatting intact.
+    - `get_index()` — returned complete INDEX-MASTER (~16K tokens), all sections present (SPEC, CODE, RULE, LEARN, Open Questions, Clusters, Tensions).
+  - All 3 tools operational end-to-end. Brain MCP Server is fully functional.
+  - `.mcp.json` confirmed present in repo root (user switched to project scope)
+- **Files created:** None
+- **Files modified:**
+  - LOG-002 (this entry)
+- **Decisions made:** None — verification session
+- **Blockers/dead ends:** None — MCP server fully operational

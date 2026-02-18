@@ -42,7 +42,8 @@
       "Bash(git add:*)",
       "Bash(git push:*)",
       "WebFetch(domain:sandboxagent.dev)",
-      "WebFetch(domain:pypi.org)"
+      "WebFetch(domain:pypi.org)",
+      "Bash(claude mcp list:*)"
     ]
   },
   "hooks": {
@@ -87,5 +88,8 @@
         ]
       }
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "brain"
+  ]
 }
