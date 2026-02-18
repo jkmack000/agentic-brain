@@ -993,3 +993,59 @@ Running chronological record of all project sessions, milestones, ingestions, an
 - **Blockers/dead ends:**
   - Stop hook blocking loop: hook fires → user rejects handoff write → hook fires again. Fixed by making hook advisory.
   - First batch of 3 agents killed during stop hook interference — had to re-launch all 3
+
+### 2026-02-18 — WORK — Coder Brain Quorum Sensing Propagation
+- **Duration:** ~20min
+- **Key actions:**
+  - Propagated quorum sensing infrastructure from agentic-brain SPEC-003 to coder-brain
+  - Created .claude/ directory with 4 behavioral rules + settings.local.json (hooks)
+  - Computed backlinks for all 18 coder-brain files from `<!-- links -->` frontmatter
+  - Added Open Questions (8), Tensions (2), and Clusters (6) sections to INDEX-MASTER
+  - Created LOG-002 project timeline with 4 backfilled entries
+  - Created archive/ directory, updated INIT.md with full session hygiene rules
+  - Committed and pushed coder-brain: 725e070
+  - Deposited LEARN-042: Bash tool Windows + cross-project gotchas
+- **Files created (in coder-brain):**
+  - .claude/rules/brain-session-hygiene.md
+  - .claude/rules/brain-fat-index-discipline.md
+  - .claude/rules/brain-ingestion-dedup.md
+  - .claude/rules/brain-deposit-as-you-go.md
+  - .claude/settings.local.json
+  - project-brain/logs/LOG-002_project-timeline.md
+  - project-brain/archive/.gitkeep
+- **Files modified (in coder-brain):**
+  - project-brain/INDEX-MASTER.md (backlinks, open Qs, tensions, clusters)
+  - project-brain/INIT.md (session hygiene rules, handoff triggers, shorthand commands)
+- **Files created (in agentic-brain):**
+  - LEARN-042 (Bash tool Windows gotchas — PowerShell $_ expansion, cross-project absolute paths)
+- **Files modified (in agentic-brain):**
+  - INDEX-MASTER.md (LEARN-042 entry, total-files 52→53)
+  - INDEX-claude-code.md (LEARN-019 backlinks += LEARN-042)
+  - LOG-002 (this entry)
+- **Decisions made:**
+  - Hooks config copied as-is from agentic-brain (proven working)
+  - SPEC-000 reference in fat-index-discipline rule changed to SPEC-001 for coder-brain context
+  - Tensions table seeded with 2 real tensions (trailing stop mode, ccxt security)
+- **Gotchas discovered:**
+  - PowerShell `$_.Name` in Bash tool silently fails (bash expands `$_` first)
+  - Python one-liners are the reliable workaround for file iteration on Windows
+  - File tools accept absolute paths to any directory — no need to clone repos
+
+### 2026-02-18 — DEPOSIT — Docling + Brain-as-Context-Multiplier Insights
+- **Duration:** ~15min
+- **Key actions:**
+  - Evaluated Docling (IBM document parsing library) for brain relevance — deposited as tool reference LEARN-043
+  - Evaluated AWS RAG explainer — skipped (no novel content, brain already has deeper coverage)
+  - Discussion with user surfaced key architectural insight: brain is a context multiplier, not RAG
+  - Deposited LEARN-044 covering: brain vs RAG divergences, structured attention (focus/orientation/awareness), superlinear scaling with context, counter-intuitive finding that brain matters more on small context
+- **Files created:**
+  - LEARN-043 (Docling document parsing library — tool reference)
+  - LEARN-044 (Brain as context multiplier, not RAG — architectural insight)
+- **Files modified:**
+  - INDEX-MASTER.md (2 new entries, total-files 52→55)
+  - indexes/INDEX-claude-code.md (LEARN-019 backlinks += LEARN-042)
+  - LOG-002 (this entry + previous entry for quorum sensing)
+  - SESSION-HANDOFF.md
+- **Decisions made:**
+  - Don't chase vector embeddings as replacement for fat indexes — they solve different problems
+  - Invest in topology (backlinks, clusters, tensions) as the brain's unique advantage

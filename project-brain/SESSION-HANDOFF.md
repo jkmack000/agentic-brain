@@ -1,45 +1,54 @@
 # SESSION-HANDOFF
 <!-- written: 2026-02-18 -->
-<!-- session-type: WORK — MCP verification + Coder brain Phase 2 ingestion -->
+<!-- session-type: WORK — Coder Brain Quorum Sensing + Knowledge Deposits -->
 <!-- trigger: user request -->
 
 ## What Was Being Done
-Two tasks this session: (1) verify Brain MCP Server works in fresh session, (2) Phase 2 ingestion for coder-brain.
+Three phases this session: (1) propagated quorum sensing infrastructure to coder-brain, (2) deposited bash/Windows gotchas, (3) evaluated external resources and deposited architectural insights about brain vs RAG.
 
 ## Current State
-- **Status:** COMPLETED — both tasks done
-- **MCP Server:** All 3 tools verified (search_brain, read_file, get_index). Committed e3b54e4, pushed.
-- **Coder Brain Phase 2:** 4 LEARN files written (LEARN-008 through LEARN-011). Committed 664a812, pushed.
-- **Stop Hook:** Fixed from blocking to advisory (sys.exit(2) → sys.exit(0)). Takes effect next session.
+- **Status:** COMPLETED — all work done, deposits made, timeline updated
 
 ## What's Done (Cumulative)
-- Brain MCP Server fully operational (search, read, index)
-- Coder-brain at 18 files (Phase 1 complete: Freqtrade seed, Phase 2 complete: CCXT, VectorBT, Optuna, pytest)
-- Agentic-brain at 52 files with full quorum sensing (P0-P3), sub-indexes, backlinks, vitality scoring
-- Stop hook is now advisory (warns but doesn't block exit)
+- Agentic-brain at 55 files with full quorum sensing (P0-P3), sub-indexes, backlinks, vitality scoring
+- Coder-brain at 19 files with quorum sensing (backlinks, 8 open Qs, 2 tensions, 6 clusters, .claude/ rules + hooks)
+- Brain MCP Server fully operational
+- Stop hook is advisory (warns but doesn't block exit)
+- Key architectural insight deposited: brain is a context multiplier, not RAG (LEARN-044)
 
 ## What's Left
-- Phase 3 ingestion for coder-brain (error patterns from production — deferred until strategies are actually generated)
-- Prover architecture open questions (#1-4, #6-12, #23 in INDEX-MASTER)
+- **Coder-brain verification** — open Claude Code in `C:\coder-brain`, confirm rules load, hooks fire, `/brain-status` works
+- Phase 3 ingestion for coder-brain (error patterns from production)
 - Install MCP brain into coder-brain when it hits ~30+ files
+- Prover architecture open questions (#1-4, #6-12, #23 in INDEX-MASTER)
+- No empirical measurement of brain's context savings vs naive loading (noted in LEARN-044)
 
 ## Uncommitted Decisions
-- None
+- None — all deposited
 
 ## Discoveries Not Yet Deposited
-- Option B pattern for cross-brain ingestion (stay in source brain with MCP, write into target remotely) — could be deposited as a LEARN if pattern reused
-- Stop hook blocking loop is a usability anti-pattern — advisory hooks are better for session management
-
-## Open Questions
-- None new
+- Option B pattern for cross-brain ingestion (stay in source brain with MCP, write into target remotely) — deposit as LEARN if pattern reused
+- Advisory hooks > blocking hooks for session management UX — in LOG-002 but not standalone LEARN
 
 ## Files Modified This Session
-- .claude/settings.local.json (stop hook fix)
-- project-brain/logs/LOG-002_project-timeline.md (2 entries: MCP verification + Phase 2 ingestion)
-- project-brain/SESSION-HANDOFF.md (this file)
-- coder-brain: LEARN-008, LEARN-009, LEARN-010, LEARN-011, INDEX-MASTER.md
+- **Agentic-brain:**
+  - LEARN-042 (created — bash Windows gotchas)
+  - LEARN-043 (created — Docling tool reference)
+  - LEARN-044 (created — brain as context multiplier)
+  - INDEX-MASTER.md (3 new entries, total-files 52→55, LEARN-019 backlinks)
+  - indexes/INDEX-claude-code.md (LEARN-019 backlinks updated)
+  - logs/LOG-002 (2 timeline entries)
+  - SESSION-HANDOFF.md (this file)
+- **Coder-brain (C:\coder-brain):**
+  - .claude/rules/ (4 files created)
+  - .claude/settings.local.json (created)
+  - CLAUDE.md (updated rules reference)
+  - project-brain/INDEX-MASTER.md (backlinks, open Qs, tensions, clusters)
+  - project-brain/INIT.md (session hygiene rules)
+  - project-brain/logs/LOG-002_project-timeline.md (created)
+  - project-brain/archive/.gitkeep (created)
 
 ## Recommended Next Session
-- **Type:** WORK
+- **Type:** WORK or VERIFY
 - **Load:** INDEX-MASTER.md
-- **First action:** User's choice — Prover architecture (open questions), more coder-brain work, or something new
+- **Priority:** Verify coder-brain in a session opened from `C:\coder-brain`

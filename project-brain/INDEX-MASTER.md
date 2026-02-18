@@ -1,7 +1,7 @@
 # INDEX-MASTER
 <!-- type: INDEX -->
 <!-- updated: 2026-02-18 -->
-<!-- total-files: 52 (36 in INDEX-MASTER + 16 in INDEX-claude-code) -->
+<!-- total-files: 55 (39 in INDEX-MASTER + 16 in INDEX-claude-code) -->
 <!-- Load this file at the start of every Claude Code session. -->
 
 ## How to Use This Index
@@ -414,6 +414,39 @@ Every entry MUST answer: **"Do I need to open this file?"**
 - **Key decisions:** None — gotchas/patterns, not design decisions.
 - **Interface:** N/A (learning, not code)
 - **Known issues:** Gotchas #2 (stdout corruption) and #6 (silent dependency failure) are the most dangerous — both completely silent failure modes.
+
+### LEARN-042
+- **Type:** LEARN
+- **File:** learnings/LEARN-042_bash-tool-windows-cross-project-gotchas.md
+- **Tags:** claude-code, bash, windows, powershell, cross-project, file-operations, gotchas
+- **Links:** LEARN-019, RULE-001, LEARN-010
+- **Backlinks:** _(none)_
+- **Summary:** Two gotchas from cross-project operations on Windows: (1) PowerShell `$_.Name`/`$_.FullName` inside Bash tool fails silently because bash expands `$_` first — use `-Name` flag or Python `os.walk()` instead. (2) Claude Code file tools (Read/Write/Edit/Glob) accept absolute paths to ANY directory — no need to clone repos when operating cross-project. Pattern: use file tools for reads/writes, bash with `cd` only for git operations. Python beats PowerShell for anything with iteration/variables on Windows Bash tool.
+- **Key decisions:** None — gotchas/patterns.
+- **Interface:** N/A (learning)
+- **Known issues:** Glob with cross-drive paths (D:\, E:\) untested.
+
+### LEARN-043
+- **Type:** LEARN
+- **File:** learnings/LEARN-043_docling-document-parsing-library.md
+- **Tags:** docling, document-parsing, PDF, OCR, markdown, ingestion, MCP, IBM, tool
+- **Links:** LEARN-001
+- **Backlinks:** _(none)_
+- **Summary:** Docling — IBM Research's open-source document parsing library (MIT, 15K+ stars). Converts PDF (with OCR + layout analysis), DOCX, PPTX, XLSX, images, audio into Markdown/JSON. Has MCP server for agent integration. Use case for brain: pre-processing step when ingesting knowledge from formats the LLM can't read directly (scanned PDFs, complex tables, slides). Heavy deps (~1-2GB models on first run) — only needed for complex formats, not plain text.
+- **Key decisions:** None — resource/tool reference.
+- **Interface:** `pip install docling` / `uv add docling`. Input: file path. Output: Markdown/JSON.
+- **Known issues:** Heavy dependency tree. First run downloads models. Overkill for simple text.
+
+### LEARN-044
+- **Type:** LEARN
+- **File:** learnings/LEARN-044_brain-as-context-multiplier-not-rag.md
+- **Tags:** architecture, RAG, context-window, scaling, attention, knowledge-management, fat-index, progressive-disclosure, quorum-sensing
+- **Links:** SPEC-000, LEARN-001, LEARN-002, LEARN-023, LEARN-030, LEARN-040, SPEC-003
+- **Backlinks:** _(none)_
+- **Summary:** The Project Brain is not RAG — it's a context multiplier. Diverges from classical RAG in 6 dimensions: no embeddings (BM25 + LLM judgment), atomic files not chunks, bidirectional writes, topology-based retrieval (backlinks/clusters/tensions), progressive disclosure, LLM-as-reranker. Provides three levels of structured attention: focus (what to look at), orientation (what matters for this task), awareness (what you don't know). Scales superlinearly with context growth (cross-file reasoning, ingestion quality) but ceiling at ~80% fill due to lost-in-the-middle degradation. Counter-intuitive finding: brain matters MORE on small context — fat index gives 54-file map for 3% of budget, progressive disclosure saves ~10:1 tokens. Core insight: multipliers matter most when the base is small.
+- **Key decisions:** Don't chase vector embeddings as replacement for fat indexes. Invest in topology (backlinks, clusters, tensions) — the brain's unique advantage over flat retrieval.
+- **Interface:** N/A (architectural insight)
+- **Known issues:** No empirical measurement of context savings vs naive loading. "Lost in the middle" numbers from 2024 research — may improve.
 
 ---
 
