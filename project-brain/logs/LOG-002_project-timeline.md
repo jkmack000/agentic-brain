@@ -916,3 +916,21 @@ Running chronological record of all project sessions, milestones, ingestions, an
 - **Blockers/dead ends:**
   - DOTALL+MULTILINE regex for section extraction failed on real files — fixed with line-by-line parser
   - Server not yet registered or tested in live Claude Code session
+
+### 2026-02-18 — DEPOSIT — Undeposited MCP Server Development Discoveries
+- **Duration:** ~5min
+- **Key actions:**
+  - Deposited 5 discoveries carried forward from previous sessions into LEARN-041
+  - MCP SDK v1.26.0 / FastMCP location, stdio stdout corruption, FastMCP instructions field, nested `claude mcp add`, regex vs line-by-line parsing
+  - Updated INDEX-MASTER.md: new fat index entry, backlinks on CODE-001/LEARN-013/LEARN-019, total 51→52
+  - Fixed INDEX-MASTER sub-index note ("15 files" → "16 files" for claude-code cluster)
+  - Cleared "Discoveries Not Yet Deposited" section in SESSION-HANDOFF.md
+- **Files created:**
+  - LEARN-041 (MCP server development gotchas — 5 practical discoveries)
+- **Files modified:**
+  - INDEX-MASTER.md (LEARN-041 entry, backlinks, total-files 51→52, sub-index squeeze point note fixed)
+  - indexes/INDEX-claude-code.md (backlinks on LEARN-013, LEARN-019)
+  - SESSION-HANDOFF.md (undeposited discoveries cleared)
+  - LOG-002 (this entry)
+- **Decisions made:** All 5 discoveries in one LEARN file (same development context, not worth splitting)
+- **Blockers/dead ends:** None

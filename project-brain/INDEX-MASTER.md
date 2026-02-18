@@ -1,7 +1,7 @@
 # INDEX-MASTER
 <!-- type: INDEX -->
-<!-- updated: 2026-02-17 -->
-<!-- total-files: 51 (35 in INDEX-MASTER + 16 in INDEX-claude-code) -->
+<!-- updated: 2026-02-18 -->
+<!-- total-files: 52 (36 in INDEX-MASTER + 16 in INDEX-claude-code) -->
 <!-- Load this file at the start of every Claude Code session. -->
 
 ## How to Use This Index
@@ -26,7 +26,7 @@ Every entry MUST answer: **"Do I need to open this file?"**
 - **File:** indexes/INDEX-claude-code.md
 - **Members:** 16 files (LEARN-004, 005, 006, 007, 008, 009, 010, 013, 014, 015, 016, 017, 018, 019, 039, LOG-003)
 - **Summary:** Claude Code internals — memory, skills, hooks, subagents, MCP, agent SDK, plugins, costs, workflows, architecture, brain integration. Load the sub-index when working on Claude Code integration tasks.
-- **Squeeze point:** Active — 15 files with overlapping summaries, largest cluster (31% of brain)
+- **Squeeze point:** Active — 16 files with overlapping summaries, largest cluster (31% of brain)
 
 ---
 
@@ -85,7 +85,7 @@ Every entry MUST answer: **"Do I need to open this file?"**
 - **File:** code/CODE-001_brain-mcp-server.md
 - **Tags:** MCP, server, brain-search, tools, resources, prompts, stdio, BM25, implementation
 - **Links:** LEARN-013, LEARN-028, LEARN-030, LEARN-040, SPEC-000
-- **Backlinks:** _(none)_
+- **Backlinks:** LEARN-041
 - **Summary:** Design doc + full implementation for the Brain MCP Server — exposes Project Brain to Claude Code via MCP protocol. Three tools: `search_brain` (BM25 search, ~2K tokens/query), `read_file` (load brain file by ID with optional section filter), `get_index` (full INDEX-MASTER). Three resources: `brain://index`, `brain://file/{file_id}`, `brain://handoff`. Two prompts: `search`, `status`. stdio transport, user scope, imports brain.py for BM25 search. Actual server implemented at `project-brain/brain-mcp-server.py`. Token budget: ~4-6K per search+read vs 100K+ loading files directly. Registration: `claude mcp add --scope user brain -- uv --directory <brain-dir> run brain-mcp-server.py`.
 - **Key decisions:** Reuse brain.py (no search duplication), stdio transport (simplest), user scope (cross-project), 3 tools only (lean tool descriptions), section filtering for token savings.
 - **Interface:** MCP tools: `search_brain(query, limit)`, `read_file(file_id, section)`, `get_index()`. MCP resources: `brain://index`, `brain://file/{id}`, `brain://handoff`. MCP prompts: `search(query)`, `status()`.
@@ -403,6 +403,17 @@ Every entry MUST answer: **"Do I need to open this file?"**
 - **Key decisions:** MCP Memory Server identified as highest-leverage improvement. Prompt caching as immediate cost win. Vector search deferred until BM25 proves insufficient.
 - **Interface:** N/A (learning, not code)
 - **Known issues:** None of the 9 strategies are implemented yet (except Options 3 and 4 which already exist). MCP server design needed as next step.
+
+### LEARN-041
+- **Type:** LEARN
+- **File:** learnings/LEARN-041_mcp-server-development-gotchas.md
+- **Tags:** MCP, FastMCP, stdio, development, gotchas, regex, registration, claude-code
+- **Links:** CODE-001, LEARN-013, LEARN-019
+- **Backlinks:** _(none)_
+- **Summary:** Five practical gotchas discovered building the Brain MCP Server. (1) MCP SDK v1.26.0 current, FastMCP is inside official `mcp` package (not separate). (2) stdio servers must NEVER print() to stdout — corrupts JSON-RPC stream silently. (3) FastMCP `instructions` field critical for Tool Search discoverability — without it, tools may never auto-activate. (4) `claude mcp add` cannot run from inside Claude Code session (nested session blocked) — must use normal terminal or edit settings JSON directly. (5) DOTALL+MULTILINE regex unreliable for markdown section extraction — line-by-line heading parser is robust alternative. Key takeaway: MCP server development has a steep "last mile" with undocumented gotchas.
+- **Key decisions:** None — gotchas/patterns, not design decisions.
+- **Interface:** N/A (learning, not code)
+- **Known issues:** Gotcha #2 (stdout corruption) is the most dangerous — completely silent failure mode.
 
 ---
 

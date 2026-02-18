@@ -105,7 +105,7 @@ This sub-index contains fat index entries for the `claude-code` cluster — 16 f
 - **File:** learnings/LEARN-013_claude-code-mcp-system.md
 - **Tags:** claude-code, MCP, model-context-protocol, transports, tools, resources, prompts, brain-server
 - **Links:** SPEC-000, LEARN-002, LEARN-005, LEARN-008, LEARN-010
-- **Backlinks:** LEARN-005, LEARN-010, LEARN-014, LEARN-016, LEARN-023, LEARN-028, LEARN-040, CODE-001
+- **Backlinks:** LEARN-005, LEARN-010, LEARN-014, LEARN-016, LEARN-023, LEARN-028, LEARN-040, CODE-001, LEARN-041
 - **Vitality:** 27.0
 - **Summary:** Comprehensive MCP reference from official docs. Three transport types (HTTP recommended, SSE deprecated, stdio for local). Three scoping levels (local > project > user) with `.mcp.json` format supporting `${VAR:-default}` env var expansion. OAuth 2.0 and header-based auth. Output limits (10K warning, 25K max, `MAX_MCP_OUTPUT_TOKENS` override). Tool Search auto-activates at 10% context to defer MCP tools (requires Sonnet 4+/Opus 4+). MCP Resources as @-mentionable attachments (`@server:protocol://path`). MCP Prompts as slash commands (`/mcp__server__prompt`). `claude mcp serve` exposes Claude as MCP server. Plugin-bundled servers with `${CLAUDE_PLUGIN_ROOT}`. Enterprise managed MCP with allowlist/denylist. Anthropic MCP Registry API. **Brain MCP server architecture fully viable:** stdio transport, tools (search/read/index), resources (@-mentionable brain files), prompts (slash-command workflows), user-scoped cross-project.
 - **Key decisions:** Brain MCP server confirmed as high-priority implementation target (validates LEARN-002 #1 ranking).
@@ -177,7 +177,7 @@ This sub-index contains fat index entries for the `claude-code` cluster — 16 f
 - **File:** learnings/LEARN-019_claude-code-brain-integration-layers-1-3.md
 - **Tags:** claude-code, integration, CLAUDE-md, rules, skills, hooks, automation, brain-delivery, testing, windows, matcher-format
 - **Links:** SPEC-000, LEARN-005, LEARN-006, LEARN-007, LEARN-008, LOG-003
-- **Backlinks:** RULE-001, RULE-003, RULE-004, LEARN-034
+- **Backlinks:** RULE-001, RULE-003, RULE-004, LEARN-034, LEARN-041
 - **Vitality:** 23.5
 - **Summary:** Documents implementation AND test results of Claude Code native integration (Layers 1-3). Eight files: CLAUDE.md (@path import of INIT.md), 3 rules, 4 skills, 4 hooks. **Tested:** Layer 1 (CLAUDE.md + rules) fully working including @path with spaces in Windows paths. Layer 2 (skills) all 4 working after fixing `disable-model-invocation: true → false`; skills also fail CLI `/` resolution when project path contains spaces — workaround is copying to user-level `~/.claude/skills/`. Layer 3 (hooks) **CRITICAL FIX:** `matcher` must be a string regex or omitted — using JSON objects (`{}`, `{"tools": [...]}`) causes a Settings Error that silently disables ALL hooks. Stop hook FAILED due to this — session exited without blocking. Fixed: PostToolUse matcher changed to `"Edit|Write"` string; all other matchers omitted. Contains gotchas section covering: `disable-model-invocation` visibility, `chr(92)` pattern, hooks snapshot at startup, hooks format migration (corrected), and skills spaces-in-path bug.
 - **Key decisions:** @path imports INIT.md (not INDEX-MASTER — too large); `disable-model-invocation: false`; PostToolUse uses `"Edit|Write"` string matcher + `chr(92)` path normalization; hooks use matcher-based format with **string matchers only**; skills copied to user-level `~/.claude/skills/` for CLI resolution.
