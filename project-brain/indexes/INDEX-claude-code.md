@@ -105,7 +105,7 @@ This sub-index contains fat index entries for the `claude-code` cluster — 16 f
 - **File:** learnings/LEARN-013_claude-code-mcp-system.md
 - **Tags:** claude-code, MCP, model-context-protocol, transports, tools, resources, prompts, brain-server
 - **Links:** SPEC-000, LEARN-002, LEARN-005, LEARN-008, LEARN-010
-- **Backlinks:** LEARN-005, LEARN-010, LEARN-014, LEARN-016, LEARN-023, LEARN-028
+- **Backlinks:** LEARN-005, LEARN-010, LEARN-014, LEARN-016, LEARN-023, LEARN-028, LEARN-040, CODE-001
 - **Vitality:** 27.0
 - **Summary:** Comprehensive MCP reference from official docs. Three transport types (HTTP recommended, SSE deprecated, stdio for local). Three scoping levels (local > project > user) with `.mcp.json` format supporting `${VAR:-default}` env var expansion. OAuth 2.0 and header-based auth. Output limits (10K warning, 25K max, `MAX_MCP_OUTPUT_TOKENS` override). Tool Search auto-activates at 10% context to defer MCP tools (requires Sonnet 4+/Opus 4+). MCP Resources as @-mentionable attachments (`@server:protocol://path`). MCP Prompts as slash commands (`/mcp__server__prompt`). `claude mcp serve` exposes Claude as MCP server. Plugin-bundled servers with `${CLAUDE_PLUGIN_ROOT}`. Enterprise managed MCP with allowlist/denylist. Anthropic MCP Registry API. **Brain MCP server architecture fully viable:** stdio transport, tools (search/read/index), resources (@-mentionable brain files), prompts (slash-command workflows), user-scoped cross-project.
 - **Key decisions:** Brain MCP server confirmed as high-priority implementation target (validates LEARN-002 #1 ranking).

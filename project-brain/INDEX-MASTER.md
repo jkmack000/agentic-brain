@@ -1,7 +1,7 @@
 # INDEX-MASTER
 <!-- type: INDEX -->
 <!-- updated: 2026-02-17 -->
-<!-- total-files: 49 (33 in INDEX-MASTER + 16 in INDEX-claude-code) -->
+<!-- total-files: 51 (35 in INDEX-MASTER + 16 in INDEX-claude-code) -->
 <!-- Load this file at the start of every Claude Code session. -->
 
 ## How to Use This Index
@@ -37,7 +37,7 @@ Every entry MUST answer: **"Do I need to open this file?"**
 - **File:** specs/SPEC-000_project-brain-architecture.md
 - **Tags:** architecture, overview, memory-system, fat-index, master-spec
 - **Links:** _(foundational — linked by everything)_
-- **Backlinks:** SPEC-001, SPEC-003, LEARN-001, LEARN-002, LEARN-003, LEARN-004, LEARN-005, LEARN-006, LEARN-007, LEARN-008, LEARN-009, LEARN-010, LEARN-011, LEARN-012, LEARN-013, LEARN-014, LEARN-015, LEARN-016, LEARN-017, LEARN-018, LEARN-019, LEARN-020, LEARN-021, LEARN-022, LEARN-023, LEARN-024, LEARN-025, LEARN-030, LEARN-031, LEARN-032, LEARN-033, LEARN-034, LOG-001, LOG-002, LOG-003 _(35 inbound — foundational hub)_
+- **Backlinks:** SPEC-001, SPEC-003, CODE-001, LEARN-001, LEARN-002, LEARN-003, LEARN-004, LEARN-005, LEARN-006, LEARN-007, LEARN-008, LEARN-009, LEARN-010, LEARN-011, LEARN-012, LEARN-013, LEARN-014, LEARN-015, LEARN-016, LEARN-017, LEARN-018, LEARN-019, LEARN-020, LEARN-021, LEARN-022, LEARN-023, LEARN-024, LEARN-025, LEARN-030, LEARN-031, LEARN-032, LEARN-033, LEARN-034, LEARN-040, LOG-001, LOG-002, LOG-003 _(37 inbound — foundational hub)_
 - **Summary:** Defines the entire Project Brain LLM memory system. Covers fat indexing methodology, file type system (SPEC/CODE/RULE/LEARN/LOG/RESET), directory structure, session workflows (search → reset → work), brain-search.py CLI spec, and the phase plan. First application target is a multi-timeframe Donchian trading bot. This is the root document — load it to understand how the memory system works.
 - **Key decisions:** Fat index over thin index; standalone CLI over Obsidian plugin; search/work session split; typed file system with 6 types; hierarchical index navigation for scale.
 - **Interface:** N/A (architecture spec, not code)
@@ -48,7 +48,7 @@ Every entry MUST answer: **"Do I need to open this file?"**
 - **File:** specs/SPEC-001_prover-multi-brain-architecture.md
 - **Tags:** prover, multi-brain, orchestrator, architecture, git-worktrees, sub-agents, coordination, backtesting
 - **Links:** SPEC-000, LEARN-024, LEARN-025, LEARN-026, LEARN-027, LEARN-028, LEARN-029, LEARN-031, LEARN-009, LEARN-011, LEARN-015, LEARN-037
-- **Backlinks:** SPEC-002, LEARN-025, LEARN-026, LEARN-027, LEARN-028, LEARN-029, LEARN-037, LEARN-038
+- **Backlinks:** SPEC-002, LEARN-025, LEARN-026, LEARN-027, LEARN-028, LEARN-029, LEARN-037, LEARN-038, LEARN-040
 - **Summary:** Definitive architecture for Prover — the multi-brain backtesting system. Incorporates findings from LEARN-025 through LEARN-031 and LEARN-037. Defines 5 brains with roles. **Each agent = own project + own brain** (not brains within a shared project — token-efficient, each agent loads only its own brain). Four coordination options: (A) git worktrees, (B) sub-agents, (C) agent teams, (D) Sandbox Agent + Rivet actors (LEARN-037). Recommended progression: B→A or D. CONTEXT-PACK v2 and RESULT v2 inter-brain protocol with YAML frontmatter, token budgets (~750/~1500 tokens), capability advertisement headers. Two-phase backtesting pipeline: VectorBT screening → Freqtrade validation → CPCV robust validation (PBO < 0.5 hard gate). Freqtrade IStrategy as AI-friendly strategy abstraction. Git worktree layout: bare repo with peer worktrees, `agent/<brain>/<task-id>` branch naming, `--no-ff` merges, orchestrator-only brain writes. Fan-out/fan-in orchestration with reducer merge, maker-checker quality gates, circuit breakers (3 failures → degrade). Six Prover guard rails as RULE files (max budget, PBO gate, thesis-before-search, fixed validation, convergence caps, narrative check). Coder brain design informed by Context7 (two-tool resolution, token-budgeted reads). Scaling thresholds from 50 to 1000+ files with consolidation cadence.
 - **Key decisions:** Option B first, evolve to A; orchestrator-only brain writes; YAML+markdown for inter-brain protocol; VectorBT+Freqtrade+CPCV stack; PBO < 0.5 hard gate; economic thesis required before parameter search; centralized INDEX-MASTER (Gap 5 resolved); code-level orchestration + LLM flexibility in specialists.
 - **Interface:** Defines CONTEXT-PACK v2 (orchestrator→specialist, ~750 tokens) and RESULT v2 (specialist→orchestrator, ~1500 tokens) message formats with YAML frontmatter.
@@ -79,7 +79,17 @@ Every entry MUST answer: **"Do I need to open this file?"**
 ---
 
 ## CODE Files
-_None yet._
+
+### CODE-001
+- **Type:** CODE
+- **File:** code/CODE-001_brain-mcp-server.md
+- **Tags:** MCP, server, brain-search, tools, resources, prompts, stdio, BM25, implementation
+- **Links:** LEARN-013, LEARN-028, LEARN-030, LEARN-040, SPEC-000
+- **Backlinks:** _(none)_
+- **Summary:** Design doc + full implementation for the Brain MCP Server — exposes Project Brain to Claude Code via MCP protocol. Three tools: `search_brain` (BM25 search, ~2K tokens/query), `read_file` (load brain file by ID with optional section filter), `get_index` (full INDEX-MASTER). Three resources: `brain://index`, `brain://file/{file_id}`, `brain://handoff`. Two prompts: `search`, `status`. stdio transport, user scope, imports brain.py for BM25 search. Actual server implemented at `project-brain/brain-mcp-server.py`. Token budget: ~4-6K per search+read vs 100K+ loading files directly. Registration: `claude mcp add --scope user brain -- uv --directory <brain-dir> run brain-mcp-server.py`.
+- **Key decisions:** Reuse brain.py (no search duplication), stdio transport (simplest), user scope (cross-project), 3 tools only (lean tool descriptions), section filtering for token savings.
+- **Interface:** MCP tools: `search_brain(query, limit)`, `read_file(file_id, section)`, `get_index()`. MCP resources: `brain://index`, `brain://file/{id}`, `brain://handoff`. MCP prompts: `search(query)`, `status()`.
+- **Known issues:** rank-bm25 must be available at import time. INDEX-MASTER at ~8K tokens may approach tool output warning threshold. Resource template parameters need Claude Code autocomplete verification.
 
 ---
 
@@ -150,7 +160,7 @@ _None yet._
 - **File:** learnings/LEARN-002_competitive-landscape-memory-indexing-systems.md
 - **Tags:** competitive-analysis, memory-systems, indexing, MCP, RAPTOR, GraphRAG, Letta, Mem0, context-engineering
 - **Links:** SPEC-000, LEARN-001, LOG-001
-- **Backlinks:** LEARN-004, LEARN-011, LEARN-020, LEARN-021, LEARN-022, LEARN-023, LEARN-024, LEARN-026, LEARN-028, LEARN-031, LEARN-032
+- **Backlinks:** LEARN-004, LEARN-011, LEARN-020, LEARN-021, LEARN-022, LEARN-023, LEARN-024, LEARN-026, LEARN-028, LEARN-031, LEARN-032, LEARN-040
 - **Summary:** Feb 2026 survey of LLM memory/indexing systems. Key finding: Letta's Context Repositories independently converged on our architecture (git-backed, file-based, progressive disclosure) — strong validation. Our 44:1 compression beats automated approaches (6-20x). Top 3 actionable improvements: (1) **MCP server wrapper for brain.py** — biggest gap, entire ecosystem converging on MCP; (2) **Formalize consolidation as ADD/UPDATE/DELETE/NOOP** — from Mem0; (3) **Git-commit every deposit** — from Letta. Also covers RAPTOR (tree-of-summaries), GraphRAG, Zep (temporal provenance), ACE (context collapse prevention), and "lost in the middle" research (critical info at top/bottom of context). Brain Hub concept (LOG-001) validated by MemOS and OpenMemory market demand.
 - **Key decisions:** MCP wrapper is #1 priority for brain system after Donchian bot MVP. Top 10 improvements ranked by impact/effort.
 - **Interface:** N/A (learning, not code)
@@ -275,7 +285,7 @@ _None yet._
 - **File:** learnings/LEARN-028_context7-architecture-analysis.md
 - **Tags:** context7, MCP, library-docs, architecture, search, reranking, coder-brain, upstash, vector-search
 - **Links:** LEARN-013, LEARN-002, LEARN-023, SPEC-001
-- **Backlinks:** SPEC-002
+- **Backlinks:** SPEC-002, LEARN-040, CODE-001
 - **Summary:** Architecture analysis of Context7 (Upstash) — MCP server providing up-to-date library docs to AI coding assistants. 33K+ libraries indexed on 10-15 day rolling crawl. Split architecture: thin open-source MCP client (2 tools, ~2 files of logic) + thick proprietary backend (crawling, parsing, LLM enrichment, Upstash Vector multi-model embeddings, c7score 5-metric reranker, Redis cache). Two MCP tools: `resolve-library-id` (maps to fat-index search) and `get-library-docs` (maps to brain file read, with token budget parameter). 5-stage data pipeline: parse → enrich (LLM adds explanations) → vectorize (adaptive models by content complexity) → rerank (c7score) → cache. Recent architecture update achieved 65% token reduction and 38% latency reduction by moving filtering from LLM to backend. Seven patterns transferable to Coder brain: two-tool resolution, token-budgeted responses, query-aware reranking, enrichment at index time (=fat index), backend filtering > LLM filtering, adaptive embeddings, rolling freshness. **Context7 and Coder brain are complementary**: Context7 answers "how does this library work?" while brain answers "how does OUR project use it and why?" Ideal: both as MCP servers to same AI assistant.
 - **Key decisions:** Context7 validates brain MCP server design (two-tool pattern, token budgets, pre-enrichment). Recommended integration: Context7 for external library docs + Coder brain for project-specific knowledge. Six concrete next steps for brain MCP server informed by Context7 patterns.
 - **Interface:** N/A (learning, not code)
@@ -286,7 +296,7 @@ _None yet._
 - **File:** learnings/LEARN-024_context-repositories-and-context-engineering-patterns.md
 - **Tags:** context-repositories, context-engineering, letta, memgpt, anthropic, memory-architecture, git-worktrees, progressive-disclosure, compaction, sub-agents
 - **Links:** LEARN-002, LEARN-004, LEARN-005, LEARN-011, SPEC-000
-- **Backlinks:** LEARN-026, LEARN-027, LEARN-029, SPEC-001
+- **Backlinks:** LEARN-026, LEARN-027, LEARN-029, SPEC-001, LEARN-040
 - **Summary:** Deep dive into Letta's Context Repositories blog post + embedded links (Anthropic context engineering framework, MemGPT paper, Letta Code docs/repo). Extends LEARN-002/011 with 17 specific new patterns not previously deposited. Letta implementation details: git worktrees for multi-agent isolation, background reflection (auto-deposit), memory defragmentation as first-class operation, `system/` always-loaded directory, YAML frontmatter per file, concurrent subagent initialization. Anthropic framework details: attention budget as n² cost, context rot as gradient (not cliff), compaction art (recall vs precision), sub-agent 10-20x compression ratio (1-2K token returns), Goldilocks zone for system prompts, hybrid pre-load + JIT approach. MemGPT: interrupt-based control flow, virtual context illusion. Includes full comparison table (our brain vs Letta vs Anthropic patterns) and 5-item gap analysis: git worktree isolation, background reflection, formalized defrag, concurrent init, per-file frontmatter.
 - **Key decisions:** None — research synthesis. Five gaps identified for future work.
 - **Interface:** N/A (learning, not code)
@@ -308,7 +318,7 @@ _None yet._
 - **File:** learnings/LEARN-030_bm25-hybrid-search-implementation-patterns.md
 - **Tags:** BM25, search, hybrid-search, vector-search, ranking, Python, brain-py, implementation, RRF, reranking, SQLite-FTS5
 - **Links:** LEARN-021, LEARN-023, SPEC-000
-- **Backlinks:** _(none)_
+- **Backlinks:** LEARN-040, CODE-001
 - **Summary:** Research synthesis for improving brain.py search. Covers BM25 fundamentals (scoring formula, k1/b tuning for short docs: k1=1.0, b=0.4), 6 Python library comparison (rank-bm25, bm25s, SQLite FTS5, Whoosh-Reloaded, tantivy-py, lunr.py) with decision matrix. Field boosting strategy (tags 5x, ID 4x, title 3x, summary 1x). Hybrid search: RRF implementation (k=60, complete Python code), weighted blending alternative, minimal vector stack (fastembed + sqlite-vec + FTS5). Query expansion (pseudo-relevance feedback with code, HyDE, multi-query). Reranking (FlashRank 4-80MB options). Small-corpora patterns: BM25 alone sufficient when vocabulary is shared, add vectors for cross-brain search. 3-phase roadmap: (1) improve tokenizer now (stemming, stopwords, hyphen expansion), (2) migrate to SQLite FTS5 at 50-100 files for native field boosting, (3) add hybrid search at 100+ files or MCP server.
 - **Key decisions:** rank-bm25 adequate for current 37 files; SQLite FTS5 is best next step (zero deps, native field boosting, persistence); vector search premature at current scale; RRF over weighted blending for hybrid fusion.
 - **Interface:** N/A (learning, not code). Contains ready-to-use Python code for RRF, PRF, tokenizer, FTS5 schema.
@@ -319,7 +329,7 @@ _None yet._
 - **File:** learnings/LEARN-031_file-based-knowledge-management-at-scale.md
 - **Tags:** zettelkasten, obsidian, logseq, knowledge-management, scaling, consolidation, graph, MOC, atomic-notes, progressive-summarization, maintenance
 - **Links:** SPEC-000, LEARN-002, LEARN-003, LEARN-012
-- **Backlinks:** SPEC-001, SPEC-003, LEARN-032, LEARN-033
+- **Backlinks:** SPEC-001, SPEC-003, LEARN-032, LEARN-033, LEARN-040
 - **Summary:** Research synthesis of file-based knowledge management patterns for LLM memory systems. Covers Zettelkasten (5 core principles, fleeting/literature/permanent pipeline, emergence from cross-domain links, digital adaptations — 40% retrieval improvement), Obsidian (vault structure, MOCs with "mental squeeze point" trigger, Dataview metadata querying, scaling thresholds up to 40K+ notes — graph view is bottleneck, not file operations), Logseq (outliner model, block-level linking, namespaces, journal-first workflow — we correctly chose Obsidian/page model for LLM consumption). Scaling thresholds: 50-100 (fat index essential), 100-300 (first consolidation), 300-500 (sub-indexes), 500-1000 (Evernote Effect danger zone), 1000+ (automated search required). Knowledge graph patterns: link density benchmarks (2-3 minimum, 4-6 good), hub note priority maintenance, clustering for auto-organization. LLM-optimized adaptations: fat index = MOC equivalent, A-MEM NeurIPS 2025 academic validation, RAG chunking alignment (fat entries at optimal 50-150 tokens), context positioning (INDEX-MASTER early, task files last). Consolidation: Forte's 5-layer progressive summarization mapped to brain, gardening metaphors, maintenance cadence (time/event/metric triggers), merge vs split vs archive decision table. Prioritized improvements table and scaling roadmap from 37 to 1000+ files.
 - **Key decisions:** Architecture validated by A-MEM (NeurIPS 2025), Letta, Claude auto memory (4th independent convergence). Sub-index creation triggered by "mental squeeze point" not arbitrary file count. Evernote Effect is biggest long-term risk — consolidation every 20-30 files is correct.
 - **Interface:** N/A (learning, not code)
@@ -382,6 +392,17 @@ _None yet._
 - **Key decisions:** None — ingested knowledge. Tool engineering > prompt engineering is the most actionable insight for brain skill design and CONTEXT-PACK format investment.
 - **Interface:** N/A (learning, not code)
 - **Known issues:** High-level guidance with no code examples or benchmarks. Framework recommendations may shift. "Simplicity first" may tension with Prover's multi-brain complexity.
+
+### LEARN-040
+- **Type:** LEARN
+- **File:** learnings/LEARN-040_persistent-memory-improvement-strategies.md
+- **Tags:** memory, context-window, MCP, embeddings, architecture, scaling, multi-agent, prompt-caching
+- **Links:** SPEC-000, LEARN-002, LEARN-013, LEARN-024, LEARN-028, LEARN-030, LEARN-031, SPEC-001
+- **Backlinks:** CODE-001
+- **Summary:** Systematic evaluation of 9 strategies for improving persistent LLM memory beyond file-based brain system. Triggered by blowing through 200K context loading all 37 LEARN files. Three tiers: (1) improve access without more context — **MCP memory server** (highest ROI, query knowledge instead of loading files), embeddings+vector search, progressive loading (already built), RESET packs (already built); (2) increase effective context — multi-agent splitting (SPEC-001 Prover), prompt caching (API feature), hierarchical summarization; (3) architectural alternatives — external DB (lose git/transparency), bigger windows (passive). Key insight: problem isn't storage but access pattern — MCP server changes "read file" to "query and receive relevant excerpts". Recommended stack: MCP server → prompt caching → hierarchical summarization → vector search.
+- **Key decisions:** MCP Memory Server identified as highest-leverage improvement. Prompt caching as immediate cost win. Vector search deferred until BM25 proves insufficient.
+- **Interface:** N/A (learning, not code)
+- **Known issues:** None of the 9 strategies are implemented yet (except Options 3 and 4 which already exist). MCP server design needed as next step.
 
 ---
 

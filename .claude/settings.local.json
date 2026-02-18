@@ -33,7 +33,16 @@
       "WebFetch(domain:github.com)",
       "WebFetch(domain:x.com)",
       "WebFetch(domain:www.sourcepulse.org)",
-      "Bash(ssh:*)"
+      "Bash(ssh:*)",
+      "Bash(git config:*)",
+      "Bash(git commit:*)",
+      "Bash(export PATH=\"$PATH:/c/Program Files/GitHub CLI\")",
+      "Bash(gh repo create:*)",
+      "Bash(uv sync:*)",
+      "Bash(git add:*)",
+      "Bash(git push:*)",
+      "WebFetch(domain:sandboxagent.dev)",
+      "WebFetch(domain:pypi.org)"
     ]
   },
   "hooks": {

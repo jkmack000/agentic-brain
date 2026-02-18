@@ -875,3 +875,44 @@ Running chronological record of all project sessions, milestones, ingestions, an
   - Each agent = own repo per SPEC-001 architecture
   - Inter-brain communication via CONTEXT-PACK/RESULT protocol, not shared filesystem
 - **Blockers/dead ends:** SSH push failed (key not on GitHub) — HTTPS workaround as before
+
+### 2026-02-17 — BOOTSTRAP + READ — Full LEARN File Review
+- **Duration:** ~15min (hit context limit, compacted mid-session)
+- **Key actions:**
+  - Bootstrapped brain (SESSION-HANDOFF.md + INDEX-MASTER.md)
+  - Read all 37 LEARN files into context (LEARN-001 through LEARN-039, excluding retired 035/036)
+  - Context compacted mid-session — LEARN content lost from active context
+  - User asked about better persistent memory approaches / context window expansion
+- **Files created:** None
+- **Files modified:** SESSION-HANDOFF.md, LOG-002 (this entry)
+- **Decisions made:** None
+- **Blockers/dead ends:** Context compaction triggered by loading all 37 LEARN files (~200K+ tokens consumed)
+
+### 2026-02-17 — WORK — LEARN-040 Deposit + Brain MCP Server Implementation
+- **Duration:** ~20min
+- **Key actions:**
+  - Discussed 9 persistent memory improvement strategies with user (triggered by context blowout from loading all 37 LEARN files)
+  - Deposited LEARN-040: tiered evaluation of memory strategies (MCP server #1, prompt caching #2, hierarchical summarization #3, vector search #4)
+  - Designed Brain MCP Server architecture (CODE-001): 3 tools, 3 resources, 2 prompts, stdio transport
+  - Implemented `brain-mcp-server.py`: full working server using FastMCP SDK, imports brain.py for BM25 search
+  - Added `mcp[cli]>=1.26.0` to pyproject.toml
+  - Tested: MCP SDK import, brain.py integration (50 entries), search (top result LEARN-013 for "MCP server"), section extraction (Key Insight, Recommendation Stack)
+  - Fixed section extraction: DOTALL+MULTILINE regex unreliable → line-by-line heading-level parsing
+  - Updated INDEX-MASTER: 2 new entries (LEARN-040, CODE-001), all backlinks propagated, total 49→51
+- **Files created:**
+  - LEARN-040 (persistent memory improvement strategies)
+  - CODE-001 (brain MCP server design doc)
+  - `project-brain/brain-mcp-server.py` (MCP server implementation)
+- **Files modified:**
+  - INDEX-MASTER.md (2 new entries, backlinks on 8+ files, total 49→51)
+  - indexes/INDEX-claude-code.md (LEARN-013 backlinks updated)
+  - pyproject.toml (mcp[cli] dependency)
+  - SESSION-HANDOFF.md, LOG-002 (this entry)
+- **Decisions made:**
+  - MCP Memory Server is highest-leverage memory improvement (LEARN-040)
+  - Reuse brain.py for search (no duplication)
+  - stdio transport, user scope, 3 tools only (lean)
+  - Section filtering in read_file for token savings
+- **Blockers/dead ends:**
+  - DOTALL+MULTILINE regex for section extraction failed on real files — fixed with line-by-line parser
+  - Server not yet registered or tested in live Claude Code session
