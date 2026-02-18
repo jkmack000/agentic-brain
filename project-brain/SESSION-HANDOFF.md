@@ -1,42 +1,45 @@
 # SESSION-HANDOFF
 <!-- written: 2026-02-18 -->
-<!-- session-type: TEST — MCP server live verification -->
-<!-- trigger: stop hook (session ending) -->
+<!-- session-type: WORK — MCP verification + Coder brain Phase 2 ingestion -->
+<!-- trigger: user request -->
 
 ## What Was Being Done
-Testing the Brain MCP server tools in a fresh Claude Code session. Previous session confirmed server code and dependencies were working but MCP tools only load at startup, so a restart was required.
+Two tasks this session: (1) verify Brain MCP Server works in fresh session, (2) Phase 2 ingestion for coder-brain.
 
 ## Current State
-- **Status:** COMPLETED
-- **What's done:**
-  - Brain MCP Server fully operational — all 3 tools verified end-to-end
-  - `search_brain("hooks")` — 10 ranked results, correct BM25 ranking (LEARN-008: 10.1, LEARN-005: 9.7, LEARN-019: 9.2)
-  - `read_file("LEARN-041")` — full markdown content returned (~1176 tokens), formatting intact
-  - `get_index()` — complete INDEX-MASTER returned (~16K tokens), all sections present
-  - LOG-002 updated with verification entry
-  - `.mcp.json` present in repo root (project-scope registration)
-- **What's left:** Nothing — MCP server testing is complete
+- **Status:** COMPLETED — both tasks done
+- **MCP Server:** All 3 tools verified (search_brain, read_file, get_index). Committed e3b54e4, pushed.
+- **Coder Brain Phase 2:** 4 LEARN files written (LEARN-008 through LEARN-011). Committed 664a812, pushed.
+- **Stop Hook:** Fixed from blocking to advisory (sys.exit(2) → sys.exit(0)). Takes effect next session.
+
+## What's Done (Cumulative)
+- Brain MCP Server fully operational (search, read, index)
+- Coder-brain at 18 files (Phase 1 complete: Freqtrade seed, Phase 2 complete: CCXT, VectorBT, Optuna, pytest)
+- Agentic-brain at 52 files with full quorum sensing (P0-P3), sub-indexes, backlinks, vitality scoring
+- Stop hook is now advisory (warns but doesn't block exit)
+
+## What's Left
+- Phase 3 ingestion for coder-brain (error patterns from production — deferred until strategies are actually generated)
+- Prover architecture open questions (#1-4, #6-12, #23 in INDEX-MASTER)
+- Install MCP brain into coder-brain when it hits ~30+ files
 
 ## Uncommitted Decisions
 - None
 
 ## Discoveries Not Yet Deposited
-- MCP server successfully serving all 3 tools — no new gotchas discovered (clean verification)
-- `.mcp.json` confirmed in repo root — user did switch to `--scope project` (resolves open question from previous handoff)
+- Option B pattern for cross-brain ingestion (stay in source brain with MCP, write into target remotely) — could be deposited as a LEARN if pattern reused
+- Stop hook blocking loop is a usability anti-pattern — advisory hooks are better for session management
 
 ## Open Questions
-- None new this session
+- None new
 
 ## Files Modified This Session
-- `project-brain/logs/LOG-002_project-timeline.md` — appended MCP server live verification entry
-
-## Files Added to Brain This Session
-- None (verification session only)
-
-## Dead Ends (if any)
-- None
+- .claude/settings.local.json (stop hook fix)
+- project-brain/logs/LOG-002_project-timeline.md (2 entries: MCP verification + Phase 2 ingestion)
+- project-brain/SESSION-HANDOFF.md (this file)
+- coder-brain: LEARN-008, LEARN-009, LEARN-010, LEARN-011, INDEX-MASTER.md
 
 ## Recommended Next Session
 - **Type:** WORK
-- **Load:** INDEX-MASTER.md, CODE-001 (Brain MCP Server design doc)
-- **First action:** With MCP server operational, the biggest infrastructure milestone is done. Next priorities from INDEX-MASTER open questions: Prover architecture work (OQs #1-4, #6-12, #23), or coder-brain Phase 2 ingestion (CCXT, VectorBT, Optuna). User's choice.
+- **Load:** INDEX-MASTER.md
+- **First action:** User's choice — Prover architecture (open questions), more coder-brain work, or something new
