@@ -33,11 +33,13 @@ GraphRAG (from LEARN-002) — uses knowledge graph structure for retrieval rathe
 
 The brain provides three levels of attention management:
 
-1. **Focus** — knowing what to look at. Fat index entries tell the LLM which files contain what, avoiding wasted context on irrelevant files.
+1. **Focus** — knowing what exists. The fat index is a task-independent map of all knowledge in the brain. It answers "what do we have?" without opening anything. The same INDEX-MASTER serves every query equally.
 
-2. **Orientation** — knowing what matters relative to the task. Clusters group related files so the LLM can load the right neighborhood of knowledge, not isolated files.
+2. **Orientation** — knowing what's relevant to *this* task. Clusters, backlinks, and tags let the LLM filter the map down to the 2-5 files that matter right now. This is task-dependent — the same brain orients differently for an architecture question vs a debugging question.
 
-3. **Awareness** — knowing what you don't know. Open questions surface gaps. Tensions surface contradictions. Without these, the LLM generates confidently wrong output.
+3. **Awareness** — knowing what's missing or contested. Open questions surface gaps. Tensions surface contradictions. Without these, the LLM generates confidently wrong output from an incomplete picture it believes is complete.
+
+Focus without Orientation is a library catalog you can't search. Orientation without Focus is guessing which shelf to check. Both without Awareness is confidently building on unknown gaps.
 
 **Analogy:** A raw context window is a desk you pile papers on. The brain is a filing system with labels, cross-references, and a list of known unknowns pinned to the wall. A bigger desk without the filing system is just a bigger mess.
 
