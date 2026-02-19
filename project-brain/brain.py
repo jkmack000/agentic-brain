@@ -27,7 +27,8 @@ import textwrap
 from pathlib import Path
 
 # Ensure UTF-8 output on Windows (avoids charmap encoding errors)
-if sys.stdout.encoding != "utf-8":
+# Only when running as CLI — wrapping stdout breaks MCP stdio transport
+if __name__ == "__main__" and sys.stdout.encoding != "utf-8":
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
 
