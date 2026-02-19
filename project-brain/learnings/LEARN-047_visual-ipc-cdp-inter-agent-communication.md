@@ -58,6 +58,13 @@ Could serve as **Option E** for S001 multi-brain coordination, especially for:
 ## Key Insight
 This inverts the typical agent communication model. Instead of agents writing structured messages for each other, agents simply work normally and observers capture their visible state. This is closer to how human teams collaborate — looking at each other's screens — than traditional IPC protocols.
 
+## Puppeteer Reference
+- **Docs**: https://pptr.dev
+- **Quick use**: `npx puppeteer screenshot <url> --output <path>`
+- **Install**: `npm install puppeteer` (bundles Chromium) or `puppeteer-core` (bring your own browser)
+- **CDP connection**: `puppeteer.connect({ browserURL: 'http://127.0.0.1:9222' })` to attach to existing Chrome
+- **When needed**: web UI verification, visual regression testing, scraping GUI-only data, cross-machine agent monitoring
+
 ## Known Issues
 - OCR accuracy on code/terminal output not measured — may degrade with dense text or non-standard fonts
 - CDP auto-detection assumes localhost — remote agents need explicit `--devtools-url`

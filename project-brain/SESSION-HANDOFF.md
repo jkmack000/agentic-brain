@@ -1,51 +1,76 @@
 # SESSION-HANDOFF
 <!-- written: 2026-02-19 -->
-<!-- session-type: WORK — Ingestion + Hook Fix + Compressed Index Format + Parser Update -->
-<!-- trigger: user request to exit -->
+<!-- session-type: WORK — AMP protocol design, build, and testing -->
+<!-- trigger: restart needed to activate AMP inbox hook -->
 
 ## What Was Being Done
-Five things this session: (1) ingested checkpoint.af comparison, (2) fixed stop+PostToolUse hooks, (3) verified MCP server, (4) designed+implemented compressed fat index format (70% token savings), (5) updated brain.py parser for compressed format. All committed and pushed.
+1. Fixed MCP `search_brain` hang — missing `rank-bm25` in venv. `uv sync` fixed it. All 3 MCP tools working.
+2. Deposited: LEARN-041 enriched, LEARN-047 (visual IPC/CDP), RULE-006 (uv venv hygiene), SPEC-004 (Agent Mailbox Protocol)
+3. Built and tested AMP — two agents exchanged messages successfully via file-based mailbox
+4. Built `amp/check-inbox.py` — PostToolUse hook that auto-notifies agents of new messages on Write
 
 ## Current State
-- **Status:** COMPLETED — all committed+pushed (cfa7f9b), working tree clean
+- **Commit:** a87830e pushed to origin/master (brain deposits)
+- **Uncommitted:** amp/ directory (scaffold + check-inbox.py), settings.local.json (new hook), SESSION-HANDOFF.md, LEARN-047 (puppeteer ref)
+- **AMP test status:** Alpha sent 001, Bravo replied 001 (ACK). Protocol working. Hook built but not yet live (needs restart with AMP_ID env var).
+
+## AMP Activation (Do This Now)
+Both instances must restart with env var set:
+```bash
+# Terminal 1 (Alpha)
+set AMP_ID=alpha
+claude
+
+# Terminal 2 (Bravo)
+set AMP_ID=bravo
+claude
+```
+
+The PostToolUse hook on Write will then auto-check `amp/agents/<other>/` for new messages after every file write. Silent (0 tokens) when no messages.
+
+### AMP Directory Layout
+```
+amp/
+├── PROTOCOL.md          ← quick reference
+├── ROSTER.md            ← alpha + bravo registered
+├── check-inbox.py       ← inbox checker (hook script)
+├── .last_seen_alpha     ← Alpha's read tracker
+├── .last_seen_bravo     ← Bravo's read tracker
+├── agents/
+│   ├── alpha/001.md     ← Alpha's first message (REQUEST)
+│   └── bravo/001.md     ← Bravo's ACK reply
+└── shared/              ← shared state (empty)
+```
+
+### If You Are Alpha
+- You are the orchestrator
+- Your outbox: `amp/agents/alpha/`
+- Next message: `amp/agents/alpha/002.md` (seq 002)
+- Check `amp/agents/bravo/` for new messages (or let the hook do it)
+
+### If You Are Bravo
+- You are the responder
+- Your outbox: `amp/agents/bravo/`
+- Next message: `amp/agents/bravo/002.md` (seq 002)
+- Check `amp/agents/alpha/` for new messages (or let the hook do it)
+
+## Full Protocol Spec
+`project-brain/specs/SPEC-004_agent-mailbox-protocol.md` — message format, types, shared state, maker-checker patterns, error handling.
 
 ## What's Done (Cumulative)
-- Agentic-brain at 57 files, INDEX-MASTER + INDEX-claude-code in compressed-v1 format
-- brain.py parser handles both compressed and markdown formats (backwards compatible)
-- cmd_deposit generates compressed-v1 entries
-- BM25 search verified on compressed index (57/57 entries, correct ranking)
-- MCP server will auto-fix on next session restart (imports brain.py)
-- Stop + PostToolUse hooks fixed (python→uv run python)
-- All pushed to origin/master
+- Brain at 60 files, compressed-v1 format, MCP server working
+- SPEC-004: Agent Mailbox Protocol with 4 maker-checker patterns
+- AMP scaffold + inbox checker hook built and tested
+- First successful two-agent message exchange
 
 ## What's Left
-- **Tomorrow: convert openclaw.brain and coder.brain indexes** to compressed-v1 format
-- **Copy updated brain.py** to openclaw.brain and coder.brain (or they won't parse compressed format)
-- Coder-brain verification (rules, hooks, /brain-status)
-- Phase 3 ingestion for coder-brain (error patterns)
-- Install MCP brain into coder-brain at ~30+ files
+- Restart both instances with AMP_ID env vars to activate hook
+- Test hook-driven message notification (write a file, see if inbox check fires)
+- Test multi-turn conversation between agents
+- Commit amp/ directory + hook changes
+- Convert other brains to compressed-v1, copy brain.py
 - Prover open questions (#1-4, #6-12, #23)
 
-## Uncommitted Decisions
-- None
-
 ## Discoveries Not Yet Deposited
-- Option B pattern for cross-brain ingestion (stay in source brain, write into target remotely) — deposit if reused
-- Advisory hooks > blocking hooks for session management UX — in LOG-002 but not standalone LEARN
-
-## Side To-Do (not in brain files)
-- **Security certification brand** — pen test / malicious code test apps, chatbots, SaaS. "Tested Secure" badge. Needs: name, scope, tiers, target market, business model, badge mechanics.
-
-## Files Modified This Session
-- LEARN-045 (created — checkpoint.af comparison)
-- LEARN-046 (created — compressed fat index format spec)
-- INDEX-MASTER.md (converted to compressed-v1, total-files 55→57)
-- indexes/INDEX-claude-code.md (converted to compressed-v1)
-- brain.py (parser updated for dual-format, cmd_deposit generates compressed)
-- .claude/settings.local.json (fixed python→uv run python in hooks)
-- SESSION-HANDOFF.md (this file)
-
-## Recommended Next Session
-- **Type:** WORK
-- **Load:** INDEX-MASTER.md, LEARN-046
-- **Priority:** (1) Verify MCP search works (just restart session), (2) Convert openclaw.brain + coder.brain indexes, (3) Copy updated brain.py to other brains
+- Option B pattern for cross-brain ingestion (carry-forward)
+- Advisory hooks > blocking hooks for session management UX (carry-forward)
