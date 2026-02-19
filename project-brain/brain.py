@@ -998,10 +998,15 @@ def cmd_status(args):
     print(f"\nIndex entries: {len(entries)}")
 
     # Check for orphans (files without index entries)
+    # Build set of indexed file prefixes to handle both exact paths and
+    # compressed-v1 derived paths (e.g., "learnings/LEARN-001" matches
+    # "learnings/LEARN-001_freqtrade-istrategy-technical-reference.md")
     indexed_files = set()
+    indexed_prefixes = set()
     for e in entries:
         if "file" in e:
             indexed_files.add(e["file"])
+            indexed_prefixes.add(e["file"])
 
     orphans = []
     for file_type, info in FILE_TYPES.items():
@@ -1010,8 +1015,12 @@ def cmd_status(args):
         type_dir = brain_root / info["dir"]
         for f in type_dir.glob(f"{file_type}-*.md"):
             relative = f"{info['dir']}/{f.name}"
-            if relative not in indexed_files:
-                orphans.append(relative)
+            if relative in indexed_files:
+                continue
+            # Check prefix match for compressed-v1 derived paths
+            if any(relative.startswith(p) for p in indexed_prefixes):
+                continue
+            orphans.append(relative)
 
     if orphans:
         print(f"\nOrphans (files without index entries): {len(orphans)}")
@@ -1021,11 +1030,17 @@ def cmd_status(args):
         print("\nNo orphans detected. All files are indexed.")
 
     # Check for stale entries (index entries pointing to missing files)
+    # For compressed-v1, derived paths are prefixes (e.g., "learnings/LEARN-001")
+    # so we glob for matches instead of checking exact path existence.
     stale = []
     for e in entries:
         if "file" in e:
             file_path = brain_root / e["file"]
-            if not file_path.exists():
+            if file_path.exists():
+                continue
+            # Try glob match for compressed-v1 derived paths (prefix + wildcard)
+            matches = list(file_path.parent.glob(f"{file_path.name}*")) if file_path.parent.exists() else []
+            if not matches:
                 stale.append(f"{e['id']} -> {e['file']}")
 
     if stale:
