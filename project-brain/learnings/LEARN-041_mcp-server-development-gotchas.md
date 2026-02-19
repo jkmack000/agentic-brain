@@ -1,11 +1,12 @@
 # LEARN-041: MCP Server Development Gotchas
 <!-- type: LEARN -->
 <!-- created: 2026-02-18 -->
+<!-- updated: 2026-02-19 -->
 <!-- tags: MCP, FastMCP, stdio, development, gotchas, regex, registration, claude-code -->
 <!-- links: CODE-001, LEARN-013, LEARN-019 -->
 
 ## Context
-Discovered during development and registration of the Brain MCP Server (CODE-001). Eight practical gotchas that affect anyone building MCP servers for Claude Code.
+Discovered during development and registration of the Brain MCP Server (CODE-001). Eight practical gotchas (with sub-gotchas 2a and 6a) that affect anyone building MCP servers for Claude Code.
 
 ## Discoveries
 
@@ -20,6 +21,7 @@ Discovered during development and registration of the Brain MCP Server (CODE-001
 - Symptoms: server appears to start but tools never appear, or tools return garbage
 - Fix: use `logging` module (writes to stderr by default) or explicitly `print(..., file=sys.stderr)`
 - This applies to ALL stdio MCP servers, not just Python
+- **2a. Module-level stdout wrapping in imported libraries breaks MCP stdio.** If your MCP server imports a library that does `sys.stdout = io.TextIOWrapper(...)` at module level (e.g., to force UTF-8 on Windows where stdout defaults to cp1252), it replaces FastMCP's JSON-RPC pipe. The server starts, some tools may work (simpler responses fit buffers), but larger responses deadlock indefinitely. Fix: guard stdout wrapping with `if __name__ == "__main__"` so it only runs in CLI mode, not on import.
 
 ### 3. FastMCP `instructions` Field Enables Tool Search Discovery
 - The `instructions` parameter in `FastMCP(name=..., instructions=...)` is critical for **Tool Search discoverability**
@@ -47,6 +49,7 @@ Discovered during development and registration of the Brain MCP Server (CODE-001
 - **Diagnosis:** Check `.venv/Lib/site-packages/` for the expected package dist-info
 - **Fix:** Run `uv --directory <project-dir> sync` from a normal terminal, then restart Claude Code
 - This is the most common "tools don't appear" failure — check dependencies first
+- **6a. Lazy imports turn missing deps into per-tool hangs, not startup failures.** If a dependency is imported inside a tool function (e.g., `from rank_bm25 import BM25Okapi` inside `search_brain`) rather than at module level, the server starts fine and other tools work — but the tool using the missing dep hangs indefinitely instead of returning an error. FastMCP's stdio transport swallows the `ModuleNotFoundError`. This is especially insidious because the venv may have been valid previously — `uv sync` can lose packages if the `.venv` is recreated. Symptoms: one specific tool hangs (0 tokens consumed) while others work fine.
 
 ### 7. `claude mcp add` Registration ≠ Server Functional
 - `claude mcp add` succeeding (or saying "already exists") only means the registration entry is stored
