@@ -43,9 +43,13 @@
       "Bash(git push:*)",
       "WebFetch(domain:sandboxagent.dev)",
       "WebFetch(domain:pypi.org)",
-      "Bash(claude mcp list:*)"
+      "Bash(claude mcp list:*)",
+      "WebFetch(domain:www.sciencedirect.com)"
     ]
   },
+  "enabledMcpjsonServers": [
+    "brain"
+  ],
   "hooks": {
     "SessionStart": [
       {
@@ -88,8 +92,5 @@
         ]
       }
     ]
-  },
-  "enabledMcpjsonServers": [
-    "brain"
-  ]
+  }
 }

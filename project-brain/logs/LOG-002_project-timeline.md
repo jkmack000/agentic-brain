@@ -1049,3 +1049,64 @@ Running chronological record of all project sessions, milestones, ingestions, an
 - **Decisions made:**
   - Don't chase vector embeddings as replacement for fat indexes — they solve different problems
   - Invest in topology (backlinks, clusters, tensions) as the brain's unique advantage
+
+### 2026-02-19 — WORK — AMP Testing, AMP Revert, Context Optimization
+- **Duration:** ~60min (hit context limit, compacted)
+- **Key actions:**
+  - Tested AMP between alpha and bravo instances — discovered fundamental coordination failures (shared settings, env var propagation, ephemeral PIDs)
+  - User decided to revoke ALL AMP changes — deleted amp/ directory, removed hook from settings.local.json, committed (b381da3)
+  - Researched CLAUDE.md best practices: Anthropic docs, skills guide PDF (39K chars via pymupdf4llm), community examples
+  - Consolidated 4 brain rules files into single `.claude/rules/brain.md` (~85% token reduction, ~1350→~200 tokens)
+  - Trimmed `project-brain/INIT.md` (~83% reduction, ~1500→~250 tokens)
+  - Drafted new CLAUDE.md as `draftclaude.md` — enforces Research→Plan→Implement→Verify workflow with stop rules
+  - Total brain startup context reduced from ~3300 to ~900 tokens
+- **Files created:**
+  - `.claude/rules/brain.md` (consolidated replacement for 4 rules files)
+  - `draftclaude.md` (new CLAUDE.md draft, not yet deployed)
+- **Files deleted:**
+  - `.claude/rules/brain-session-hygiene.md`
+  - `.claude/rules/brain-fat-index-discipline.md`
+  - `.claude/rules/brain-deposit-as-you-go.md`
+  - `.claude/rules/brain-ingestion-dedup.md`
+  - `amp/` (entire directory, committed b381da3)
+- **Files modified:**
+  - `project-brain/INIT.md` (trimmed)
+  - `.claude/settings.local.json` (AMP hook removed)
+- **Decisions made:**
+  - AMP abandoned — shared settings.local.json makes per-agent hooks impossible without git worktrees
+  - Brain startup context must be minimal — rules consolidated, INIT trimmed, CLAUDE.md rewritten
+  - New CLAUDE.md enforces explicit workflow phases with stop rules to prevent rushing
+- **Blockers/dead ends:**
+  - AMP: env var propagation unreliable on Windows, PID/PPID identity claiming broken (ephemeral bash processes), shared hooks can't differentiate agents
+  - PRISM KERNEL symbolic format evaluated but not adopted (standard markdown chosen)
+
+### 2026-02-20 — INGESTION + DESIGN — Hypertext Indexing, Ars Contexta, Brain v2 Architecture
+- **Duration:** ~30min
+- **Key actions:**
+  - Ingested Thachuk 2013 "Indexing hypertext" paper (Journal of Discrete Algorithms): first succinct hypertext index, dual FM-indexes, 2D orthogonal range queries for edge crossings, three-case pattern matching decomposition (within-node / one-edge / multi-edge), hypertext-wildcard correspondence
+  - Deposited LEARN-048 (index architecture) and LEARN-049 (algorithm + wildcard correspondence)
+  - Evaluated and skipped 3 URLs: claude-memory repo (90% covered by L002/L011/L020/L034), zettelkasten.de intro (covered by L031), DataCamp graph databases (too shallow)
+  - Ingested Ars Contexta Claude Code plugin: three-space architecture (self/notes/ops), 6 Rs pipeline with backward-pass Reweave phase, derivation engine with 249 research claims, schema enforcement via PostToolUse hooks, fresh subagent per pipeline phase
+  - Deposited LEARN-050 (Ars Contexta agent-native KM architecture)
+  - Synthesized all 63 brain files into Brain v2 architecture — deposited as SPEC-005: three-space separation, three-layer index (fat + link + cluster), 5-phase pipeline (Deposit→Connect→Reweave→Verify→Synthesize), three-case search adapted from hypertext paper, schema enforcement, auto-deposit SessionEnd hook, 6-phase incremental migration plan
+  - Designed comprehensive coder brain knowledge map (8 clusters, ~75-95 files covering market microstructure, data engineering, indicators, strategy patterns, backtesting/validation, risk management, execution, Python patterns) — user copied to coder-brain project
+  - Updated INDEX-MASTER throughout: 4 new entries, S000 backlinks 37→40, file count 60→64
+- **Files created:**
+  - LEARN-048 (succinct hypertext index architecture)
+  - LEARN-049 (hypertext-wildcard correspondence + three-case algorithm)
+  - LEARN-050 (Ars Contexta agent-native KM architecture)
+  - SPEC-005 (Brain v2 architecture — full synthesis)
+- **Files modified:**
+  - INDEX-MASTER.md (4 new entries, S000 backlinks updated, count 60→64)
+  - LOG-002 (this entry)
+  - SESSION-HANDOFF.md
+- **Decisions made:**
+  - Brain v2 adopts three-space separation (identity/knowledge/ops)
+  - Link index as separate file from fat index (typed relationships: extends/validates/contradicts/etc.)
+  - Reweave (backward pass) formalized as pipeline stage, bounded to 1-hop + max 5 files
+  - Three-case search adapted from hypertext indexing: within-file (BM25), cross-link (link index query), cross-chain (BFS with depth limit)
+  - Schema enforcement via PostToolUse hooks (blocks malformed deposits)
+  - BFS for path search at current scale; reassess 2D range queries at 100+ files
+- **Blockers/dead ends:**
+  - ScienceDirect HTML URL 403 (paywalled) — user pasted paper text
+  - DataCamp URL 403 — user pasted content, too shallow for deposit
